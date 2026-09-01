@@ -25,6 +25,11 @@ namespace EasyDeliveryCoMods
         private static ConfigEntry<bool> radioShuffle;
         private static ConfigEntry<bool> replaceNewsChannel;
 
+        // ==================== FPS CONFIG ====================
+        private static ConfigEntry<bool> fpsUnlockEnabled;
+        private static ConfigEntry<int> targetFrameRate;
+        private static ConfigEntry<bool> disableVSync;
+
         // ==================== WHEEL CONFIG ====================
         private static ConfigEntry<bool> wheelEnabled;
         private static ConfigEntry<int> wheelSteerAxis;
@@ -64,6 +69,7 @@ namespace EasyDeliveryCoMods
         private static float[] cachedRawAxes = new float[16];
         private static bool[] cachedRawButtons = new bool[32];
         private static string connectedJoyName = "None";
+        private static float fpsDeltaTime = 0f;
 
         private void Awake()
         {
@@ -72,10 +78,25 @@ namespace EasyDeliveryCoMods
 
             InitConfig();
 
+            ApplyFpsSettings();
+
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 3.0.0 (Radio + Wheel) loaded successfully!");
+            Logger.LogInfo("Easy Delivery Co Mods 3.1.0 (Radio + Wheel + FPS) loaded successfully!");
+        }
+
+        private void ApplyFpsSettings()
+        {
+            if (fpsUnlockEnabled.Value)
+            {
+                Application.targetFrameRate = targetFrameRate.Value <= 0 ? -1 : targetFrameRate.Value;
+                if (disableVSync.Value)
+                {
+                    QualitySettings.vSyncCount = 0;
+                }
+                Logger.LogInfo($"[FPS] Target set to {(targetFrameRate.Value <= 0 ? "Unlimited" : targetFrameRate.Value.ToString())}, VSync={(disableVSync.Value ? "Off" : "On")}");
+            }
         }
 
         private void Start()
@@ -88,6 +109,15 @@ namespace EasyDeliveryCoMods
 
         private void Update()
         {
+            if (fpsUnlockEnabled.Value)
+            {
+                int desired = targetFrameRate.Value <= 0 ? -1 : targetFrameRate.Value;
+                if (Application.targetFrameRate != desired)
+                {
+                    Application.targetFrameRate = desired;
+                }
+            }
+
             // Toggle overlay
             if (Input.GetKeyDown(wheelOverlayToggleKey.Value))
             {
@@ -112,8 +142,16 @@ namespace EasyDeliveryCoMods
             replaceNewsChannel = Config.Bind("1. Custom Radio", "ReplaceNewsChannel", true,
                 "Replace talk/news channel (99.1 FM) with your custom music.");
 
+            // FPS
+            fpsUnlockEnabled = Config.Bind("2. Frame Rate", "UnlockFPS", true,
+                "Unlock frame rate limit (blocks game's internal 60 FPS limiter).");
+            targetFrameRate = Config.Bind("2. Frame Rate", "TargetFPS", 240,
+                "Target frame rate (e.g. 240, 144, 120, or 0 for unlimited uncapped FPS).");
+            disableVSync = Config.Bind("2. Frame Rate", "DisableVSync", true,
+                "Disable vertical sync to allow frame rates higher than monitor refresh rate.");
+
             // Wheel
-            wheelEnabled = Config.Bind("2. Steering Wheel", "Enabled", true,
+            wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
                 "Enable DirectInput / PXN steering wheel support.");
 
             wheelSteerAxis = Config.Bind("2. Steering Wheel", "SteeringAxisNumber", 1,
@@ -364,6 +402,16 @@ namespace EasyDeliveryCoMods
             }
         }
 
+        // ==================== FPS PATCH ====================
+
+        [HarmonyPatch(typeof(LimitFrameRate), "Update")]
+        [HarmonyPrefix]
+        private static bool Prefix_LimitFrameRate_Update()
+        {
+            // Block game's internal 60 FPS limiter when unlock is enabled
+            return !fpsUnlockEnabled.Value;
+        }
+
         // ==================== WHEEL LOGIC ====================
 
         private void PollWheelInput()
@@ -548,7 +596,11 @@ namespace EasyDeliveryCoMods
                 normal = { textColor = Color.white }
             };
 
+            fpsDeltaTime += (Time.unscaledDeltaTime - fpsDeltaTime) * 0.1f;
+            float currentFps = 1.0f / Mathf.Max(0.0001f, fpsDeltaTime);
+
             GUILayout.Label($"Device: {connectedJoyName}", textStyle);
+            GUILayout.Label($"FPS: {currentFps:0.} (Target: {(targetFrameRate.Value <= 0 ? "Unlimited" : targetFrameRate.Value.ToString())}, VSync: {(disableVSync.Value ? "Off" : "On")})", textStyle);
             GUILayout.Label($"Radio: {radioStatusText}", textStyle);
 
             GUILayout.Space(4);
