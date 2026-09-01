@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.6.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.7.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -25,6 +25,7 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<bool> radioEnabled;
         public static ConfigEntry<string> musicFolderPath;
         public static ConfigEntry<bool> radioShuffle;
+        public static ConfigEntry<int> maxCachedSongs;
 
         public static ConfigEntry<bool> fpsUnlockEnabled;
         public static ConfigEntry<int> targetFrameRate;
@@ -46,18 +47,14 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<KeyCode> overlayKey;
 
         // ==================== RADIO RUNTIME ====================
-        public static List<string> musicFiles = new List<string>();
-        public static int currentTrackIndex = 0;
-        public static AudioClip currentCustomClip = null;
-        public static string currentTrackTitle = "None";
-        public static bool isDecodingTrack = false;
+        public static List<string> allMusicFilePaths = new List<string>();
+        public static List<AudioClip> decodedRadioClips = new List<AudioClip>();
         public static string radioStatusText = "Idle";
-        public static RadioChannel customRadioChannel = null;
+        public static bool isDecoderRunning = false;
 
         // ==================== WHEEL RUNTIME ====================
         public static InputDevice activeWheelDevice = null;
         public static List<AxisControl> availableAxes = new List<AxisControl>();
-        public static List<ButtonControl> availableButtons = new List<ButtonControl>();
 
         public static AxisControl steerAxis = null;
         public static AxisControl gasAxis = null;
@@ -67,9 +64,11 @@ namespace EasyDeliveryCoMods
         public static float gasOut = 0f;
         public static float brakeOut = 0f;
 
+        // Auto-calibrated resting positions
+        public static float steerRestValue = 0f;
         public static float gasRestValue = -1f;
         public static float brakeRestValue = -1f;
-        public static bool pedalsCalibrated = false;
+        public static bool wheelCalibrated = false;
 
         private static float fpsDeltaTime = 0f;
 
@@ -112,11 +111,11 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 3.6.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 3.7.0 loaded successfully!");
 
             if (radioEnabled.Value)
             {
-                ScanMusicFolder();
+                StartCoroutine(InitRadioPipelineAsync());
             }
         }
 
@@ -124,11 +123,13 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom radio. Music from MusicFolder will play on custom station 105.5 FM.");
+                "Enable custom music from local folder on 88.1 FM and 99.1 FM.");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
-                "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG). Decoded on the fly.");
+                "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG). Decoded in background.");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
                 "Shuffle playback order of tracks.");
+            maxCachedSongs = Config.Bind("1. Custom Radio", "PlaylistSize", 40,
+                "Number of tracks decoded into radio rotation (keeps memory low and game fast).");
 
             // FPS
             fpsUnlockEnabled = Config.Bind("2. Frame Rate", "UnlockFPS", true,
@@ -140,7 +141,7 @@ namespace EasyDeliveryCoMods
 
             // Wheel
             wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
-                "Enable direct 1:1 steering wheel support.");
+                "Enable steering wheel support.");
             wheelDeviceFilter = Config.Bind("3. Steering Wheel", "DeviceFilter", "pxn",
                 "Search term for wheel device name in InputSystem.");
 
@@ -151,11 +152,16 @@ namespace EasyDeliveryCoMods
             wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "rz",
                 "Axis name for brake pedal (usually 'rz' on PXN V12 Lite).");
 
-            wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.02f, "Deadzone for steering.");
-            wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f, "Direct 1:1 steering sensitivity multiplier.");
-            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true, "Invert steering direction (True matches real wheel).");
-            wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false, "Invert gas pedal.");
-            wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false, "Invert brake pedal.");
+            wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.03f,
+                "Deadzone around wheel center. When wheel is within deadzone, keyboard/gamepad have 100% free control.");
+            wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
+                "1:1 steering multiplier.");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true,
+                "Invert steering direction.");
+            wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false,
+                "Invert gas pedal.");
+            wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
+                "Invert brake pedal.");
 
             showOverlay = Config.Bind("4. Overlay", "ShowOverlay", true, "Show live diagnostics overlay on F7.");
             overlayKey = Config.Bind("4. Overlay", "ToggleKey", KeyCode.F7, "Key to toggle overlay.");
@@ -203,7 +209,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== WHEEL LOGIC (1:1 DIRECT SIMULATOR STEERING) ====================
+        // ==================== WHEEL LOGIC: BULLETPROOF CALIBRATION & 1:1 DIRECT INPUT ====================
 
         private void FindAndSetupWheel()
         {
@@ -230,20 +236,15 @@ namespace EasyDeliveryCoMods
                 if (match != null && match != activeWheelDevice)
                 {
                     activeWheelDevice = match;
-                    Logger.LogInfo($"[Wheel] Selected: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
+                    Logger.LogInfo($"[Wheel] Selected device: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
 
                     availableAxes.Clear();
-                    availableButtons.Clear();
 
                     foreach (var ctrl in activeWheelDevice.allControls)
                     {
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             availableAxes.Add(axis);
-                        }
-                        else if (ctrl is ButtonControl btn)
-                        {
-                            availableButtons.Add(btn);
                         }
                     }
 
@@ -252,18 +253,18 @@ namespace EasyDeliveryCoMods
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase))
                                 ?? availableAxes.FirstOrDefault(a => a.name.Contains("x"));
 
-                    // Gas: 'z'
+                    // Gas: 'z' on PXN V12 Lite
                     gasAxis = FindAxis(wheelGasAxisName.Value)
                               ?? availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
                               ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
 
-                    // Brake: 'rz'
+                    // Brake: 'rz' on PXN V12 Lite
                     brakeAxis = FindAxis(wheelBrakeAxisName.Value)
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase));
 
-                    pedalsCalibrated = false;
-                    Logger.LogInfo($"[Wheel Configured] Steer='{(steerAxis != null ? steerAxis.name : "NULL")}', Gas='{(gasAxis != null ? gasAxis.name : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.name : "NULL")}'");
+                    wheelCalibrated = false;
+                    Logger.LogInfo($"[Wheel Mapped] Steer='{(steerAxis != null ? steerAxis.name : "NULL")}', Gas='{(gasAxis != null ? gasAxis.name : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.name : "NULL")}'");
                 }
             }
             catch (Exception ex)
@@ -282,92 +283,94 @@ namespace EasyDeliveryCoMods
         {
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
-            // Zero baseline on first poll
-            if (!pedalsCalibrated && gasAxis != null && brakeAxis != null)
+            // Auto-calibrate center/resting values once when wheel connects
+            if (!wheelCalibrated && steerAxis != null && gasAxis != null && brakeAxis != null)
             {
+                steerRestValue = steerAxis.ReadValue();
                 gasRestValue = gasAxis.ReadValue();
                 brakeRestValue = brakeAxis.ReadValue();
-                pedalsCalibrated = true;
-                Logger.LogInfo($"[Pedals Calibrated] GasRest={gasRestValue:F2}, BrakeRest={brakeRestValue:F2}");
+                wheelCalibrated = true;
+                Logger.LogInfo($"[Wheel Calibrated] SteerCenter={steerRestValue:F3}, GasRest={gasRestValue:F3}, BrakeRest={brakeRestValue:F3}");
             }
 
-            // 1. Steering: PURE LINEAR 1:1 DIRECT INPUT
-            // No fake power curves, no deadzone cutoff beyond center!
+            // 1. Steering: Relative to calibrated center position
             if (steerAxis != null)
             {
                 float raw = steerAxis.ReadValue();
-                if (wheelInvertSteer.Value) raw = -raw;
+                // Deviation from physical center
+                float delta = raw - steerRestValue;
 
-                float abs = Mathf.Abs(raw);
+                if (wheelInvertSteer.Value) delta = -delta;
+
+                float absDelta = Mathf.Abs(delta);
                 float dz = wheelSteerDeadzone.Value;
-                if (abs < dz)
+
+                if (absDelta < dz)
                 {
+                    // IN DEADZONE: Output is EXACTLY ZERO. Keyboard and gamepad have 100% priority!
                     steerOut = 0f;
                 }
                 else
                 {
-                    // Linear mapping from deadzone to 1.0
-                    float norm = (abs - dz) / (1f - dz);
-                    steerOut = Mathf.Clamp(norm * Mathf.Sign(raw) * wheelSteerSensitivity.Value, -1f, 1f);
+                    // Linear 1:1 steering across 900 degrees
+                    float norm = (absDelta - dz) / (1f - dz);
+                    steerOut = Mathf.Clamp(norm * Mathf.Sign(delta) * wheelSteerSensitivity.Value, -1f, 1f);
                 }
             }
 
-            // 2. Gas Pedal
+            // 2. Gas Pedal (rests at -1.0, presses to +1.0)
             if (gasAxis != null)
             {
                 float raw = gasAxis.ReadValue();
-                float travel = Mathf.Abs(raw - gasRestValue);
-                if (travel < 0.06f)
+                float travel = raw - gasRestValue; // Movement away from rest position
+                if (wheelInvertGas.Value) travel = -travel;
+
+                if (travel < 0.08f)
                 {
                     gasOut = 0f;
                 }
                 else
                 {
-                    float maxTravel = (Mathf.Abs(gasRestValue) > 0.4f) ? 1.88f : 0.94f;
-                    float val = Mathf.Clamp01((travel - 0.06f) / (maxTravel - 0.06f));
-                    if (wheelInvertGas.Value) val = 1f - val;
-                    gasOut = val;
+                    gasOut = Mathf.Clamp01((travel - 0.08f) / 1.84f);
                 }
             }
 
-            // 3. Brake Pedal
+            // 3. Brake Pedal (rests at -1.0, presses to +1.0)
             if (brakeAxis != null)
             {
                 float raw = brakeAxis.ReadValue();
-                float travel = Mathf.Abs(raw - brakeRestValue);
-                if (travel < 0.06f)
+                float travel = raw - brakeRestValue; // Movement away from rest position
+                if (wheelInvertBrake.Value) travel = -travel;
+
+                if (travel < 0.08f)
                 {
                     brakeOut = 0f;
                 }
                 else
                 {
-                    float maxTravel = (Mathf.Abs(brakeRestValue) > 0.4f) ? 1.88f : 0.94f;
-                    float val = Mathf.Clamp01((travel - 0.06f) / (maxTravel - 0.06f));
-                    if (wheelInvertBrake.Value) val = 1f - val;
-                    brakeOut = val;
+                    brakeOut = Mathf.Clamp01((travel - 0.08f) / 1.84f);
                 }
             }
         }
 
-        // DIRECT WHEEL INJECTION INTO CAR PHYSICS:
-        // Bypasses the gamepad Lerp filter and gamepad S-curve that caused sharp steering and sudden stops!
+        // DIRECT WHEEL INJECTION: Bypasses keyboard Lerp filter and gamepad S-curve!
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
         {
             if (!wheelEnabled.Value || activeWheelDevice == null) return;
 
-            // Check if player is actively steering via keyboard or gamepad
+            // 1. Check if user is pressing Keyboard (A/D or Arrows)
             bool keyboardSteering = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
                                     Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
 
-            // Apply direct 1:1 steering from wheel if not using keyboard
+            // If NOT steering with keyboard, and wheel is turned past deadzone:
             if (!keyboardSteering && Mathf.Abs(steerOut) > 0.005f)
             {
                 __instance.input.x = steerOut;
             }
 
-            // Check keyboard throttle
+            // 2. Check if user is pressing Keyboard (W/S or Arrows)
             bool keyboardThrottle = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) ||
                                      Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
 
@@ -389,19 +392,19 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== RADIO: NATIVE SCANNING WITH CUSTOM STATION ====================
+        // ==================== CUSTOM RADIO: 100% NATIVE GAME INTEGRATION ====================
 
-        private void ScanMusicFolder()
+        private IEnumerator InitRadioPipelineAsync()
         {
             string folder = musicFolderPath.Value;
             if (!Directory.Exists(folder))
             {
                 radioStatusText = $"Folder not found: {folder}";
-                return;
+                yield break;
             }
 
             string[] exts = { ".flac", ".m4a", ".aac", ".mp3", ".wav", ".wma", ".ogg" };
-            musicFiles.Clear();
+            allMusicFilePaths.Clear();
 
             try
             {
@@ -410,243 +413,107 @@ namespace EasyDeliveryCoMods
                 {
                     if (exts.Contains(file.Extension.ToLowerInvariant()))
                     {
-                        musicFiles.Add(file.FullName);
+                        allMusicFilePaths.Add(file.FullName);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError($"Music scan error: {ex.Message}");
+                Logger.LogError($"Error scanning music folder: {ex.Message}");
             }
 
-            if (radioShuffle.Value && musicFiles.Count > 0)
+            if (allMusicFilePaths.Count == 0)
+            {
+                radioStatusText = $"No music found in {folder}";
+                yield break;
+            }
+
+            if (radioShuffle.Value)
             {
                 var rnd = new System.Random();
-                musicFiles = musicFiles.OrderBy(x => rnd.Next()).ToList();
+                allMusicFilePaths = allMusicFilePaths.OrderBy(x => rnd.Next()).ToList();
             }
 
-            radioStatusText = $"{musicFiles.Count} tracks ready";
-            Logger.LogInfo($"[CustomRadio] Found {musicFiles.Count} tracks in {folder}");
+            int countToDecode = Math.Min(allMusicFilePaths.Count, maxCachedSongs.Value);
+            radioStatusText = $"Loading {countToDecode} tracks into radio...";
+            Logger.LogInfo($"[CustomRadio] Loading {countToDecode} tracks from {folder}...");
 
-            if (musicFiles.Count > 0)
+            isDecoderRunning = true;
+            decodedRadioClips.Clear();
+
+            for (int i = 0; i < countToDecode; i++)
             {
-                currentTrackTitle = Path.GetFileNameWithoutExtension(musicFiles[0]);
-            }
-        }
+                string path = allMusicFilePaths[i];
+                string name = Path.GetFileNameWithoutExtension(path);
+                string ext = Path.GetExtension(path).ToLowerInvariant();
 
-        // Radio scene start: add Custom Radio (105.5 FM) properly into game radio channels
-        [HarmonyPatch(typeof(sRadioSystem), "Start")]
-        [HarmonyPostfix]
-        private static void Postfix_RadioStart(sRadioSystem __instance)
-        {
-            Logger.LogInfo($"=== Radio Starting === Initial stations: {__instance.channels.Count}, Frequency: {__instance.frequency} FM");
+                AudioClip clip = null;
 
-            // Also make sure all existing stations in scene are unlocked and active
-            var addChannels = UnityEngine.Object.FindObjectsOfType<sAddRadioChannel>();
-            foreach (var ac in addChannels)
-            {
-                if (ac.channel != null && !__instance.channels.Contains(ac.channel))
+                if (ext == ".ogg")
                 {
-                    ac.channel.queue = ac.channel.GetRandomizedClone();
-                    __instance.channels.Add(ac.channel);
-                    Logger.LogInfo($"[Station Unlocked] '{ac.channel.name}' ({ac.channel.frequency} FM)");
-                }
-            }
-
-            if (radioEnabled.Value && musicFiles.Count > 0)
-            {
-                if (customRadioChannel == null)
-                {
-                    customRadioChannel = ScriptableObject.CreateInstance<RadioChannel>();
-                    customRadioChannel.name = "Custom Radio";
-                    customRadioChannel.frequency = 105.5f;
-                    customRadioChannel.signal = 1f;
-                    customRadioChannel.queue = new AudioClip[0];
-                }
-
-                if (!__instance.channels.Contains(customRadioChannel))
-                {
-                    __instance.channels.Add(customRadioChannel);
-                    Logger.LogInfo($"[Custom Radio Added] 105.5 FM! Total stations: {__instance.channels.Count}");
-                }
-            }
-
-            // Log all channels
-            for (int i = 0; i < __instance.channels.Count; i++)
-            {
-                var c = __instance.channels[i];
-                Logger.LogInfo($"Station [{i}]: '{c.name}' at {c.frequency:F1} FM");
-            }
-        }
-
-        // FIX FOR RADIO SCANNING:
-        // In vanilla game, DoScanning() jumps frequency by 0.1f or more per frame.
-        // At 240 FPS, it skips over stations because it checks exact equality!
-        // We patch GetCurrentChannel so that it catches stations within 0.15 FM tolerance!
-        [HarmonyPatch(typeof(sRadioSystem), "GetCurrentChannel")]
-        [HarmonyPrefix]
-        private static bool Prefix_GetCurrentChannel(sRadioSystem __instance, ref int __result)
-        {
-            float currentFreq = __instance.frequency;
-
-            for (int i = 0; i < __instance.channels.Count; i++)
-            {
-                float chFreq = __instance.channels[i].frequency;
-                // Within 0.15 MHz tolerance so scanning catches it smoothly at 240 FPS!
-                if (Mathf.Abs(currentFreq - chFreq) <= 0.15f)
-                {
-                    // Snap to exact station frequency
-                    __instance.frequency = chFreq;
-                    __result = i;
-                    return false; // Skip vanilla method
-                }
-            }
-
-            __result = -1;
-            return false;
-        }
-
-        // Custom Radio Playback: ONLY intercepts when tuned to 105.5 FM (Custom Radio)
-        // All other stations (99.1 News, 101.7 D&B) are 100% untouched and play natively!
-        [HarmonyPatch(typeof(sRadioSystem), "UpdateTracks")]
-        [HarmonyPrefix]
-        private static bool Prefix_RadioUpdateTracks(sRadioSystem __instance)
-        {
-            if (!radioEnabled.Value || customRadioChannel == null || musicFiles.Count == 0) return true;
-
-            bool onCustomStation = (__instance.currentChannelIndex >= 0 &&
-                                    __instance.currentChannelIndex < __instance.channels.Count &&
-                                    __instance.channels[__instance.currentChannelIndex] == customRadioChannel);
-
-            if (onCustomStation)
-            {
-                __instance.signalStrength = 1f;
-                if (!__instance.source.enabled) return false;
-
-                if (__instance.source.clip == null || __instance.source.clip != currentCustomClip)
-                {
-                    if (currentCustomClip == null && !isDecodingTrack)
+                    string uri = "file:///" + path.Replace("\\", "/");
+                    using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.OGGVORBIS))
                     {
-                        LoadAndPlayTrack(currentTrackIndex);
-                    }
-                    else if (currentCustomClip != null)
-                    {
-                        __instance.source.clip = currentCustomClip;
-                        if (!__instance.source.isPlaying) __instance.source.Play();
-                    }
-                }
-                else if (!__instance.source.isPlaying && !isDecodingTrack && __instance.source.time == 0f)
-                {
-                    // Track finished, auto advance
-                    SkipToNextTrack();
-                }
-
-                return false; // Handled by custom player
-            }
-
-            // Normal stations: let vanilla game audio play!
-            return true;
-        }
-
-        public static void SkipToNextTrack()
-        {
-            if (musicFiles.Count == 0) return;
-            currentTrackIndex = (currentTrackIndex + 1) % musicFiles.Count;
-            LoadAndPlayTrack(currentTrackIndex);
-        }
-
-        private static void LoadAndPlayTrack(int index)
-        {
-            if (Instance == null || musicFiles.Count == 0 || isDecodingTrack) return;
-            Instance.StartCoroutine(DecodeAndPlayTrackCoroutine(musicFiles[index]));
-        }
-
-        private static IEnumerator DecodeAndPlayTrackCoroutine(string filePath)
-        {
-            isDecodingTrack = true;
-            string trackName = Path.GetFileNameWithoutExtension(filePath);
-            currentTrackTitle = trackName;
-            radioStatusText = $"Decoding: {trackName}";
-
-            string ext = Path.GetExtension(filePath).ToLowerInvariant();
-            AudioClip clip = null;
-
-            if (ext == ".ogg")
-            {
-                string uri = "file:///" + filePath.Replace("\\", "/");
-                using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.OGGVORBIS))
-                {
-                    yield return www.SendWebRequest();
-                    if (www.result == UnityWebRequest.Result.Success)
-                    {
-                        clip = DownloadHandlerAudioClip.GetContent(www);
-                        if (clip != null) clip.name = trackName;
-                    }
-                }
-            }
-            else
-            {
-                DecodedAudioData decodedData = null;
-                Task task = Task.Run(() =>
-                {
-                    try
-                    {
-                        using (var reader = new MediaFoundationReader(filePath))
+                        yield return www.SendWebRequest();
+                        if (www.result == UnityWebRequest.Result.Success)
                         {
-                            var sp = reader.ToSampleProvider();
-                            int ch = sp.WaveFormat.Channels;
-                            int sr = sp.WaveFormat.SampleRate;
-                            List<float> samples = new List<float>();
-                            float[] buf = new float[8192 * ch];
-                            int r;
-                            while ((r = sp.Read(buf, 0, buf.Length)) > 0)
-                            {
-                                for (int i = 0; i < r; i++) samples.Add(buf[i]);
-                            }
-                            decodedData = new DecodedAudioData { Samples = samples.ToArray(), Channels = ch, SampleRate = sr };
+                            clip = DownloadHandlerAudioClip.GetContent(www);
+                            if (clip != null) clip.name = name;
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Decode failed for {trackName}: {ex.Message}");
-                    }
-                });
-
-                while (!task.IsCompleted) yield return null;
-
-                if (decodedData != null && decodedData.Samples != null && decodedData.Samples.Length > 0)
-                {
-                    try
-                    {
-                        int totalSamplesPerChannel = decodedData.Samples.Length / decodedData.Channels;
-                        clip = AudioClip.Create(trackName, totalSamplesPerChannel, decodedData.Channels, decodedData.SampleRate, false);
-                        clip.SetData(decodedData.Samples, 0);
-                    }
-                    catch { }
                 }
+                else
+                {
+                    DecodedAudioData data = null;
+                    Task task = Task.Run(() =>
+                    {
+                        try
+                        {
+                            using (var reader = new MediaFoundationReader(path))
+                            {
+                                var sp = reader.ToSampleProvider();
+                                int ch = sp.WaveFormat.Channels;
+                                int sr = sp.WaveFormat.SampleRate;
+                                List<float> samples = new List<float>();
+                                float[] buf = new float[8192 * ch];
+                                int r;
+                                while ((r = sp.Read(buf, 0, buf.Length)) > 0)
+                                {
+                                    for (int s = 0; s < r; s++) samples.Add(buf[s]);
+                                }
+                                data = new DecodedAudioData { Samples = samples.ToArray(), Channels = ch, SampleRate = sr };
+                            }
+                        }
+                        catch { }
+                    });
+
+                    while (!task.IsCompleted) yield return null;
+
+                    if (data != null && data.Samples != null && data.Samples.Length > 0)
+                    {
+                        try
+                        {
+                            int total = data.Samples.Length / data.Channels;
+                            clip = AudioClip.Create(name, total, data.Channels, data.SampleRate, false);
+                            clip.SetData(data.Samples, 0);
+                        }
+                        catch { }
+                    }
+                }
+
+                if (clip != null)
+                {
+                    decodedRadioClips.Add(clip);
+                }
+
+                yield return null;
             }
 
-            if (clip != null)
-            {
-                if (currentCustomClip != null)
-                {
-                    Destroy(currentCustomClip);
-                }
-                currentCustomClip = clip;
+            isDecoderRunning = false;
+            radioStatusText = $"{decodedRadioClips.Count} tracks loaded on radio!";
+            Logger.LogInfo($"[CustomRadio] Successfully loaded {decodedRadioClips.Count} tracks into game radio!");
 
-                sRadioSystem radio = sRadioSystem.instance;
-                if (radio != null && radio.source != null)
-                {
-                    radio.source.clip = currentCustomClip;
-                    radio.source.time = 0f;
-                    if (radio.source.enabled) radio.source.Play();
-                }
-
-                radioStatusText = $"Playing: {trackName}";
-                Logger.LogInfo($"[CustomRadio] Playing [{currentTrackIndex + 1}/{musicFiles.Count}]: {trackName}");
-            }
-
-            isDecodingTrack = false;
+            ApplyTracksToGameRadio();
         }
 
         private class DecodedAudioData
@@ -656,7 +523,49 @@ namespace EasyDeliveryCoMods
             public int SampleRate;
         }
 
-        // ==================== HARMONY HOOKS ====================
+        private static void ApplyTracksToGameRadio()
+        {
+            if (decodedRadioClips == null || decodedRadioClips.Count == 0) return;
+
+            sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
+            if (radio == null || radio.channels == null) return;
+
+            // Feed tracks into Station [4] ('88.1 custom') and Station [1] ('News' 99.1 FM)
+            foreach (var ch in radio.channels)
+            {
+                if (ch != null && (ch.name.ToLowerInvariant().Contains("custom") || ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("news") || ch.frequency == 99.1f))
+                {
+                    ch.externalTracks.Clear();
+                    ch.externalTracks.AddRange(decodedRadioClips);
+                    ch.queue = decodedRadioClips.ToArray();
+                    Logger.LogInfo($"[CustomRadio] Applied {decodedRadioClips.Count} tracks to station '{ch.name}' ({ch.frequency} FM)");
+                }
+            }
+        }
+
+        // When radio scene starts, populate custom stations with our decoded music
+        [HarmonyPatch(typeof(sRadioSystem), "Start")]
+        [HarmonyPostfix]
+        private static void Postfix_RadioStart_InjectTracks(sRadioSystem __instance)
+        {
+            ApplyTracksToGameRadio();
+        }
+
+        // When AudioLoader finishes, populate customChannel with our music
+        [HarmonyPatch(typeof(AudioLoader), "Start")]
+        [HarmonyPostfix]
+        private static void Postfix_AudioLoader_Start(AudioLoader __instance)
+        {
+            if (decodedRadioClips != null && decodedRadioClips.Count > 0 && __instance.customChannel != null)
+            {
+                __instance.customChannel.externalTracks.Clear();
+                __instance.customChannel.externalTracks.AddRange(decodedRadioClips);
+                __instance.customChannel.queue = decodedRadioClips.ToArray();
+                Logger.LogInfo($"[CustomRadio] Populated AudioLoader customChannel with {decodedRadioClips.Count} tracks!");
+            }
+        }
+
+        // ==================== FPS PATCH ====================
 
         [HarmonyPatch(typeof(LimitFrameRate), "Update")]
         [HarmonyPrefix]
@@ -673,7 +582,7 @@ namespace EasyDeliveryCoMods
 
             GUI.color = Color.white;
             int width = 450;
-            int height = 300;
+            int height = 280;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
             GUI.Box(boxRect, "");
@@ -704,14 +613,15 @@ namespace EasyDeliveryCoMods
             string devName = activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel detected";
             GUILayout.Label($"Device: {devName}", textStyle);
             GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
-            GUILayout.Label($"Custom Radio: {radioStatusText}", textStyle);
+            GUILayout.Label($"Radio Status: {radioStatusText}", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Vehicle Control ---", textStyle);
             string steerName = steerAxis != null ? steerAxis.name : "none";
             string gasName = gasAxis != null ? gasAxis.name : "none";
             string brakeName = brakeAxis != null ? brakeAxis.name : "none";
-            GUILayout.Label($"Steer({steerName}): {steerOut:+0.00;-0.00;0.00} | Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
+            GUILayout.Label($"Steer({steerName}): {steerOut:+0.00;-0.00;0.00} (Center: {steerRestValue:F2})", textStyle);
+            GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Live Device Axes ---", textStyle);
