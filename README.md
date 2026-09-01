@@ -6,49 +6,60 @@
 
 ---
 
-## 🇷🇺 Описание (RU)
+## 🇷🇺 Возможности (RU)
 
-Комплексный BepInEx-мод для **Easy Delivery Co**, исправляющий проблемы управления и расширяющий возможности игры:
-
-### 1. 📻 Кастомное радио (88.1 FM)
-- Потоковый стриминг всей вашей музыки из `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) без расхода оперативной памяти.
-- Выделенная станция **88.1 FM (Custom)** со 100% чистым сигналом всегда.
-- Оригинальные станции (99.1 Новости, 101.7 D&B, 99.9 Lofi, 91.1 EasyCo) сохранены: по мере приближения к вышкам сигнал плавно вырастает до 100% прямо под ними.
-- Быстрое переключение станций штатными кнопками машины или клавишами `.` и `,`.
-
-### 2. 🏎️ Поддержка руля (PXN V12 Lite, Logitech, Thrustmaster, DirectInput)
-- Честный симуляторный ввод 1:1 на полные **900 градусов** в обход геймпадовских кривых.
-- Исправлено знаковое переполнение Unity HID: нейтраль держит **строгий ноль `0.00`** без дрейфа в сторону.
-- Педали: плавный газ (`z`) и тормоз (`rz`).
-- Ручной тормоз: верхний лепесток или кнопка вызывают настоящее действие Пробела (`Break`) с блокировкой задней оси.
-- Клавиатура и геймпад работают параллельно без конфликтов.
-- **F7**: экран живой диагностики осей и кнопок.
-
-### 3. ⚡ Разблокировка FPS
-- Блокирует встроенный скрипт игры `LimitFrameRate`, удерживая 240 FPS (или безлимит) без сброса на 60.
+- **📻 Кастомное радио (88.1 FM)**: стриминг всей вашей музыки из `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) с нулевым расходом оперативной памяти. Станция 88.1 FM работает со 100% сигналом всегда, а на оригинальных станциях сигнал нарастает до 100% прямо у вышек.
+- **🏎️ Руль (PXN V12 Lite, Logitech, Thrustmaster, DirectInput)**: честный симуляторный ввод 1:1 на **900 градусов**, строгий **ноль `0.00`** в центре, плавные педали газа (`z`) и тормоза (`rz`).
+- **🅿️ Ручник на лепестке**: зажатие верхнего лепестка (или кнопки) вызывает настоящее действие Пробела (`Break`) с блокировкой задней оси.
+- **⌨️ Приоритет клавиатуры и геймпада**: клавиатура и геймпад работают параллельно без конфликтов.
+- **⚡ Разблокировка FPS**: держит 240 FPS (или безлимит) без сброса на 60.
+- **📊 Экран F7**: живой оверлей осей, статуса радио и нажатых кнопок.
 
 ---
 
-## 🇬🇧 Description (EN)
+## 🇬🇧 Features (EN)
 
-A clean BepInEx mod for **Easy Delivery Co** adding wheel support, audio streaming, and uncapped FPS:
+- **📻 Custom Radio (88.1 FM)**: on-demand streaming from `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) with near-zero RAM usage. Dedicated 88.1 FM station with 100% signal always; vanilla stations scale up to 100% near towers.
+- **🏎️ Steering Wheel Support**: direct 1:1 input across **900 degrees**, true **`0.00` center** with zero drift, progressive gas (`z`) and brake (`rz`) pedals.
+- **🅿️ Spacebar Handbrake**: paddle/button triggers true in-game Spacebar (`Break`) action to lock rear wheels.
+- **⌨️ Multi-Device Priority**: keyboard and gamepad work seamlessly alongside the wheel.
+- **⚡ FPS Unlocker**: sustains 240 FPS (or uncapped) without dropping to 60.
+- **📊 F7 Overlay**: real-time diagnostics overlay.
 
-### 1. 📻 Custom Radio (88.1 FM)
-- On-demand streaming from `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) with minimal RAM usage.
-- Dedicated **88.1 FM (Custom)** station with 100% clear signal across the map.
-- Original radio stations kept intact with realistic proximity signal scaling up to 100% near towers.
-- Clean station tuning with in-car controls or keyboard shortcuts (`.` and `,`).
+---
 
-### 2. 🏎️ Steering Wheel Support (PXN V12 Lite & DirectInput)
-- Direct 1:1 steering across full **900 degrees** (bypasses gamepad smoothing curve).
-- Fixed 16-bit signed/unsigned HID overflow: holds an exact **`0.00` center** with zero phantom drift.
-- Progressive throttle (`z`) and brake (`rz`) pedal curves.
-- Handbrake paddle: triggers true in-game Spacebar (`Break`) action to lock rear wheels.
-- Seamless multi-device priority: keyboard/gamepad always work alongside the wheel.
-- **F7**: in-game live diagnostics overlay.
+## ⚙️ Кастомизация / Customization
 
-### 3. ⚡ FPS Unlocker
-- Overrides the internal `LimitFrameRate` component to maintain 240 FPS (or uncapped) without dropping to 60.
+Все параметры мода полностью настраиваются через конфигурационный файл, который создаётся после первого запуска:  
+*All mod parameters are fully customizable via config file generated after first run:*  
+📁 `Easy Delivery Co\BepInEx\config\opencode.easydeliveryco.mods.cfg`
+
+```ini
+[1. Custom Radio]
+Enabled = true
+MusicFolder = C:\Music          # Путь к вашей папке с музыкой / Path to your music folder
+Shuffle = true                  # Перемешивание треков / Shuffle tracks
+
+[2. Frame Rate]
+UnlockFPS = true                # Разблокировка 60 FPS / Unlock 60 FPS cap
+TargetFPS = 240                 # Целевой FPS (0 = безлимит) / Target FPS (0 = uncapped)
+DisableVSync = true             # Отключение VSync / Disable VSync
+
+[3. Steering Wheel]
+Enabled = true                  # Включить поддержку руля / Enable wheel
+DeviceFilter = pxn              # Имя устройства для поиска / Wheel name filter
+SteerDeadzone = 0.02            # Мертвая зона руля / Steering deadzone
+SteerSensitivity = 1            # Чувствительность руля / Steering sensitivity
+InvertSteering = false          # Инверсия руля / Invert steering
+InvertGas = false               # Инверсия газа / Invert gas
+InvertBrake = false             # Инверсия тормоза / Invert brake
+HandbrakeButtonIndex = 4        # Номер кнопки ручника / Handbrake button index
+HandbrakeAxisName = rx          # Ось лепестка ручника / Handbrake paddle axis
+
+[4. Overlay]
+ShowOverlay = true              # Показывать экран диагностики / Show F7 overlay
+ToggleKey = F7                  # Кнопка открытия оверлея / Overlay toggle key
+```
 
 ---
 
@@ -56,7 +67,7 @@ A clean BepInEx mod for **Easy Delivery Co** adding wheel support, audio streami
 
 1. Установите / Install [BepInEx 5.4.23.5 (x64)](https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_win_x64_5.4.23.5.zip).
 2. Скачайте архив / Download `EasyDeliveryCo-Mods-v1.0.0.zip` из [Releases](../../releases/latest).
-3. Распакуйте файлы в / Extract all files to `Easy Delivery Co/BepInEx/plugins/`:
+3. Распакуйте все 3 файла в / Extract all 3 DLLs to `Easy Delivery Co/BepInEx/plugins/`:
    - `EasyDeliveryCoMods.dll`
    - `NAudio.Core.dll`
    - `NAudio.Wasapi.dll`
