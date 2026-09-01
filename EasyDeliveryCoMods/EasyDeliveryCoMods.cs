@@ -19,7 +19,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.5.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.6.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -82,8 +82,8 @@ namespace EasyDeliveryCoMods
         private static Effect ffbEffect = null;
         private static SharpDX.DirectInput.ConstantForce constantForce = null;
         private static bool ffbReady = false;
-        private static string ffbStatus = "Searching window...";
-        private static float ffbInitTimer = 0f;
+        private static string ffbStatus = "Initializing FFB...";
+        private static float currentFFBApplied = 0f;
 
         private static float fpsDeltaTime = 0f;
 
@@ -127,7 +127,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 5.5.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 5.6.0 initialized!");
 
             if (radioEnabled.Value)
             {
@@ -235,15 +235,10 @@ namespace EasyDeliveryCoMods
                 TuneRadioPrev();
             }
 
-            // Robust FFB Initializer
+            // Immediate FFB Initializer
             if (ffbEnabled.Value && !ffbReady)
             {
-                ffbInitTimer += Time.unscaledDeltaTime;
-                if (ffbInitTimer > 0.5f)
-                {
-                    ffbInitTimer = 0f;
-                    TryInitFFB();
-                }
+                TryInitFFB();
             }
 
             if (wheelEnabled.Value)
@@ -418,7 +413,6 @@ namespace EasyDeliveryCoMods
                     ax.path.EndsWith("/" + handbrakeAxisName.Value, StringComparison.OrdinalIgnoreCase))
                 {
                     float v = ax.ReadValue();
-                    // If pulled from -1.0 to > -0.4
                     if (v > -0.4f)
                     {
                         handbrakeActive = true;
@@ -450,12 +444,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f)
+                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
                 {
-                    if (brakeOut > 0.05f)
+                    if (brakeOut > 0.05f || handbrakeActive)
                     {
                         __instance.brakePressed = true;
-                        __instance.driveInput.y = gasOut > 0.05f ? gasOut : -brakeOut;
+                        __instance.driveInput.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
                     }
                     else
                     {
@@ -496,12 +490,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f)
+                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
                 {
-                    if (brakeOut > 0.05f)
+                    if (brakeOut > 0.05f || handbrakeActive)
                     {
                         __instance.SetBreaking(true);
-                        __instance.input.y = gasOut > 0.05f ? gasOut : -brakeOut;
+                        __instance.input.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
                     }
                     else
                     {
@@ -552,6 +546,7 @@ namespace EasyDeliveryCoMods
                     }
 
                     float totalFFB = (centeringForce + lateralResistance) * gripFactor;
+                    currentFFBApplied = totalFFB;
                     SetFFBForce(totalFFB);
                 }
                 catch { }
@@ -564,32 +559,49 @@ namespace EasyDeliveryCoMods
         [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
         [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
         [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr hWnd);
+        [DllImport("user32.dll")] static extern IntPtr GetActiveWindow();
         [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
+
+        private static IntPtr GetGameWindowHandle()
+        {
+            IntPtr found = IntPtr.Zero;
+
+            try
+            {
+                found = Process.GetCurrentProcess().MainWindowHandle;
+                if (found != IntPtr.Zero) return found;
+            }
+            catch { }
+
+            try
+            {
+                uint myPid = (uint)Process.GetCurrentProcess().Id;
+                EnumWindows((h, l) =>
+                {
+                    GetWindowThreadProcessId(h, out uint winPid);
+                    if (winPid == myPid)
+                    {
+                        found = h;
+                        return false;
+                    }
+                    return true;
+                }, IntPtr.Zero);
+
+                if (found != IntPtr.Zero) return found;
+            }
+            catch { }
+
+            try { found = GetActiveWindow(); if (found != IntPtr.Zero) return found; } catch { }
+            try { found = GetForegroundWindow(); if (found != IntPtr.Zero) return found; } catch { }
+
+            return IntPtr.Zero;
+        }
 
         private void TryInitFFB()
         {
             if (ffbReady || !ffbEnabled.Value) return;
 
-            // Find Unity game window handle via Process ID
-            IntPtr hwnd = IntPtr.Zero;
-            uint myPid = (uint)Process.GetCurrentProcess().Id;
-
-            EnumWindows((h, l) =>
-            {
-                GetWindowThreadProcessId(h, out uint winPid);
-                if (winPid == myPid && IsWindowVisible(h))
-                {
-                    hwnd = h;
-                    return false; // Found! Stop enumerating
-                }
-                return true;
-            }, IntPtr.Zero);
-
-            if (hwnd == IntPtr.Zero)
-            {
-                hwnd = GetForegroundWindow();
-            }
-
+            IntPtr hwnd = GetGameWindowHandle();
             if (hwnd == IntPtr.Zero)
             {
                 ffbStatus = "Waiting for game window...";
@@ -619,33 +631,71 @@ namespace EasyDeliveryCoMods
                     }
                 }
 
+                if (targetDevice == null && devices.Count > 0)
+                {
+                    targetDevice = devices[0];
+                }
+
                 if (targetDevice != null)
                 {
                     dinputWheel = new SharpDX.DirectInput.Joystick(directInput, targetDevice.InstanceGuid);
-                    dinputWheel.SetCooperativeLevel(hwnd, CooperativeLevel.Exclusive | CooperativeLevel.Background);
-                    dinputWheel.Acquire();
 
-                    constantForce = new SharpDX.DirectInput.ConstantForce { Magnitude = 0 };
-                    var effectParameters = new EffectParameters
+                    // Try multiple cooperative levels to ensure compatibility
+                    bool acquired = false;
+                    try
                     {
-                        Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
-                        Duration = int.MaxValue,
-                        SamplePeriod = 0,
-                        Gain = 10000,
-                        TriggerButton = -1,
-                        TriggerRepeatInterval = 0,
-                        Axes = new[] { 0 }, // X Axis (Motor)
-                        Directions = new[] { 0 },
-                        StartDelay = 0,
-                        Parameters = constantForce
-                    };
+                        dinputWheel.SetCooperativeLevel(hwnd, CooperativeLevel.Exclusive | CooperativeLevel.Background);
+                        dinputWheel.Acquire();
+                        acquired = true;
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            dinputWheel.SetCooperativeLevel(hwnd, CooperativeLevel.Exclusive | CooperativeLevel.Foreground);
+                            dinputWheel.Acquire();
+                            acquired = true;
+                        }
+                        catch
+                        {
+                            try
+                            {
+                                dinputWheel.SetCooperativeLevel(hwnd, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+                                dinputWheel.Acquire();
+                                acquired = true;
+                            }
+                            catch (Exception exAcq)
+                            {
+                                ffbStatus = "Acquire failed: " + exAcq.Message;
+                                return;
+                            }
+                        }
+                    }
 
-                    ffbEffect = new Effect(dinputWheel, EffectGuid.ConstantForce, effectParameters);
-                    ffbEffect.Start(1, EffectPlayFlags.None);
+                    if (acquired)
+                    {
+                        constantForce = new SharpDX.DirectInput.ConstantForce { Magnitude = 0 };
+                        var effectParameters = new EffectParameters
+                        {
+                            Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
+                            Duration = int.MaxValue,
+                            SamplePeriod = 0,
+                            Gain = 10000,
+                            TriggerButton = -1,
+                            TriggerRepeatInterval = 0,
+                            Axes = new[] { 0 }, // X Axis (Motor)
+                            Directions = new[] { 0 },
+                            StartDelay = 0,
+                            Parameters = constantForce
+                        };
 
-                    ffbReady = true;
-                    ffbStatus = "ACTIVE (DirectInput 8 ConstantForce)";
-                    Logger.LogInfo($"[FFB] DirectInput 8 Force Feedback successfully attached to '{targetDevice.InstanceName}' on HWND={hwnd}!");
+                        ffbEffect = new Effect(dinputWheel, EffectGuid.ConstantForce, effectParameters);
+                        ffbEffect.Start(1, EffectPlayFlags.None);
+
+                        ffbReady = true;
+                        ffbStatus = "ACTIVE (DirectInput 8 ConstantForce)";
+                        Logger.LogInfo($"[FFB] Force Feedback successfully attached to '{targetDevice.InstanceName}' on HWND={hwnd}!");
+                    }
                 }
                 else
                 {
@@ -1082,7 +1132,8 @@ namespace EasyDeliveryCoMods
             GUILayout.Label($"Gas: {gasOut:0.00} | Brake: {brakeOut:0.00} | Handbrake: {hbStr}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label($"Force Feedback (FFB): {ffbStatus}", textStyle);
+            string ffbPercent = ffbReady ? $" [Torque: {Mathf.RoundToInt(currentFFBApplied * 100f)}%]" : "";
+            GUILayout.Label($"Force Feedback (FFB): {ffbStatus}{ffbPercent}", textStyle);
             GUILayout.Label($"Pressed Buttons: {activePressedButtonsList}", textStyle);
 
             GUILayout.EndArea();
