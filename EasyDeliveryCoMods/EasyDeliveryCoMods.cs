@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.8.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.9.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -105,7 +105,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 3.8.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 3.9.0 loaded!");
 
             if (radioEnabled.Value)
             {
@@ -117,7 +117,7 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music from local folder on 88.1 FM (Custom) and 99.1 FM (News).");
+                "Enable custom music from local folder on 88.1 FM and 99.1 FM.");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
                 "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
@@ -193,7 +193,7 @@ namespace EasyDeliveryCoMods
                 showOverlay.Value = !showOverlay.Value;
             }
 
-            // Keyboard shortcut to manually tune radio stations: Period (.) and Comma (,)
+            // Keyboard direct tune station: Period (.) and Comma (,)
             if (Input.GetKeyDown(KeyCode.Period))
             {
                 TuneRadioStation(1);
@@ -213,7 +213,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== WHEEL LOGIC: 100% CLEAN DIRECT 1:1 AXES ====================
+        // ==================== WHEEL LOGIC: DIRECT LINEAR 1:1 AXES ====================
 
         private void FindAndSetupWheel()
         {
@@ -249,7 +249,6 @@ namespace EasyDeliveryCoMods
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             availableAxes.Add(axis);
-                            Logger.LogInfo($"[Axis] Name='{axis.name}', Path='{axis.path}'");
                         }
                     }
 
@@ -299,7 +298,7 @@ namespace EasyDeliveryCoMods
 
                 if (abs < dz)
                 {
-                    // Perfectly centered: EXACT ZERO. Keyboard and gamepad have 100% free control!
+                    // IN DEADZONE: Output is EXACTLY ZERO. Keyboard and gamepad have 100% free control!
                     steerOut = 0f;
                 }
                 else
@@ -310,7 +309,7 @@ namespace EasyDeliveryCoMods
                 }
             }
 
-            // 2. GAS PEDAL (Standard DirectInput: -1.0 released to +1.0 pressed)
+            // 2. GAS PEDAL (DirectInput: -1.0 released to +1.0 pressed)
             if (gasAxis != null)
             {
                 float raw = gasAxis.ReadValue();
@@ -327,7 +326,7 @@ namespace EasyDeliveryCoMods
                 }
             }
 
-            // 3. BRAKE PEDAL (Standard DirectInput: -1.0 released to +1.0 pressed)
+            // 3. BRAKE PEDAL (DirectInput: -1.0 released to +1.0 pressed)
             if (brakeAxis != null)
             {
                 float raw = brakeAxis.ReadValue();
@@ -387,12 +386,15 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== RADIO: INSTANT STABLE STATION TUNING & MUSIC INJECTION ====================
+        // ==================== RADIO: PREVENT FORCED LOCK & CLEAN TUNING ====================
 
         public static void TuneRadioStation(int direction)
         {
             sRadioSystem radio = sRadioSystem.instance;
             if (radio == null || radio.channels == null || radio.channels.Count == 0) return;
+
+            // Release any forced lock from game events so player can freely tune!
+            radio.forcedRadio = false;
 
             if (!radio.source.enabled)
             {
@@ -404,12 +406,14 @@ namespace EasyDeliveryCoMods
             Logger.LogInfo($"[Radio Tuned] Station [{next}]: '{radio.channels[next].name}' at {radio.channels[next].frequency:F1} FM");
         }
 
-        // Hook in-game radio tuning buttons: instantly and cleanly snap between stations!
-        // Replaces the broken floating-point sweep that skipped stations at 240 FPS!
+        // Hook in-game radio tuning inputs
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
         private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
         {
+            // Clear forcedRadio so player can change station anytime
+            __instance.forcedRadio = false;
+
             if (Mathf.Abs(v.x) > 0.25f)
             {
                 int dir = (v.x > 0f) ? 1 : -1;
@@ -424,6 +428,15 @@ namespace EasyDeliveryCoMods
             }
 
             return true;
+        }
+
+        // Disable RadioSignalManager forced radio hijacking (prevents game from pulling needle back to 99.1 FM)
+        [HarmonyPatch(typeof(RadioSignalManager), "Update")]
+        [HarmonyPrefix]
+        private static bool Prefix_RadioSignalManager_Update()
+        {
+            // Block RadioSignalManager from constantly setting forcedRadio = true and resetting frequency to 99.1 FM
+            return false;
         }
 
         private IEnumerator InitRadioPipelineAsync()
@@ -647,6 +660,7 @@ namespace EasyDeliveryCoMods
             GUILayout.Label($"Device: {devName}", textStyle);
             GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
             GUILayout.Label($"Radio Status: {radioStatusText}", textStyle);
+            GUILayout.Label($"Tune Stations: Left/Right on car radio, or '.' and ',' on keyboard", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Vehicle Control ---", textStyle);
