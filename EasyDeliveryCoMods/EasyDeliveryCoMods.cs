@@ -450,24 +450,41 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Hook in-game radio tuning button: when player presses Next/Prev on radio, skip track too!
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
-        private static void Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
+        private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
         {
-            if (!radioEnabled.Value || musicFiles.Count == 0) return;
+            if (!radioEnabled.Value || musicFiles.Count == 0) return true;
 
             // In-game radio tuning input
-            if (v.x > 0.25f)
+            if (v.x > 0f)
             {
-                // Player tuned right / next station / next track
-                SkipToNextTrack();
+                // IsCustomStation ? Next track : native behavior
+                bool onCustomStation = (__instance.currentChannelIndex >= 0 &&
+                                        __instance.currentChannelIndex < __instance.channels.Count &&
+                                        __instance.channels[__instance.currentChannelIndex] == customRadioChannel)
+                                        || (replaceNewsChannel.Value && __instance.currentChannelIndex == 0);
+
+                if (onCustomStation)
+                {
+                    SkipToNextTrack();
+                    return false; // Suppress native behavior when doing custom track skip
+                }
             }
-            else if (v.x < -0.25f)
+            else if (v.x < 0f)
             {
-                // Player tuned left / prev station / prev track
-                SkipToPrevTrack();
+                bool onCustomStation = (__instance.currentChannelIndex >= 0 &&
+                                        __instance.currentChannelIndex < __instance.channels.Count &&
+                                        __instance.channels[__instance.currentChannelIndex] == customRadioChannel)
+                                        || (replaceNewsChannel.Value && __instance.currentChannelIndex == 0);
+
+                if (onCustomStation)
+                {
+                    SkipToPrevTrack();
+                    return false; // Suppress native behavior
+                }
             }
+            return true; // Let native game logic handle scanning / volume
         }
 
         // Radio scene start hook: unlock all game stations so player can tune between them!
