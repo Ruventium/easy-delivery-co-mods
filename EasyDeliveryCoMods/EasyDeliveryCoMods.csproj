@@ -52,6 +52,10 @@
       <HintPath>A:\SteamLibrary\steamapps\common\Easy Delivery Co\EasyDeliveryCo_Data\Managed\UnityEngine.InputModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>A:\SteamLibrary\steamapps\common\Easy Delivery Co\EasyDeliveryCo_Data\Managed\Unity.InputSystem.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>A:\SteamLibrary\steamapps\common\Easy Delivery Co\EasyDeliveryCo_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>false</Private>
