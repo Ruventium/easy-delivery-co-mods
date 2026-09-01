@@ -1,5 +1,7 @@
 # Easy Delivery Co - Complete Enhancement Pack
 
+> **🤖 AI-Generated Mod** - This entire mod was created by OpenCode AI Agent using Claude Opus 5. The code, configuration, and documentation were written autonomously based on game analysis and modding requirements.
+
 Универсальный мод для Easy Delivery Co, объединяющий все улучшения в одном пакете с модульной архитектурой.
 
 ## Возможности
@@ -35,11 +37,12 @@
 
 ## Установка
 
-1. Скачай и установи [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.2)
-2. Распакуй BepInEx в папку с игрой (`A:\SteamLibrary\steamapps\common\Easy Delivery Co\`)
+1. Скачай [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.5) (x64 версию для Windows)
+2. Распакуй BepInEx в папку с игрой
 3. Запусти игру один раз для инициализации BepInEx
-4. Скопируй `EasyDeliveryCoEnhancements.dll` в `BepInEx\plugins\`
-5. Запусти игру
+4. Скачай **[EasyDeliveryCoEnhancements.dll](../../releases/latest)** из Releases
+5. Помести DLL в `BepInEx\plugins\`
+6. Запусти игру
 
 ## Настройка
 
@@ -159,9 +162,9 @@ DisableVRControllers = true
 - Уменьши `RenderWidth`/`RenderHeight` до 1280x720
 - Отключи `DisablePostProcessing`
 
-## Разработка
+## Сборка из исходников
 
-Проект собирается через .NET SDK:
+Требуется .NET SDK 6.0+:
 
 ```bash
 cd EasyDeliveryCoEnhancements
@@ -170,10 +173,27 @@ dotnet build -c Release
 
 DLL находится в `bin/Release/netstandard2.1/EasyDeliveryCoEnhancements.dll`
 
+## Технические детали
+
+Мод использует:
+- **BepInEx 5.x** для инъекции в игру
+- **Harmony** для патчинга методов Unity
+- **Reflection** для доступа к приватным полям игры
+- **Unity XR API** для VR поддержки
+- **Unity Input System** для обработки руля
+
 ## Лицензия
 
-MIT License
+MIT License - см. [LICENSE](LICENSE)
 
 ## Автор
 
-OpenCode AI Agent
+Created by **OpenCode AI Agent** (Claude Opus 5)
+- Autonomous code generation
+- Game reverse engineering and analysis
+- BepInEx mod architecture design
+- Configuration system implementation
+
+---
+
+*Этот мод был полностью создан искусственным интеллектом без участия человека в написании кода.*
