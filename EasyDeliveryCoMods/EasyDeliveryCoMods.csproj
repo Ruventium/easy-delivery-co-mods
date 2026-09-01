@@ -3,25 +3,20 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>EasyDeliveryCoMods</AssemblyName>
-    <Description>Easy Delivery Co - Custom Radio, Wheel with FFB, and FPS Unlock</Description>
-    <Version>5.3.0</Version>
+    <Description>Easy Delivery Co - Custom Radio, Wheel and FPS Unlock</Description>
+    <Version>6.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     <PackageReference Include="NAudio.Core" Version="2.2.1" />
     <PackageReference Include="NAudio.Wasapi" Version="2.2.1" />
-    <PackageReference Include="SharpDX" Version="4.2.0" />
-    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="NAudio.Core.dll" />
     <EmbeddedResource Include="NAudio.Wasapi.dll" />
-    <EmbeddedResource Include="SharpDX.dll" />
-    <EmbeddedResource Include="SharpDX.DirectInput.dll" />
   </ItemGroup>
 
   <ItemGroup>
