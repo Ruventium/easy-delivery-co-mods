@@ -150,16 +150,17 @@ namespace EasyDeliveryCoMods
             wheelDeviceFilter = Config.Bind("3. Steering Wheel", "DeviceFilter", "pxn",
                 "Search term for wheel device name in InputSystem (e.g. 'pxn', 'v12', 'wheel', 'joystick').");
 
+            // Wheel defaults for PXN V12 Lite and DirectInput
             wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "x",
-                "Axis name for steering (usually 'x'). See F7 overlay.");
-            wheelGasAxisName = Config.Bind("3. Steering Wheel", "GasAxisName", "auto",
-                "Axis name for gas pedal ('auto' or specific name like 'rz', 'y', 'slider'). See F7 overlay.");
-            wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "auto",
-                "Axis name for brake pedal ('auto' or specific name like 'z', 'rz'). See F7 overlay.");
+                "Axis name for steering (usually 'x').");
+            wheelGasAxisName = Config.Bind("3. Steering Wheel", "GasAxisName", "z",
+                "Axis name for gas pedal (usually 'z' on PXN V12 Lite).");
+            wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "rz",
+                "Axis name for brake pedal (usually 'rz' on PXN V12 Lite).");
 
             wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.02f, "Deadzone for steering.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f, "Steering sensitivity.");
-            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false, "Invert steering.");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true, "Invert steering direction (set True so steering matches wheel rotation).");
             wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false, "Invert gas pedal.");
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false, "Invert brake pedal.");
 
@@ -198,16 +199,6 @@ namespace EasyDeliveryCoMods
             if (Input.GetKeyDown(overlayKey.Value))
             {
                 showOverlay.Value = !showOverlay.Value;
-            }
-
-            // Keyboard skip track when on custom radio
-            if (Input.GetKeyDown(KeyCode.RightBracket))
-            {
-                SkipToNextTrack();
-            }
-            if (Input.GetKeyDown(KeyCode.LeftBracket))
-            {
-                SkipToPrevTrack();
             }
 
             if (wheelEnabled.Value)
@@ -266,32 +257,32 @@ namespace EasyDeliveryCoMods
                         }
                     }
 
-                    // 1. Steer axis: usually 'x'
+                    // 1. Steer axis: 'x'
                     steerAxis = FindAxis(wheelSteerAxisName.Value)
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) || a.name.EndsWith("/x", StringComparison.OrdinalIgnoreCase))
                                 ?? availableAxes.FirstOrDefault(a => a.name.Contains("x"));
 
-                    // 2. Gas axis: on PXN/DirectInput it is typically 'rz' or 'slider' or 'y'
+                    // 2. Gas axis: on PXN V12 Lite it is 'z'
                     if (wheelGasAxisName.Value != "auto")
                     {
                         gasAxis = FindAxis(wheelGasAxisName.Value);
                     }
                     if (gasAxis == null)
                     {
-                        gasAxis = availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
-                                  ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase))
-                                  ?? availableAxes.FirstOrDefault(a => a.name.Equals("y", StringComparison.OrdinalIgnoreCase));
+                        gasAxis = availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
+                                  ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
+                                  ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase));
                     }
 
-                    // 3. Brake axis: on PXN/DirectInput it is 'z'
+                    // 3. Brake axis: on PXN V12 Lite it is 'rz'
                     if (wheelBrakeAxisName.Value != "auto")
                     {
                         brakeAxis = FindAxis(wheelBrakeAxisName.Value);
                     }
                     if (brakeAxis == null)
                     {
-                        brakeAxis = availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
-                                    ?? availableAxes.FirstOrDefault(a => a.name.Equals("y", StringComparison.OrdinalIgnoreCase) && a != gasAxis)
+                        brakeAxis = availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
+                                    ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase))
                                     ?? (availableAxes.Count > 2 ? availableAxes[2] : null);
                     }
 
@@ -698,7 +689,7 @@ namespace EasyDeliveryCoMods
             string devName = activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel detected";
             GUILayout.Label($"Device: {devName}", textStyle);
             GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
-            GUILayout.Label($"Custom Radio: {radioStatusText} (Press ']' / '[' to skip)", textStyle);
+            GUILayout.Label($"Radio: {radioStatusText} (Use in-game radio controls)", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Vehicle Control ---", textStyle);
