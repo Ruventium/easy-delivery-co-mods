@@ -1,13 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 using NAudio.Wave;
+using SharpDX.DirectInput;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.InputSystem;
@@ -15,7 +18,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.6.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.0.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -38,6 +41,11 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<bool> wheelInvertGas;
         public static ConfigEntry<bool> wheelInvertBrake;
 
+        // Force Feedback
+        public static ConfigEntry<bool> ffbEnabled;
+        public static ConfigEntry<float> ffbGain;
+        public static ConfigEntry<bool> ffbInvert;
+
         public static ConfigEntry<bool> showOverlay;
         public static ConfigEntry<KeyCode> overlayKey;
 
@@ -46,11 +54,17 @@ namespace EasyDeliveryCoMods
         public static List<AudioClip> fullPlaylistClips = new List<AudioClip>();
         public static string radioStatusText = "Idle";
 
-        // ==================== WHEEL RUNTIME ====================
+        // ==================== DIRECTINPUT & FFB ====================
+        private static DirectInput directInput = null;
+        private static SharpDX.DirectInput.Joystick dinputJoystick = null;
+        private static Effect ffbEffect = null;
+        private static SharpDX.DirectInput.ConstantForce constantForceParams = null;
+        private static bool dinputInitialized = false;
+
+        // Fallback InputSystem controls
         public static InputDevice activeWheelDevice = null;
         public static List<AxisControl> activeDeviceAxes = new List<AxisControl>();
-
-        public static AxisControl steerAxis = null;
+        public static AxisControl fallbackSteerAxis = null;
         public static AxisControl gasAxis = null;
         public static AxisControl brakeAxis = null;
 
@@ -68,7 +82,8 @@ namespace EasyDeliveryCoMods
                 try
                 {
                     string name = new System.Reflection.AssemblyName(args.Name).Name;
-                    if (name == "NAudio.Core" || name == "NAudio.Wasapi")
+                    string[] embedded = { "NAudio.Core", "NAudio.Wasapi", "SharpDX", "SharpDX.DirectInput" };
+                    if (embedded.Contains(name))
                     {
                         var asm = typeof(EasyDeliveryCoModsPlugin).Assembly;
                         using (var stream = asm.GetManifestResourceStream("EasyDeliveryCoMods." + name + ".dll"))
@@ -100,7 +115,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 4.6.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 5.0.0 (DirectInput & FFB) initialized!");
 
             if (radioEnabled.Value)
             {
@@ -112,7 +127,7 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music on 88.1 FM with 100% full signal always. News 99.1 and other stations stay untouched!");
+                "Enable custom music from C:\\Music on 88.1 FM with 100% full signal always.");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
                 "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
@@ -128,9 +143,9 @@ namespace EasyDeliveryCoMods
 
             // Wheel
             wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
-                "Enable steering wheel support.");
+                "Enable DirectInput steering wheel support.");
             wheelDeviceFilter = Config.Bind("3. Steering Wheel", "DeviceFilter", "pxn",
-                "Search term for wheel device name in InputSystem.");
+                "Search term for wheel device name.");
 
             wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.02f,
                 "Deadzone around wheel center.");
@@ -143,8 +158,16 @@ namespace EasyDeliveryCoMods
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
                 "Invert brake pedal.");
 
-            showOverlay = Config.Bind("4. Overlay", "ShowOverlay", true, "Show live diagnostics overlay on F7.");
-            overlayKey = Config.Bind("4. Overlay", "ToggleKey", KeyCode.F7, "Key to toggle overlay.");
+            // Force Feedback
+            ffbEnabled = Config.Bind("4. Force Feedback", "Enabled", true,
+                "Enable DirectInput Force Feedback (FFB) on the wheel motor.");
+            ffbGain = Config.Bind("4. Force Feedback", "Gain", 1.0f,
+                "Force Feedback strength multiplier (0.0 to 2.0).");
+            ffbInvert = Config.Bind("4. Force Feedback", "InvertForce", false,
+                "Invert force feedback direction if resistance pushes instead of centers.");
+
+            showOverlay = Config.Bind("5. Overlay", "ShowOverlay", true, "Show live diagnostics overlay on F7.");
+            overlayKey = Config.Bind("5. Overlay", "ToggleKey", KeyCode.F7, "Key to toggle overlay.");
         }
 
         private void ApplyFpsSettings()
@@ -158,12 +181,17 @@ namespace EasyDeliveryCoMods
 
         private void OnDeviceChange(InputDevice device, InputDeviceChange change)
         {
-            FindAndSetupWheel();
+            InitDirectInputWheel();
         }
 
         private void Start()
         {
-            FindAndSetupWheel();
+            InitDirectInputWheel();
+        }
+
+        private void OnDestroy()
+        {
+            ShutdownDirectInput();
         }
 
         private void Update()
@@ -179,7 +207,7 @@ namespace EasyDeliveryCoMods
                 showOverlay.Value = !showOverlay.Value;
             }
 
-            // Keyboard direct station tuning: Period (.) and Comma (,)
+            // Keyboard direct tune station: Period (.) and Comma (,)
             if (Input.GetKeyDown(KeyCode.Period))
             {
                 TuneRadioNext();
@@ -191,145 +219,237 @@ namespace EasyDeliveryCoMods
 
             if (wheelEnabled.Value)
             {
-                if (activeWheelDevice == null)
+                if (!dinputInitialized || dinputJoystick == null)
                 {
-                    FindAndSetupWheel();
+                    InitDirectInputWheel();
                 }
-                PollWheel();
+                PollDirectInputWheel();
             }
         }
 
-        // ==================== WHEEL LOGIC: UNSIGNED 16-BIT CONVERSION FIX ====================
+        // ==================== DIRECTINPUT INITIALIZATION & POLLING ====================
 
-        private void FindAndSetupWheel()
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        private void InitDirectInputWheel()
         {
             try
             {
-                string filter = wheelDeviceFilter.Value.ToLowerInvariant();
-                InputDevice match = null;
-
-                foreach (var dev in InputSystem.devices)
+                if (directInput == null)
                 {
-                    string dName = dev.displayName.ToLowerInvariant();
-                    string lName = dev.layout.ToLowerInvariant();
-                    string pName = dev.name.ToLowerInvariant();
+                    directInput = new DirectInput();
+                }
 
-                    if (dName.Contains(filter) || lName.Contains(filter) || pName.Contains(filter) ||
-                        dName.Contains("pxn") || dName.Contains("v12") || dName.Contains("wheel") ||
-                        dev is UnityEngine.InputSystem.Joystick)
+                var devices = directInput.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
+                DeviceInstance targetDevice = null;
+                string filter = wheelDeviceFilter.Value.ToLowerInvariant();
+
+                foreach (var d in devices)
+                {
+                    string name = d.InstanceName.ToLowerInvariant();
+                    string prod = d.ProductName.ToLowerInvariant();
+                    if (name.Contains(filter) || prod.Contains(filter) || name.Contains("pxn") || prod.Contains("pxn") ||
+                        name.Contains("v12") || prod.Contains("v12") || name.Contains("wheel") || prod.Contains("wheel"))
                     {
-                        match = dev;
+                        targetDevice = d;
                         break;
                     }
                 }
 
-                if (match != null && match != activeWheelDevice)
+                if (targetDevice == null && devices.Count > 0)
                 {
-                    activeWheelDevice = match;
-                    Logger.LogInfo($"[Wheel] Selected device: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
+                    targetDevice = devices[0];
+                }
 
-                    activeDeviceAxes.Clear();
-
-                    foreach (var ctrl in activeWheelDevice.allControls)
+                if (targetDevice != null)
+                {
+                    if (dinputJoystick != null)
                     {
-                        if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
-                        {
-                            activeDeviceAxes.Add(axis);
-                        }
+                        try { dinputJoystick.Unacquire(); dinputJoystick.Dispose(); } catch { }
                     }
 
-                    // Steer axis: 'stick/x'
-                    steerAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/stick/x", StringComparison.OrdinalIgnoreCase))
-                                ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("hat") && !a.path.Contains("dpad"));
+                    dinputJoystick = new SharpDX.DirectInput.Joystick(directInput, targetDevice.InstanceGuid);
 
-                    // Gas: 'z'
-                    gasAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/z", StringComparison.OrdinalIgnoreCase))
-                              ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"));
+                    IntPtr hwnd = Process.GetCurrentProcess().MainWindowHandle;
+                    if (hwnd == IntPtr.Zero) hwnd = GetForegroundWindow();
 
-                    // Brake: 'rz'
-                    brakeAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/rz", StringComparison.OrdinalIgnoreCase))
-                                ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
+                    dinputJoystick.SetCooperativeLevel(hwnd, CooperativeLevel.NonExclusive | CooperativeLevel.Background);
+                    dinputJoystick.Properties.AxisMode = DeviceAxisMode.Absolute;
+                    dinputJoystick.Acquire();
 
-                    Logger.LogInfo($"[Wheel Configured] Steer='{(steerAxis != null ? steerAxis.path : "NULL")}', Gas='{(gasAxis != null ? gasAxis.path : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.path : "NULL")}'");
+                    dinputInitialized = true;
+                    Logger.LogInfo($"[DirectInput] Attached to '{targetDevice.InstanceName}' (DirectInput 8)");
+
+                    // Setup Force Feedback
+                    if (ffbEnabled.Value)
+                    {
+                        InitForceFeedback();
+                    }
                 }
+                else
+                {
+                    Logger.LogWarning("[DirectInput] No DirectInput wheel found.");
+                }
+
+                // Also setup InputSystem fallback for pedal controls
+                SetupInputSystemFallback();
             }
             catch (Exception ex)
             {
-                Logger.LogError($"Error setting up wheel: {ex.Message}");
+                Logger.LogError($"[DirectInput] Init error: {ex.Message}");
+                SetupInputSystemFallback();
             }
         }
 
-        private void PollWheel()
+        private void InitForceFeedback()
         {
-            if (activeWheelDevice == null || !activeWheelDevice.added) return;
-
-            // 1. STEERING MATHEMATICAL FIX:
-            // The PXN V12 Lite hardware reports an UNSIGNED 16-bit word (0 to 65535):
-            // - Full Left: 0
-            // - Center: 32768 (0x8000)
-            // - Full Right: 65535
-            // Unity's HID driver reads this as a SIGNED 16-bit short, causing 32768 to overflow to -32768 (-1.00)!
-            // We convert two's complement signed short back to unsigned 16-bit ushort, then map cleanly:
-            // 0 -> -1.0, 32768 -> 0.0, 65535 -> +1.0!
-            if (steerAxis != null)
+            try
             {
-                rawSteerValue = steerAxis.ReadValue();
+                if (dinputJoystick == null) return;
 
-                // Recover true 16-bit unsigned integer from signed float
-                short s = (short)Mathf.Clamp(Mathf.RoundToInt(rawSteerValue * 32767f), -32768, 32767);
-                ushort u = (ushort)s;
-
-                // Map 0..65535 linearly to -1.0 .. 0.0 .. +1.0
-                float normalizedSteer = (u - 32768f) / 32768f;
-
-                if (wheelInvertSteer.Value) normalizedSteer = -normalizedSteer;
-
-                float abs = Mathf.Abs(normalizedSteer);
-                float dz = wheelSteerDeadzone.Value;
-
-                if (abs < dz)
+                constantForceParams = new SharpDX.DirectInput.ConstantForce { Magnitude = 0 };
+                var effectParameters = new EffectParameters
                 {
-                    steerOut = 0f; // TRUE CLEAN 0.00 IN CENTER!
-                }
-                else
+                    Flags = EffectFlags.Cartesian | EffectFlags.ObjectOffsets,
+                    Duration = int.MaxValue,
+                    SamplePeriod = 0,
+                    Gain = 10000,
+                    TriggerButton = -1,
+                    TriggerRepeatInterval = 0,
+                    Axes = new[] { 0 }, // X Axis
+                    Directions = new[] { 0 },
+                    StartDelay = 0,
+                    Parameters = constantForceParams
+                };
+
+                ffbEffect = new Effect(dinputJoystick, EffectGuid.ConstantForce, effectParameters);
+                ffbEffect.Start(1, EffectPlayFlags.None);
+                Logger.LogInfo("[DirectInput] Force Feedback (FFB) initialized on PXN motor!");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogWarning($"[DirectInput FFB] Wheel motor effect setup: {ex.Message}");
+            }
+        }
+
+        public static void SetFFB(float force) // -1.0 to +1.0
+        {
+            if (ffbEffect == null || constantForceParams == null || !ffbEnabled.Value) return;
+
+            try
+            {
+                if (ffbInvert.Value) force = -force;
+                int magnitude = (int)Mathf.Clamp(force * 10000f * ffbGain.Value, -10000f, 10000f);
+                constantForceParams.Magnitude = magnitude;
+
+                ffbEffect.SetParameters(new EffectParameters { Parameters = constantForceParams },
+                    EffectParameterFlags.TypeSpecificParameters | EffectParameterFlags.Start);
+            }
+            catch { }
+        }
+
+        private void ShutdownDirectInput()
+        {
+            try
+            {
+                if (ffbEffect != null) { ffbEffect.Stop(); ffbEffect.Dispose(); ffbEffect = null; }
+                if (dinputJoystick != null) { dinputJoystick.Unacquire(); dinputJoystick.Dispose(); dinputJoystick = null; }
+                if (directInput != null) { directInput.Dispose(); directInput = null; }
+            }
+            catch { }
+        }
+
+        private void SetupInputSystemFallback()
+        {
+            string filter = wheelDeviceFilter.Value.ToLowerInvariant();
+            InputDevice match = null;
+
+            foreach (var dev in InputSystem.devices)
+            {
+                string dName = dev.displayName.ToLowerInvariant();
+                string pName = dev.name.ToLowerInvariant();
+                if (dName.Contains(filter) || pName.Contains(filter) || dName.Contains("pxn") || pName.Contains("pxn") ||
+                    dev is UnityEngine.InputSystem.Joystick)
                 {
-                    float norm = (abs - dz) / (1f - dz);
-                    steerOut = Mathf.Clamp(norm * Mathf.Sign(normalizedSteer) * wheelSteerSensitivity.Value, -1f, 1f);
+                    match = dev;
+                    break;
                 }
             }
 
-            // 2. GAS PEDAL (DirectInput standard: -1.0 released to +1.0 pressed)
+            if (match != null && match != activeWheelDevice)
+            {
+                activeWheelDevice = match;
+                activeDeviceAxes.Clear();
+
+                foreach (var ctrl in activeWheelDevice.allControls)
+                {
+                    if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
+                    {
+                        activeDeviceAxes.Add(axis);
+                    }
+                }
+
+                gasAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/z", StringComparison.OrdinalIgnoreCase))
+                          ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase));
+
+                brakeAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/rz", StringComparison.OrdinalIgnoreCase))
+                            ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
+            }
+        }
+
+        private void PollDirectInputWheel()
+        {
+            // 1. STEERING: DirectInput Native X Axis
+            // In Windows DirectInput:
+            // 0 = Full Left, 32768 = Exact Center, 65535 = Full Right!
+            if (dinputJoystick != null && dinputInitialized)
+            {
+                try
+                {
+                    dinputJoystick.Poll();
+                    var state = dinputJoystick.GetCurrentState();
+
+                    // PURE MATHEMATICAL CENTER:
+                    // state.X is an unsigned integer 0..65535
+                    rawSteerValue = (state.X - 32768f) / 32768f;
+                    float val = rawSteerValue;
+                    if (wheelInvertSteer.Value) val = -val;
+
+                    float abs = Mathf.Abs(val);
+                    float dz = wheelSteerDeadzone.Value;
+
+                    if (abs < dz)
+                    {
+                        steerOut = 0f; // ABSOLUTE PURE 0.00 IN CENTER!
+                    }
+                    else
+                    {
+                        float norm = (abs - dz) / (1f - dz);
+                        steerOut = Mathf.Clamp(norm * Mathf.Sign(val) * wheelSteerSensitivity.Value, -1f, 1f);
+                    }
+                }
+                catch
+                {
+                    try { dinputJoystick.Acquire(); } catch { }
+                }
+            }
+
+            // 2. PEDALS
             if (gasAxis != null)
             {
                 float raw = gasAxis.ReadValue();
-                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 pressed
+                float norm = (raw + 1f) / 2f;
                 if (wheelInvertGas.Value) norm = 1f - norm;
-
-                if (norm < 0.06f)
-                {
-                    gasOut = 0f;
-                }
-                else
-                {
-                    gasOut = Mathf.Clamp01((norm - 0.06f) / 0.94f);
-                }
+                gasOut = (norm < 0.06f) ? 0f : Mathf.Clamp01((norm - 0.06f) / 0.94f);
             }
 
-            // 3. BRAKE PEDAL (DirectInput standard: -1.0 released to +1.0 pressed)
             if (brakeAxis != null)
             {
                 float raw = brakeAxis.ReadValue();
-                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 pressed
+                float norm = (raw + 1f) / 2f;
                 if (wheelInvertBrake.Value) norm = 1f - norm;
-
-                if (norm < 0.06f)
-                {
-                    brakeOut = 0f;
-                }
-                else
-                {
-                    brakeOut = Mathf.Clamp01((norm - 0.06f) / 0.94f);
-                }
+                brakeOut = (norm < 0.06f) ? 0f : Mathf.Clamp01((norm - 0.06f) / 0.94f);
             }
         }
 
@@ -338,7 +458,7 @@ namespace EasyDeliveryCoMods
         [HarmonyPostfix]
         private static void Postfix_GetInput(sInputManager __instance)
         {
-            if (!wheelEnabled.Value || activeWheelDevice == null) return;
+            if (!wheelEnabled.Value) return;
 
             bool keyboardSteering = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
                                     Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
@@ -372,12 +492,12 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Direct bypass of keyboard Lerp filter in sCarController.Move
+        // CarController Move hook: direct steering + FORCE FEEDBACK CALCULATION
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
         {
-            if (!wheelEnabled.Value || activeWheelDevice == null) return;
+            if (!wheelEnabled.Value) return;
 
             bool keyboardSteering = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
                                     Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
@@ -410,9 +530,45 @@ namespace EasyDeliveryCoMods
                     __instance.input.y = 0f;
                 }
             }
+
+            // CALCULATE FORCE FEEDBACK (FFB) FOR WHEEL MOTOR
+            if (ffbEnabled.Value && dinputInitialized)
+            {
+                try
+                {
+                    float speed = __instance.rb.linearVelocity.magnitude;
+                    float forwardSpeed = Vector3.Dot(__instance.rb.linearVelocity, __instance.transform.forward);
+                    float speedFactor = Mathf.Clamp01(speed / 15f);
+
+                    // 1. Centering return torque (caster angle pushing wheel back to center)
+                    float centeringForce = -steerOut * Mathf.Lerp(0.15f, 0.65f, speedFactor);
+
+                    // 2. Lateral G-Force / tire cornering resistance
+                    float lateralVel = Vector3.Dot(__instance.rb.linearVelocity, __instance.transform.right);
+                    float lateralResistance = -Mathf.Clamp(lateralVel / 8f, -0.6f, 0.6f);
+
+                    // 3. Loss of grip when sliding (wheel goes light in oversteer)
+                    float gripFactor = 1f;
+                    if (__instance.wheels != null && __instance.wheels.Length > 0)
+                    {
+                        float slide = (__instance.wheels[0].slide + __instance.wheels[1].slide) / 2f;
+                        gripFactor = Mathf.Clamp01(1f - slide * 0.7f);
+                    }
+
+                    // 4. In air: zero resistance
+                    if (__instance.Airbourne())
+                    {
+                        gripFactor = 0f;
+                    }
+
+                    float totalFFB = (centeringForce + lateralResistance) * gripFactor;
+                    SetFFB(totalFFB);
+                }
+                catch { }
+            }
         }
 
-        // ==================== RADIO: RELIABLE INSTANT STATION SWITCHING ====================
+        // ==================== RADIO: FULL SIGNAL NEAR TOWERS & ON 88.1 FM ====================
 
         public static void TuneRadioNext()
         {
@@ -443,7 +599,6 @@ namespace EasyDeliveryCoMods
             radio.currentChannelIndex = targetIndex;
             radio.frequency = radio.channels[targetIndex].frequency;
 
-            // Play track from target channel immediately
             var channel = radio.channels[targetIndex];
             if (channel.queue != null && channel.queue.Length > 0)
             {
@@ -456,7 +611,6 @@ namespace EasyDeliveryCoMods
             Logger.LogInfo($"[Radio Switched] -> [{targetIndex}] '{channel.name}' ({channel.frequency:F1} FM)");
         }
 
-        // Intercept in-game radio tuning inputs (D-Pad / Arrows / in-car click)
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
         private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
@@ -466,12 +620,12 @@ namespace EasyDeliveryCoMods
             if (v.x > 0.25f)
             {
                 TuneRadioNext();
-                return false; // Handled directly! Never gets stuck!
+                return false;
             }
             if (v.x < -0.25f)
             {
                 TuneRadioPrev();
-                return false; // Handled directly! Never gets stuck!
+                return false;
             }
             if (v.y < -0.25f)
             {
@@ -482,8 +636,9 @@ namespace EasyDeliveryCoMods
             return true;
         }
 
-        // ONLY 88.1 FM (Custom Radio) gets 100% full signal!
-        // All other stations (News 99.1, D&B 101.7, Lofi 99.9, EasyCo 91.1) use their normal vanilla story signal!
+        // FULL 100% SIGNAL CALCULATION:
+        // 1. 88.1 FM (Custom) ALWAYS gets 100% signal!
+        // 2. Any station near a radio tower gets 100% full crisp signal!
         [HarmonyPatch(typeof(sRadioSystem), "DoSignal")]
         [HarmonyPrefix]
         private static void Prefix_DoSignal(sRadioSystem __instance)
@@ -491,27 +646,63 @@ namespace EasyDeliveryCoMods
             if (__instance.currentChannelIndex >= 0 && __instance.currentChannelIndex < __instance.channels.Count)
             {
                 var ch = __instance.channels[__instance.currentChannelIndex];
-                if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
+                if (ch != null)
                 {
-                    __instance.signalStrength = 1f;
-                    ch.signal = 1f; // 100% full signal on 88.1 FM!
+                    // Custom Radio ALWAYS 100%
+                    if (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom"))
+                    {
+                        __instance.signalStrength = 1f;
+                        ch.signal = 1f;
+                    }
                 }
             }
         }
 
-        // Block RadioSignalManager from hijacking frequency back to 99.9
+        // Fix RadioSignalManager: when near tower, signal is 100% clear (signal = 1.0f), NEVER hijack station!
         [HarmonyPatch(typeof(RadioSignalManager), "Update")]
         [HarmonyPrefix]
-        private static bool Prefix_RadioSignalManager_Update()
+        private static bool Prefix_RadioSignalManager_Update(RadioSignalManager __instance)
         {
-            return false;
-        }
+            var radio = sRadioSystem.instance;
+            var car = UnityEngine.Object.FindFirstObjectByType<sCarController>();
+            if (radio == null || car == null || __instance.signalActivators == null) return false;
 
-        [HarmonyPatch(typeof(RadioSignalManager), "CheckStation")]
-        [HarmonyPrefix]
-        private static bool Prefix_RadioSignalManager_CheckStation()
-        {
-            return false;
+            radio.forcedRadio = false; // Never lock the player's radio!
+
+            for (int j = 0; j < radio.channels.Count; j++)
+            {
+                var ch = radio.channels[j];
+                if (ch == null) continue;
+
+                if (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom"))
+                {
+                    ch.signal = 1f;
+                    continue;
+                }
+
+                if (j < __instance.signalActivators.Length && __instance.signalActivators[j] != null)
+                {
+                    var tower = __instance.signalActivators[j];
+                    if (tower.activeSelf)
+                    {
+                        ch.signal = 1f; // Activated tower: 100% full clear signal!
+                        continue;
+                    }
+
+                    float dist = Vector3.Distance(car.transform.position, tower.transform.position);
+                    if (dist < __instance.signalDistance)
+                    {
+                        // STANDING AT TOWER: 100% CRYSTAL CLEAR FULL SIGNAL!
+                        ch.signal = 1f;
+                    }
+                    else
+                    {
+                        ch.signal = 0.1f; // Out of range: normal faint signal
+                    }
+                }
+            }
+
+            return false; // Suppress original method so it never resets frequency!
         }
 
         // Streaming audio track for all 3500+ files with zero RAM overhead
@@ -638,8 +829,6 @@ namespace EasyDeliveryCoMods
             }
 
             radioStatusText = $"Loading {allMusicFilePaths.Count} tracks into 88.1 FM...";
-            Logger.LogInfo($"[CustomRadio] Loading full playlist of {allMusicFilePaths.Count} tracks for 88.1 FM...");
-
             fullPlaylistClips.Clear();
 
             int batchSize = 100;
@@ -664,7 +853,7 @@ namespace EasyDeliveryCoMods
             }
 
             radioStatusText = $"All {fullPlaylistClips.Count} tracks ready on 88.1 FM!";
-            Logger.LogInfo($"[CustomRadio] Done! Full playlist of {fullPlaylistClips.Count} tracks loaded into 88.1 FM Custom Radio!");
+            Logger.LogInfo($"[CustomRadio] Ready! {fullPlaylistClips.Count} tracks live on 88.1 FM Custom Radio.");
 
             ApplyFullPlaylistToCustomChannel();
         }
@@ -676,8 +865,6 @@ namespace EasyDeliveryCoMods
             sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
             if (radio == null || radio.channels == null) return;
 
-            // ONLY apply our music to 88.1 FM ('custom')!
-            // News (99.1 FM) and all other stations are completely UNTOUCHED vanilla!
             foreach (var ch in radio.channels)
             {
                 if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
@@ -686,7 +873,7 @@ namespace EasyDeliveryCoMods
                     ch.externalTracks.AddRange(fullPlaylistClips);
                     ch.queue = fullPlaylistClips.ToArray();
                     ch.signal = 1f;
-                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with FULL {fullPlaylistClips.Count} TRACKS! (News 99.1 is untouched vanilla)");
+                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM with FULL {fullPlaylistClips.Count} TRACKS!");
                 }
             }
         }
@@ -754,21 +941,23 @@ namespace EasyDeliveryCoMods
             {
                 string chName = (radio.currentChannelIndex >= 0 && radio.currentChannelIndex < radio.channels.Count)
                     ? radio.channels[radio.currentChannelIndex].name : "Scanning...";
-                stationStr = $"{radio.Frequency()} FM ({chName})";
+                float sig = (radio.currentChannelIndex >= 0 && radio.currentChannelIndex < radio.channels.Count)
+                    ? radio.channels[radio.currentChannelIndex].signal * 100f : 0f;
+                stationStr = $"{radio.Frequency()} FM ({chName}) - Signal: {sig:0}%";
             }
 
-            string devName = activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel detected";
-            GUILayout.Label($"Device: {devName}", textStyle);
+            string devName = dinputJoystick != null ? dinputJoystick.Information.InstanceName : (activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel");
+            GUILayout.Label($"Device: {devName} (DirectInput 8 + FFB)", textStyle);
             GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
             GUILayout.Label($"88.1 FM Custom: {radioStatusText}", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Vehicle Control ---", textStyle);
-            string steerName = steerAxis != null ? steerAxis.path : "none";
-            string gasName = gasAxis != null ? gasAxis.name : "none";
-            string brakeName = brakeAxis != null ? brakeAxis.name : "none";
-            GUILayout.Label($"Steer({steerName}): Raw={rawSteerValue:+0.00;-0.00;0.00} -> Out={steerOut:+0.00;-0.00;0.00}", textStyle);
-            GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
+            GUILayout.Label($"Steer: Raw={rawSteerValue:+0.00;-0.00;0.00} -> Out={steerOut:+0.00;-0.00;0.00}", textStyle);
+            GUILayout.Label($"Gas: {gasOut:0.00} | Brake: {brakeOut:0.00}", textStyle);
+
+            GUILayout.Space(4);
+            GUILayout.Label($"Force Feedback (FFB): {(ffbEnabled.Value && dinputInitialized ? "ACTIVE (ConstantForce)" : "Inactive")}", textStyle);
 
             GUILayout.EndArea();
         }
