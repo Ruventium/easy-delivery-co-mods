@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.9.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.0.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -63,6 +63,7 @@ namespace EasyDeliveryCoMods
         public static float steerOut = 0f;
         public static float gasOut = 0f;
         public static float brakeOut = 0f;
+        public static float rawSteerValue = 0f;
 
         private static float fpsDeltaTime = 0f;
 
@@ -105,7 +106,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 3.9.0 loaded!");
+            Logger.LogInfo("Easy Delivery Co Mods 4.0.0 (Radio & Wheel Fix) loaded!");
 
             if (radioEnabled.Value)
             {
@@ -117,7 +118,7 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music from local folder on 88.1 FM and 99.1 FM.");
+                "Enable custom music on 88.1 FM and 99.1 FM with 100% full clear signal on all stations.");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
                 "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
@@ -147,7 +148,7 @@ namespace EasyDeliveryCoMods
                 "Axis name for brake pedal (usually 'rz' on PXN V12 Lite).");
 
             wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.03f,
-                "Deadzone around wheel center (0.00 to 0.10). When wheel is centered, keyboard/gamepad have 100% free control.");
+                "Deadzone around wheel center. In deadzone, steering is 0.00 and keyboard/gamepad work freely.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
                 "1:1 steering multiplier.");
             wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false,
@@ -213,7 +214,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== WHEEL LOGIC: DIRECT LINEAR 1:1 AXES ====================
+        // ==================== WHEEL LOGIC: BULLETPROOF 1:1 DIRECT BIPOLAR STEERING ====================
 
         private void FindAndSetupWheel()
         {
@@ -240,7 +241,7 @@ namespace EasyDeliveryCoMods
                 if (match != null && match != activeWheelDevice)
                 {
                     activeWheelDevice = match;
-                    Logger.LogInfo($"[Wheel] Selected: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
+                    Logger.LogInfo($"[Wheel] Connected: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
 
                     availableAxes.Clear();
 
@@ -249,25 +250,26 @@ namespace EasyDeliveryCoMods
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             availableAxes.Add(axis);
+                            Logger.LogInfo($"[Wheel Axis] Name='{axis.name}', Path='{axis.path}'");
                         }
                     }
 
-                    // Steer: 'x'
+                    // Steer: look for main analog 'x', EXCLUDING dpad and hatswitch!
                     steerAxis = FindAxis(wheelSteerAxisName.Value)
-                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase))
-                                ?? availableAxes.FirstOrDefault(a => a.name.Contains("x"));
+                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("dpad") && !a.path.Contains("hat"))
+                                ?? availableAxes.FirstOrDefault(a => a.name.Contains("x") && !a.path.Contains("dpad") && !a.path.Contains("hat"));
 
-                    // Gas: 'z'
+                    // Gas: 'z' on PXN V12 Lite
                     gasAxis = FindAxis(wheelGasAxisName.Value)
                               ?? availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
                               ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
 
-                    // Brake: 'rz'
+                    // Brake: 'rz' on PXN V12 Lite
                     brakeAxis = FindAxis(wheelBrakeAxisName.Value)
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase));
 
-                    Logger.LogInfo($"[Wheel Mapped] Steer='{(steerAxis != null ? steerAxis.name : "NULL")}', Gas='{(gasAxis != null ? gasAxis.name : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.name : "NULL")}'");
+                    Logger.LogInfo($"[Wheel Configured] Steer='{(steerAxis != null ? steerAxis.path : "NULL")}', Gas='{(gasAxis != null ? gasAxis.path : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.path : "NULL")}'");
                 }
             }
             catch (Exception ex)
@@ -279,41 +281,42 @@ namespace EasyDeliveryCoMods
         private AxisControl FindAxis(string name)
         {
             if (activeWheelDevice == null || string.IsNullOrEmpty(name)) return null;
-            return availableAxes.FirstOrDefault(a => a.name.Equals(name, StringComparison.OrdinalIgnoreCase) || a.path.EndsWith("/" + name, StringComparison.OrdinalIgnoreCase));
+            return availableAxes.FirstOrDefault(a => (a.name.Equals(name, StringComparison.OrdinalIgnoreCase) || a.path.EndsWith("/" + name, StringComparison.OrdinalIgnoreCase)) && !a.path.Contains("dpad") && !a.path.Contains("hat"));
         }
 
         private void PollWheel()
         {
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
-            // 1. STEERING: True physical bipolar axis centered at 0.000
-            // Left is negative (-1.0 to 0.0), Right is positive (0.0 to +1.0)
+            // 1. STEERING: Direct physical axis centered at 0.000
+            // Left is -1.0 to 0.0, Right is 0.0 to +1.0
             if (steerAxis != null)
             {
-                float raw = steerAxis.ReadValue();
-                if (wheelInvertSteer.Value) raw = -raw;
+                rawSteerValue = steerAxis.ReadValue();
+                float val = rawSteerValue;
+                if (wheelInvertSteer.Value) val = -val;
 
-                float abs = Mathf.Abs(raw);
+                float abs = Mathf.Abs(val);
                 float dz = wheelSteerDeadzone.Value;
 
                 if (abs < dz)
                 {
-                    // IN DEADZONE: Output is EXACTLY ZERO. Keyboard and gamepad have 100% free control!
+                    // IN DEADZONE: strictly 0.00. Zero phantom drift!
                     steerOut = 0f;
                 }
                 else
                 {
-                    // Linear 1:1 steering output from deadzone to edge
+                    // Linear 1:1 direct steering
                     float norm = (abs - dz) / (1f - dz);
-                    steerOut = Mathf.Clamp(norm * Mathf.Sign(raw) * wheelSteerSensitivity.Value, -1f, 1f);
+                    steerOut = Mathf.Clamp(norm * Mathf.Sign(val) * wheelSteerSensitivity.Value, -1f, 1f);
                 }
             }
 
-            // 2. GAS PEDAL (DirectInput: -1.0 released to +1.0 pressed)
+            // 2. GAS PEDAL (DirectInput standard: -1.0 released to +1.0 pressed)
             if (gasAxis != null)
             {
                 float raw = gasAxis.ReadValue();
-                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 fully floored
+                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 pressed
                 if (wheelInvertGas.Value) norm = 1f - norm;
 
                 if (norm < 0.06f)
@@ -326,11 +329,11 @@ namespace EasyDeliveryCoMods
                 }
             }
 
-            // 3. BRAKE PEDAL (DirectInput: -1.0 released to +1.0 pressed)
+            // 3. BRAKE PEDAL (DirectInput standard: -1.0 released to +1.0 pressed)
             if (brakeAxis != null)
             {
                 float raw = brakeAxis.ReadValue();
-                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 fully floored
+                float norm = (raw + 1f) / 2f; // 0.0 released -> 1.0 pressed
                 if (wheelInvertBrake.Value) norm = 1f - norm;
 
                 if (norm < 0.06f)
@@ -344,27 +347,60 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Direct injection into car physics right before Move()
+        // Apply inputs cleanly to sInputManager and preserve keyboard/gamepad priority!
+        [HarmonyPatch(typeof(sInputManager), "GetInput")]
+        [HarmonyPostfix]
+        private static void Postfix_GetInput(sInputManager __instance)
+        {
+            if (!wheelEnabled.Value || activeWheelDevice == null) return;
+
+            bool keyboardSteering = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
+                                    Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
+
+            if (!keyboardSteering)
+            {
+                __instance.driveInput.x = steerOut;
+            }
+
+            bool keyboardThrottle = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) ||
+                                     Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
+
+            if (!keyboardThrottle)
+            {
+                if (gasOut > 0.02f || brakeOut > 0.02f)
+                {
+                    if (brakeOut > 0.05f)
+                    {
+                        __instance.brakePressed = true;
+                        __instance.driveInput.y = gasOut > 0.05f ? gasOut : -brakeOut;
+                    }
+                    else
+                    {
+                        __instance.driveInput.y = gasOut;
+                    }
+                }
+                else
+                {
+                    __instance.driveInput.y = 0f;
+                }
+            }
+        }
+
+        // Direct bypass of keyboard Lerp filter in sCarController.Move
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
         {
             if (!wheelEnabled.Value || activeWheelDevice == null) return;
 
-            // 1. Keyboard priority: if player presses A/D or Arrows, do NOT override with wheel
             bool keyboardSteering = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
                                     Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
 
             if (!keyboardSteering)
             {
-                // Only override if wheel is physically turned past deadzone
-                if (Mathf.Abs(steerOut) > 0.01f)
-                {
-                    __instance.input.x = steerOut;
-                }
+                __instance.input.x = steerOut;
             }
 
-            // 2. Keyboard throttle priority: if player presses W/S or Arrows, do NOT override with pedals
             bool keyboardThrottle = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) ||
                                      Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow);
 
@@ -383,17 +419,20 @@ namespace EasyDeliveryCoMods
                         __instance.SetBreaking(false);
                     }
                 }
+                else
+                {
+                    __instance.input.y = 0f;
+                }
             }
         }
 
-        // ==================== RADIO: PREVENT FORCED LOCK & CLEAN TUNING ====================
+        // ==================== RADIO: FULL CRISP SIGNAL & NATIVE TUNING ====================
 
         public static void TuneRadioStation(int direction)
         {
             sRadioSystem radio = sRadioSystem.instance;
             if (radio == null || radio.channels == null || radio.channels.Count == 0) return;
 
-            // Release any forced lock from game events so player can freely tune!
             radio.forcedRadio = false;
 
             if (!radio.source.enabled)
@@ -406,19 +445,18 @@ namespace EasyDeliveryCoMods
             Logger.LogInfo($"[Radio Tuned] Station [{next}]: '{radio.channels[next].name}' at {radio.channels[next].frequency:F1} FM");
         }
 
-        // Hook in-game radio tuning inputs
+        // In-game radio controls tune station cleanly without jumping
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
         private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
         {
-            // Clear forcedRadio so player can change station anytime
             __instance.forcedRadio = false;
 
             if (Mathf.Abs(v.x) > 0.25f)
             {
                 int dir = (v.x > 0f) ? 1 : -1;
                 TuneRadioStation(dir);
-                return false; // Handled directly and cleanly!
+                return false;
             }
 
             if (v.y < -0.25f)
@@ -430,13 +468,40 @@ namespace EasyDeliveryCoMods
             return true;
         }
 
-        // Disable RadioSignalManager forced radio hijacking (prevents game from pulling needle back to 99.1 FM)
+        // 100% MAXIMUM CRYSTAL CLEAR SIGNAL ON ALL STATIONS (no static, full volume!)
+        [HarmonyPatch(typeof(sRadioSystem), "DoSignal")]
+        [HarmonyPrefix]
+        private static void Prefix_DoSignal(sRadioSystem __instance)
+        {
+            __instance.signalStrength = 1f;
+            if (__instance.currentChannelIndex >= 0 && __instance.currentChannelIndex < __instance.channels.Count)
+            {
+                if (__instance.channels[__instance.currentChannelIndex] != null)
+                {
+                    __instance.channels[__instance.currentChannelIndex].signal = 1f;
+                }
+            }
+        }
+
+        // Keep signals at 1.0f and prevent RadioSignalManager from hijacking frequency back to 99.1 FM
         [HarmonyPatch(typeof(RadioSignalManager), "Update")]
         [HarmonyPrefix]
         private static bool Prefix_RadioSignalManager_Update()
         {
-            // Block RadioSignalManager from constantly setting forcedRadio = true and resetting frequency to 99.1 FM
-            return false;
+            var radio = sRadioSystem.instance;
+            if (radio != null && radio.channels != null)
+            {
+                radio.forcedRadio = false;
+                radio.signalStrength = 1f;
+                for (int i = 0; i < radio.channels.Count; i++)
+                {
+                    if (radio.channels[i] != null)
+                    {
+                        radio.channels[i].signal = 1f;
+                    }
+                }
+            }
+            return false; // Prevent forced hijacking
         }
 
         private IEnumerator InitRadioPipelineAsync()
@@ -555,7 +620,7 @@ namespace EasyDeliveryCoMods
             }
 
             isDecoderRunning = false;
-            radioStatusText = $"{decodedRadioClips.Count} tracks loaded on radio!";
+            radioStatusText = $"{decodedRadioClips.Count} tracks ready on 88.1 & 99.1 FM";
             Logger.LogInfo($"[CustomRadio] Ready! Loaded {decodedRadioClips.Count} tracks into radio.");
 
             ApplyTracksToGameRadio();
@@ -584,12 +649,12 @@ namespace EasyDeliveryCoMods
                     ch.externalTracks.Clear();
                     ch.externalTracks.AddRange(decodedRadioClips);
                     ch.queue = decodedRadioClips.ToArray();
+                    ch.signal = 1f;
                     Logger.LogInfo($"[CustomRadio] Populated '{ch.name}' ({ch.frequency} FM) with {decodedRadioClips.Count} tracks!");
                 }
             }
         }
 
-        // When radio scene starts, inject tracks into custom and news stations
         [HarmonyPatch(typeof(sRadioSystem), "Start")]
         [HarmonyPostfix]
         private static void Postfix_RadioStart(sRadioSystem __instance)
@@ -597,7 +662,6 @@ namespace EasyDeliveryCoMods
             ApplyTracksToGameRadio();
         }
 
-        // When AudioLoader completes, inject tracks into customChannel
         [HarmonyPatch(typeof(AudioLoader), "Start")]
         [HarmonyPostfix]
         private static void Postfix_AudioLoader_Start(AudioLoader __instance)
@@ -607,6 +671,7 @@ namespace EasyDeliveryCoMods
                 __instance.customChannel.externalTracks.Clear();
                 __instance.customChannel.externalTracks.AddRange(decodedRadioClips);
                 __instance.customChannel.queue = decodedRadioClips.ToArray();
+                __instance.customChannel.signal = 1f;
                 Logger.LogInfo($"[CustomRadio] AudioLoader customChannel ready with {decodedRadioClips.Count} tracks!");
             }
         }
@@ -627,7 +692,7 @@ namespace EasyDeliveryCoMods
             if (!showOverlay.Value) return;
 
             GUI.color = Color.white;
-            int width = 450;
+            int width = 460;
             int height = 280;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
@@ -658,7 +723,7 @@ namespace EasyDeliveryCoMods
 
             string devName = activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel detected";
             GUILayout.Label($"Device: {devName}", textStyle);
-            GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
+            GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr} (Signal: 100%)", textStyle);
             GUILayout.Label($"Radio Status: {radioStatusText}", textStyle);
             GUILayout.Label($"Tune Stations: Left/Right on car radio, or '.' and ',' on keyboard", textStyle);
 
@@ -667,7 +732,7 @@ namespace EasyDeliveryCoMods
             string steerName = steerAxis != null ? steerAxis.name : "none";
             string gasName = gasAxis != null ? gasAxis.name : "none";
             string brakeName = brakeAxis != null ? brakeAxis.name : "none";
-            GUILayout.Label($"Steer({steerName}): {steerOut:+0.00;-0.00;0.00}", textStyle);
+            GUILayout.Label($"Steer({steerName}): Raw={rawSteerValue:+0.00;-0.00;0.00} -> Out={steerOut:+0.00;-0.00;0.00}", textStyle);
             GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
