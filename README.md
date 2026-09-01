@@ -1,142 +1,179 @@
-# Easy Delivery Co Mods
+# Easy Delivery Co - Complete Enhancement Pack
 
-A collection of BepInEx mods for Easy Delivery Co that enhance gameplay and add new features.
+Универсальный мод для Easy Delivery Co, объединяющий все улучшения в одном пакете с модульной архитектурой.
 
-## Mods Included
+## Возможности
 
-### 1. FPS Unlocker
-Removes FPS cap and disables VSync for smoother gameplay.
+### 1. FPS Unlock
+- Разблокировка частоты кадров (до 240 FPS или безлимит)
+- Отключение VSync
+- Настройка целевого FPS
 
-**Features:**
-- Configurable target FPS (default: 240, set to 0 for unlimited)
-- VSync toggle
-- Real-time FPS display
-
-**Config:** `BepInEx/config/opencode.easydeliveryco.fpsunlock.cfg`
-
-### 2. HD Rendering
-Disables PS1-style effects and increases render resolution for modern look.
-
-**Features:**
-- Disables CRT/retro post-processing effects
-- Increases render texture resolution to full HD
-- Changes texture filtering to bilinear for crisp visuals
-- Configurable settings for each effect
-
-**Config:** `BepInEx/config/opencode.easydeliveryco.hdrendering.cfg`
+### 2. Graphics Enhancements
+- **HD рендеринг**: увеличение внутреннего разрешения с 256x256 до 1920x1080+
+- **Отключение PS1 эффектов**: убирает CRT, пикселизацию, низкое разрешение
+- **Фильтрация текстур**: Point (пиксели), Bilinear, Trilinear
+- **Отключение пост-обработки**: chromatic aberration, lens distortion, vignette
+- **Дальность прорисовки**: настройка render distance
+- **FPS счётчик**: показ текущего FPS в углу экрана
 
 ### 3. Steering Wheel Support
-Native support for PXN V12 Lite and other DirectInput steering wheels.
-
-**Features:**
-- Automatic steering wheel detection
-- Configurable steering sensitivity and dead zones
-- Pedal support (accelerator and brake)
-- Manual gear shifting with paddle shifters
-- Force feedback support (if wheel supports it)
-- In-game overlay showing wheel input (toggle with F2)
-
-**Config:** `BepInEx/config/opencode.easydeliveryco.steeringwheel.cfg`
-
-**Controls:**
-- Steering wheel: Turn vehicle
-- Right trigger/pedal: Accelerate
-- Left trigger/pedal: Brake
-- Paddle shifters: Change gears (if manual mode enabled)
-- F2: Toggle input display overlay
+- Полная поддержка рулей (Logitech, Thrustmaster, Fanatec, PXN и др.)
+- Настройка осей для руля, газа и тормоза
+- Мёртвые зоны для каждой оси
+- Инверсия осей
+- Чувствительность руля
+- Раздельные/объединённые педали
+- Debug режим с показом всех значений
 
 ### 4. VR Support
-Adds VR headtracking support while keeping traditional input methods.
+- Поддержка VR шлемов через OpenVR/SteamVR
+- 6DOF отслеживание головы (позиция + вращение)
+- Отключение VR контроллеров (управление через клавиатуру/мышь/геймпад/руль)
+- Настройка масштаба и высоты камеры
+- Debug режим для VR
 
-**Features:**
-- Full VR headtracking (6DOF)
-- Stereo rendering for VR headsets
-- No VR controllers required - use keyboard/mouse/gamepad/wheel
-- Configurable head tracking scale and camera offset
-- Debug mode for troubleshooting
+## Установка
 
-**Config:** `BepInEx/config/opencode.easydeliveryco.vr.cfg`
+1. Скачай и установи [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.2)
+2. Распакуй BepInEx в папку с игрой (`A:\SteamLibrary\steamapps\common\Easy Delivery Co\`)
+3. Запусти игру один раз для инициализации BepInEx
+4. Скопируй `EasyDeliveryCoEnhancements.dll` в `BepInEx\plugins\`
+5. Запусти игру
 
-**Requirements:**
-- SteamVR or Oculus Runtime
-- Compatible VR headset
+## Настройка
 
-**Usage:**
-1. Start SteamVR
-2. Launch the game
-3. Put on your headset
-4. Use your preferred input device (wheel/gamepad/keyboard)
+После первого запуска создаётся конфиг:
+`BepInEx\config\opencode.easydeliveryco.enhancements.cfg`
 
-## Installation
+### Модульная система
 
-1. Download and install [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases) for the game
-2. Download the mod DLLs from [Releases](../../releases)
-3. Place the DLL files in `Easy Delivery Co/BepInEx/plugins/`
-4. Launch the game
+Каждый модуль можно включить/выключить независимо:
 
-## Configuration
+```ini
+[1. FPS Unlock]
+Enable = false              # Включить FPS unlock
+TargetFPS = 60             # 0 = безлимит, 60 = дефолт
+DisableVSync = false       # Отключить VSync
 
-All mods are configurable through their respective config files in `BepInEx/config/`. Edit these files to customize settings.
+[2. Graphics]
+Enable = false             # Включить графические улучшения
+DisablePS1Effects = false  # Убрать PS1 стиль
+RenderWidth = 256          # Дефолт: 256, HD: 1920+
+RenderHeight = 256         # Дефолт: 256, HD: 1080+
+TextureFilterMode = 0      # 0=Point (пиксели), 1=Bilinear, 2=Trilinear
+DisablePostProcessing = false
+RenderDistance = 1000
 
-Configs are created after first launch with default values.
+[3. UI]
+ShowFPSCounter = false     # FPS счётчик
 
-## Building from Source
+[4. Steering Wheel]
+Enable = false             # Включить поддержку руля
+SteeringAxis = Joystick Axis 1
+ThrottleAxis = Joystick Axis 3
+BrakeAxis = Joystick Axis 2
+SteeringDeadzone = 0.05
+ThrottleDeadzone = 0.05
+BrakeDeadzone = 0.05
+SteeringSensitivity = 1.0
+CombinedPedals = false
+InvertSteering = false
+InvertThrottle = false
+InvertBrake = false
+DebugMode = false          # Показать значения осей
 
-Requirements:
-- .NET 6.0 SDK
-- Game installed with BepInEx
-
-```bash
-# Clone the repository
-git clone https://github.com/Ruventium/easy-delivery-co-mods.git
-cd easy-delivery-co-mods
-
-# Build FPS Unlocker
-cd EasyDeliveryCoFpsUnlock
-dotnet build
-cp bin/Debug/net6.0/EasyDeliveryCoFpsUnlock.dll "path/to/game/BepInEx/plugins/"
-
-# Build HD Rendering
-cd ../EasyDeliveryCoHDRendering
-dotnet build
-cp bin/Debug/net6.0/EasyDeliveryCoHDRendering.dll "path/to/game/BepInEx/plugins/"
-
-# Build Steering Wheel Support
-cd ../EasyDeliveryCoSteeringWheel
-dotnet build
-cp bin/Debug/net6.0/EasyDeliveryCoSteeringWheel.dll "path/to/game/BepInEx/plugins/"
-
-# Build VR Support
-cd ../EasyDeliveryCoVR
-dotnet build
-cp bin/Debug/net6.0/EasyDeliveryCoVR.dll "path/to/game/BepInEx/plugins/"
+[5. VR Support]
+Enable = false             # Включить VR режим
+EnableHeadTracking = true  # 6DOF трекинг
+HeadTrackingScale = 1.0
+CameraHeightOffset = 0.0
+DisableVRControllers = true  # Не использовать VR контроллеры
+DebugMode = false
 ```
 
-## Troubleshooting
+## Примеры настроек
 
-### FPS Unlocker not working
-- Check that VSync is disabled in game settings
-- Try different target FPS values
+### Максимальное качество графики
+```ini
+[2. Graphics]
+Enable = true
+DisablePS1Effects = true
+RenderWidth = 1920
+RenderHeight = 1080
+TextureFilterMode = 2
+DisablePostProcessing = true
+RenderDistance = 5000
+```
 
-### HD Rendering makes game look wrong
-- Adjust individual settings in the config
-- Some effects may need to stay enabled for certain art styles
+### Разблокировка FPS
+```ini
+[1. FPS Unlock]
+Enable = true
+TargetFPS = 240    # или 0 для безлимита
+DisableVSync = true
+```
 
-### Steering wheel not detected
-- Make sure wheel is connected and detected by Windows
-- Check Device Manager for "Human Interface Devices"
-- Try adjusting dead zones in config
+### Руль Logitech G29
+```ini
+[4. Steering Wheel]
+Enable = true
+SteeringAxis = Joystick Axis 1
+ThrottleAxis = Joystick Axis 3
+BrakeAxis = Joystick Axis 2
+SteeringDeadzone = 0.05
+SteeringSensitivity = 1.0
+```
 
-### VR not working
-- Ensure SteamVR or Oculus is running before launching game
-- Check BepInEx console for error messages
-- Enable debug mode in config to see VR state
-- Verify your headset is tracked (green light in SteamVR)
+### VR режим
+```ini
+[5. VR Support]
+Enable = true
+EnableHeadTracking = true
+HeadTrackingScale = 1.0
+DisableVRControllers = true
+```
 
-## License
+## Совместимость
 
-MIT License - see LICENSE file for details
+- **Игра**: Easy Delivery Co
+- **BepInEx**: 5.4.23.5
+- **Unity**: 2021.3+ (URP)
+- **VR**: OpenVR/SteamVR совместимые шлемы
+- **Рули**: Любые HID-совместимые устройства
 
-## Credits
+## Устранение проблем
 
-Created by OpenCode
+### Руль не работает
+1. Включи `DebugMode = true` в `[4. Steering Wheel]`
+2. Запусти игру и посмотри значения в правом верхнем углу
+3. Если оси неправильные, используй программу вроде JoyToKey для определения номеров осей
+4. Настрой `SteeringAxis`, `ThrottleAxis`, `BrakeAxis`
+
+### VR не запускается
+1. Убедись что SteamVR запущен
+2. Включи `DebugMode = true` в `[5. VR Support]`
+3. Проверь лог BepInEx: `BepInEx\LogOutput.log`
+
+### Низкий FPS после включения HD
+- Уменьши `RenderWidth`/`RenderHeight` до 1280x720
+- Отключи `DisablePostProcessing`
+
+## Разработка
+
+Проект собирается через .NET SDK:
+
+```bash
+cd EasyDeliveryCoEnhancements
+dotnet build -c Release
+```
+
+DLL находится в `bin/Release/netstandard2.1/EasyDeliveryCoEnhancements.dll`
+
+## Лицензия
+
+MIT License
+
+## Автор
+
+OpenCode AI Agent
