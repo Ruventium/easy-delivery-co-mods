@@ -13,7 +13,7 @@ using UnityEngine.Networking;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "3.0.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio, Wheel & FPS", "3.2.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -24,6 +24,16 @@ namespace EasyDeliveryCoMods
         private static ConfigEntry<string> musicFolderPath;
         private static ConfigEntry<bool> radioShuffle;
         private static ConfigEntry<bool> replaceNewsChannel;
+
+        private static ConfigEntry<KeyCode> keyNextTrack;
+        private static ConfigEntry<KeyCode> keyPrevTrack;
+        private static ConfigEntry<KeyCode> keyRadioToggle;
+        private static ConfigEntry<KeyCode> keyNextStation;
+        private static ConfigEntry<KeyCode> keyPrevStation;
+
+        private static ConfigEntry<int> wheelBtnNextTrack;
+        private static ConfigEntry<int> wheelBtnPrevTrack;
+        private static ConfigEntry<int> wheelBtnRadioToggle;
 
         // ==================== FPS CONFIG ====================
         private static ConfigEntry<bool> fpsUnlockEnabled;
@@ -43,7 +53,7 @@ namespace EasyDeliveryCoMods
         private static ConfigEntry<int> wheelBrakeAxis;
         private static ConfigEntry<bool> wheelInvertThrottle;
         private static ConfigEntry<bool> wheelInvertBrake;
-        private static ConfigEntry<bool> wheelPedalsMinusOneToOne;
+        private static ConfigEntry<bool> wheelPedalRestAtMinusOne;
         private static ConfigEntry<float> wheelPedalDeadzone;
 
         private static ConfigEntry<int> wheelShiftUpButton;
@@ -55,8 +65,10 @@ namespace EasyDeliveryCoMods
 
         // ==================== RUNTIME STATE ====================
         private static List<AudioClip> loadedCustomClips = new List<AudioClip>();
-        private static bool isRadioLoading = false;
+        private static int currentTrackIndex = 0;
         private static string radioStatusText = "Initializing...";
+        private static string currentTrackTitle = "None";
+        private static bool isCustomChannelPlaying = false;
 
         // Wheel inputs calculated per frame
         private static float currentSteerOut = 0f;
@@ -65,6 +77,11 @@ namespace EasyDeliveryCoMods
         private static bool currentHandbrakeOut = false;
         private static bool currentShiftUpOut = false;
         private static bool currentShiftDownOut = false;
+
+        // Baseline resting values for pedals to prevent phantom driving
+        private static float throttleRestValue = -1f;
+        private static float brakeRestValue = -1f;
+        private static bool pedalsInitialized = false;
 
         private static float[] cachedRawAxes = new float[16];
         private static bool[] cachedRawButtons = new bool[32];
@@ -114,7 +131,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 3.1.0 (Radio + Wheel + FPS) loaded successfully!");
+            Logger.LogInfo("Easy Delivery Co Mods 3.2.0 loaded successfully!");
         }
 
         private void ApplyFpsSettings()
@@ -130,12 +147,9 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        private void Start()
-        {
-        }
-
         private void Update()
         {
+            // FPS lock retention
             if (fpsUnlockEnabled.Value)
             {
                 int desired = targetFrameRate.Value <= 0 ? -1 : targetFrameRate.Value;
@@ -151,6 +165,10 @@ namespace EasyDeliveryCoMods
                 wheelShowOverlay.Value = !wheelShowOverlay.Value;
             }
 
+            // Radio hotkeys
+            HandleRadioInput();
+
+            // Wheel polling
             if (wheelEnabled.Value)
             {
                 PollWheelInput();
@@ -169,6 +187,24 @@ namespace EasyDeliveryCoMods
             replaceNewsChannel = Config.Bind("1. Custom Radio", "ReplaceNewsChannel", true,
                 "Replace talk/news channel (99.1 FM) with your custom music.");
 
+            keyNextTrack = Config.Bind("1. Custom Radio", "KeyNextTrack", KeyCode.RightBracket,
+                "Keyboard key for Next Track (default: ']')");
+            keyPrevTrack = Config.Bind("1. Custom Radio", "KeyPrevTrack", KeyCode.LeftBracket,
+                "Keyboard key for Previous Track (default: '[')");
+            keyRadioToggle = Config.Bind("1. Custom Radio", "KeyRadioToggle", KeyCode.Backslash,
+                "Keyboard key to toggle radio on/off (default: '\\')");
+            keyNextStation = Config.Bind("1. Custom Radio", "KeyNextStation", KeyCode.Period,
+                "Keyboard key to tune station up (default: '.')");
+            keyPrevStation = Config.Bind("1. Custom Radio", "KeyPrevStation", KeyCode.Comma,
+                "Keyboard key to tune station down (default: ',')");
+
+            wheelBtnNextTrack = Config.Bind("1. Custom Radio", "WheelButtonNextTrack", -1,
+                "Joystick button for Next Track (-1 to disable)");
+            wheelBtnPrevTrack = Config.Bind("1. Custom Radio", "WheelButtonPrevTrack", -1,
+                "Joystick button for Prev Track (-1 to disable)");
+            wheelBtnRadioToggle = Config.Bind("1. Custom Radio", "WheelButtonRadioToggle", -1,
+                "Joystick button to toggle radio (-1 to disable)");
+
             // FPS
             fpsUnlockEnabled = Config.Bind("2. Frame Rate", "UnlockFPS", true,
                 "Unlock frame rate limit (blocks game's internal 60 FPS limiter).");
@@ -181,57 +217,159 @@ namespace EasyDeliveryCoMods
             wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
                 "Enable DirectInput / PXN steering wheel support.");
 
-            wheelSteerAxis = Config.Bind("2. Steering Wheel", "SteeringAxisNumber", 1,
-                "Joystick axis number for steering (usually 1). See F7 overlay to check which axis moves.");
-            wheelInvertSteer = Config.Bind("2. Steering Wheel", "InvertSteering", false,
+            wheelSteerAxis = Config.Bind("3. Steering Wheel", "SteeringAxisNumber", 1,
+                "Joystick axis number for steering (usually 1). Check F7 overlay.");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false,
                 "Invert steering direction.");
-            wheelSteerDeadzone = Config.Bind("2. Steering Wheel", "SteeringDeadzone", 0.02f,
+            wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteeringDeadzone", 0.02f,
                 "Deadzone around wheel center (0.0 to 0.5).");
-            wheelSteerSensitivity = Config.Bind("2. Steering Wheel", "SteeringSensitivity", 1.0f,
+            wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteeringSensitivity", 1.0f,
                 "Steering response multiplier (0.5 to 2.0).");
-            wheelSteerLinearity = Config.Bind("2. Steering Wheel", "SteeringLinearity", 1.0f,
+            wheelSteerLinearity = Config.Bind("3. Steering Wheel", "SteeringLinearity", 1.0f,
                 "1.0 = linear, higher values give finer control around center.");
 
-            wheelSeparatePedals = Config.Bind("2. Steering Wheel", "SeparatePedals", true,
+            wheelSeparatePedals = Config.Bind("3. Steering Wheel", "SeparatePedals", true,
                 "True if gas and brake are separate pedals. False for single combined axis.");
-            wheelThrottleAxis = Config.Bind("2. Steering Wheel", "ThrottleAxisNumber", 3,
-                "Joystick axis number for gas pedal (usually 2 or 3). Check with F7 overlay.");
-            wheelBrakeAxis = Config.Bind("2. Steering Wheel", "BrakeAxisNumber", 2,
-                "Joystick axis number for brake pedal (usually 2 or 3). Check with F7 overlay.");
-            wheelInvertThrottle = Config.Bind("2. Steering Wheel", "InvertThrottle", false,
+            wheelThrottleAxis = Config.Bind("3. Steering Wheel", "ThrottleAxisNumber", 2,
+                "Joystick axis number for gas pedal (usually 2). Check F7 overlay.");
+            wheelBrakeAxis = Config.Bind("3. Steering Wheel", "BrakeAxisNumber", 3,
+                "Joystick axis number for brake pedal (usually 3). Check F7 overlay.");
+            wheelInvertThrottle = Config.Bind("3. Steering Wheel", "InvertThrottle", false,
                 "Invert throttle pedal behavior.");
-            wheelInvertBrake = Config.Bind("2. Steering Wheel", "InvertBrake", false,
+            wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
                 "Invert brake pedal behavior.");
-            wheelPedalsMinusOneToOne = Config.Bind("2. Steering Wheel", "PedalRestAtMinusOne", true,
-                "Set to True if pedal axis rests at -1.0 and goes to +1.0 when pressed (standard DirectInput wheels like PXN/Logitech).");
-            wheelPedalDeadzone = Config.Bind("2. Steering Wheel", "PedalDeadzone", 0.05f,
-                "Deadzone threshold before pedal starts registering.");
+            wheelPedalRestAtMinusOne = Config.Bind("3. Steering Wheel", "PedalRestAtMinusOne", false,
+                "Set to True ONLY if pedal axis rests at -1.0 and moves to +1.0 when pressed. If it rests at 0.0 or 1.0, leave False.");
+            wheelPedalDeadzone = Config.Bind("3. Steering Wheel", "PedalDeadzone", 0.08f,
+                "Deadzone threshold before pedal registers (prevents phantom gas/brake).");
 
-            wheelShiftUpButton = Config.Bind("2. Steering Wheel", "ShiftUpButton", 5,
+            wheelShiftUpButton = Config.Bind("3. Steering Wheel", "ShiftUpButton", 5,
                 "Joystick button for Shift Up (Right paddle). 0 to 31, or -1 to disable.");
-            wheelShiftDownButton = Config.Bind("2. Steering Wheel", "ShiftDownButton", 4,
+            wheelShiftDownButton = Config.Bind("3. Steering Wheel", "ShiftDownButton", 4,
                 "Joystick button for Shift Down (Left paddle). 0 to 31, or -1 to disable.");
-            wheelHandbrakeButton = Config.Bind("2. Steering Wheel", "HandbrakeButton", 2,
+            wheelHandbrakeButton = Config.Bind("3. Steering Wheel", "HandbrakeButton", 2,
                 "Joystick button for handbrake. 0 to 31, or -1 to disable.");
 
-            wheelShowOverlay = Config.Bind("2. Steering Wheel", "ShowLiveOverlay", true,
-                "Show real-time on-screen diagnostics overlay for wheel axes and buttons. Press F7 to toggle in-game.");
-            wheelOverlayToggleKey = Config.Bind("2. Steering Wheel", "OverlayToggleKey", KeyCode.F7,
+            wheelShowOverlay = Config.Bind("3. Steering Wheel", "ShowLiveOverlay", true,
+                "Show real-time on-screen diagnostics overlay. Press F7 to toggle in-game.");
+            wheelOverlayToggleKey = Config.Bind("3. Steering Wheel", "OverlayToggleKey", KeyCode.F7,
                 "Keyboard key to toggle diagnostics overlay.");
         }
 
         // ==================== RADIO LOGIC ====================
 
+        private void HandleRadioInput()
+        {
+            if (!radioEnabled.Value) return;
+
+            sRadioSystem radio = sRadioSystem.instance;
+            if (radio == null) return;
+
+            // 1. Next Track
+            if (Input.GetKeyDown(keyNextTrack.Value) || CheckWheelButtonDown(wheelBtnNextTrack.Value))
+            {
+                PlayNextCustomTrack();
+            }
+
+            // 2. Previous Track
+            if (Input.GetKeyDown(keyPrevTrack.Value) || CheckWheelButtonDown(wheelBtnPrevTrack.Value))
+            {
+                PlayPreviousCustomTrack();
+            }
+
+            // 3. Toggle Radio On/Off
+            if (Input.GetKeyDown(keyRadioToggle.Value) || CheckWheelButtonDown(wheelBtnRadioToggle.Value))
+            {
+                radio.ToggleRadio();
+            }
+
+            // 4. Next Station
+            if (Input.GetKeyDown(keyNextStation.Value))
+            {
+                TuneNextStation(radio);
+            }
+
+            // 5. Prev Station
+            if (Input.GetKeyDown(keyPrevStation.Value))
+            {
+                TunePrevStation(radio);
+            }
+
+            // Auto-advance track on finish when on custom station
+            if (isCustomChannelPlaying && radio.source != null && radio.source.enabled && radio.source.clip != null)
+            {
+                if (!radio.source.isPlaying && radio.source.time == 0f)
+                {
+                    // Track finished, auto advance
+                    PlayNextCustomTrack();
+                }
+            }
+        }
+
+        private static bool CheckWheelButtonDown(int btnIndex)
+        {
+            if (btnIndex < 0 || btnIndex >= 20) return false;
+            return Input.GetKeyDown((KeyCode)((int)KeyCode.JoystickButton0 + btnIndex));
+        }
+
+        private static void TuneNextStation(sRadioSystem radio)
+        {
+            if (radio == null || radio.channels == null || radio.channels.Count == 0) return;
+            int next = (radio.currentChannelIndex + 1) % radio.channels.Count;
+            radio.SetFrequency(next, radio.channels[next].frequency);
+            Logger.LogInfo($"[Radio] Tuned to station: {radio.channels[next].name} ({radio.Frequency()} FM)");
+        }
+
+        private static void TunePrevStation(sRadioSystem radio)
+        {
+            if (radio == null || radio.channels == null || radio.channels.Count == 0) return;
+            int prev = (radio.currentChannelIndex - 1 + radio.channels.Count) % radio.channels.Count;
+            radio.SetFrequency(prev, radio.channels[prev].frequency);
+            Logger.LogInfo($"[Radio] Tuned to station: {radio.channels[prev].name} ({radio.Frequency()} FM)");
+        }
+
+        public static void PlayNextCustomTrack()
+        {
+            if (loadedCustomClips == null || loadedCustomClips.Count == 0) return;
+            currentTrackIndex = (currentTrackIndex + 1) % loadedCustomClips.Count;
+            PlayTrackByIndex(currentTrackIndex);
+        }
+
+        public static void PlayPreviousCustomTrack()
+        {
+            if (loadedCustomClips == null || loadedCustomClips.Count == 0) return;
+            currentTrackIndex = (currentTrackIndex - 1 + loadedCustomClips.Count) % loadedCustomClips.Count;
+            PlayTrackByIndex(currentTrackIndex);
+        }
+
+        private static void PlayTrackByIndex(int index)
+        {
+            sRadioSystem radio = sRadioSystem.instance;
+            if (radio == null || radio.source == null) return;
+
+            if (index >= 0 && index < loadedCustomClips.Count)
+            {
+                AudioClip clip = loadedCustomClips[index];
+                currentTrackTitle = clip.name;
+                radio.source.clip = clip;
+                radio.source.time = 0f;
+                if (radio.source.enabled)
+                {
+                    radio.source.Play();
+                }
+                isCustomChannelPlaying = true;
+                Logger.LogInfo($"[CustomRadio] Playing [{index + 1}/{loadedCustomClips.Count}]: {currentTrackTitle}");
+            }
+        }
+
         private IEnumerator LoadMusicFolderAsync()
         {
-            isRadioLoading = true;
             string folder = musicFolderPath.Value;
 
             if (!Directory.Exists(folder))
             {
                 radioStatusText = $"Folder not found: {folder}";
                 Logger.LogWarning($"[CustomRadio] Folder not found: {folder}");
-                isRadioLoading = false;
                 yield break;
             }
 
@@ -244,17 +382,12 @@ namespace EasyDeliveryCoMods
                 {
                     fileList.AddRange(Directory.GetFiles(folder, pattern, SearchOption.AllDirectories));
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogWarning($"[CustomRadio] Error scanning for {pattern}: {ex.Message}");
-                }
+                catch { }
             }
 
             if (fileList.Count == 0)
             {
                 radioStatusText = $"No audio files found in {folder}";
-                Logger.LogWarning($"[CustomRadio] No audio files in {folder}");
-                isRadioLoading = false;
                 yield break;
             }
 
@@ -265,7 +398,7 @@ namespace EasyDeliveryCoMods
             }
 
             radioStatusText = $"Loading {fileList.Count} tracks...";
-            Logger.LogInfo($"[CustomRadio] Found {fileList.Count} tracks. Beginning on-the-fly decoding...");
+            Logger.LogInfo($"[CustomRadio] Found {fileList.Count} tracks. Decoding...");
 
             List<AudioClip> newClips = new List<AudioClip>();
 
@@ -276,33 +409,21 @@ namespace EasyDeliveryCoMods
 
                 if (ext == ".ogg")
                 {
-                    // OGG handled directly by UnityWebRequest
                     yield return LoadOggAsync(filePath, trackName, (clip) =>
                     {
-                        if (clip != null)
-                        {
-                            newClips.Add(clip);
-                            Logger.LogInfo($"[CustomRadio] Loaded OGG: {trackName} ({clip.length:F1}s)");
-                        }
+                        if (clip != null) newClips.Add(clip);
                     });
                 }
                 else
                 {
-                    // FLAC, M4A, AAC, MP3, WAV, WMA handled via NAudio / Windows Media Foundation
                     DecodedAudioData decodedData = null;
-                    string decodeError = null;
-
-                    // Decode in background thread to eliminate any stuttering
                     Task decodeTask = Task.Run(() =>
                     {
                         try
                         {
                             decodedData = DecodeAudioWithMediaFoundation(filePath);
                         }
-                        catch (Exception ex)
-                        {
-                            decodeError = ex.Message;
-                        }
+                        catch { }
                     });
 
                     while (!decodeTask.IsCompleted)
@@ -318,16 +439,8 @@ namespace EasyDeliveryCoMods
                             AudioClip clip = AudioClip.Create(trackName, totalSamplesPerChannel, decodedData.Channels, decodedData.SampleRate, false);
                             clip.SetData(decodedData.Samples, 0);
                             newClips.Add(clip);
-                            Logger.LogInfo($"[CustomRadio] Decoded ({ext.ToUpper()}): {trackName} ({clip.length:F1}s)");
                         }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError($"[CustomRadio] Failed creating AudioClip for {trackName}: {ex.Message}");
-                        }
-                    }
-                    else
-                    {
-                        Logger.LogWarning($"[CustomRadio] Could not decode {filePath}: {decodeError ?? "Unknown error"}");
+                        catch { }
                     }
                 }
 
@@ -336,11 +449,13 @@ namespace EasyDeliveryCoMods
             }
 
             loadedCustomClips = newClips;
-            isRadioLoading = false;
             radioStatusText = $"Ready ({loadedCustomClips.Count} tracks)";
-            Logger.LogInfo($"[CustomRadio] Finished! Total custom tracks ready: {loadedCustomClips.Count}");
+            Logger.LogInfo($"[CustomRadio] All {loadedCustomClips.Count} tracks decoded and ready!");
 
-            ApplyCustomTracksToRadio();
+            if (loadedCustomClips.Count > 0)
+            {
+                currentTrackTitle = loadedCustomClips[0].name;
+            }
         }
 
         private class DecodedAudioData
@@ -399,33 +514,36 @@ namespace EasyDeliveryCoMods
             callback(null);
         }
 
-        private void ApplyCustomTracksToRadio()
+        // Custom Radio Playback Hooks
+        [HarmonyPatch(typeof(sRadioSystem), "UpdateTracks")]
+        [HarmonyPrefix]
+        private static bool Prefix_UpdateTracks(sRadioSystem __instance)
         {
-            if (loadedCustomClips == null || loadedCustomClips.Count == 0) return;
+            if (!radioEnabled.Value || loadedCustomClips == null || loadedCustomClips.Count == 0) return true;
+            if (!replaceNewsChannel.Value) return true;
 
-            sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
-            if (radio != null && radio.channels != null && radio.channels.Count > 0)
+            // If we are tuned to channel 0 (news / custom station 99.1 FM)
+            if (__instance.currentChannelIndex == 0)
             {
-                RadioChannel targetChannel = radio.channels[0];
-                targetChannel.externalTracks = loadedCustomClips;
-                targetChannel.queue = targetChannel.GetRandomizedClone();
-                Logger.LogInfo($"[CustomRadio] Injected {loadedCustomClips.Count} tracks into {targetChannel.name} ({targetChannel.frequency} FM)");
+                isCustomChannelPlaying = true;
+                __instance.signalStrength = 1f;
+
+                if (!__instance.source.enabled)
+                {
+                    return false;
+                }
+
+                if (__instance.source.clip == null || !loadedCustomClips.Contains(__instance.source.clip))
+                {
+                    PlayTrackByIndex(currentTrackIndex);
+                }
+
+                return false; // Skip original game track updater
             }
-        }
-
-        [HarmonyPatch(typeof(RadioChannel), "GetRandomizedClone")]
-        [HarmonyPostfix]
-        private static void Postfix_GetRandomizedClone(RadioChannel __instance, ref AudioClip[] __result)
-        {
-            if (!radioEnabled.Value || loadedCustomClips == null || loadedCustomClips.Count == 0) return;
-            if (!replaceNewsChannel.Value) return;
-
-            sRadioSystem radio = sRadioSystem.instance;
-            if (radio == null || radio.channels == null || radio.channels.Count == 0) return;
-
-            if (radio.channels[0] == __instance)
+            else
             {
-                __result = loadedCustomClips.ToArray();
+                isCustomChannelPlaying = false;
+                return true; // Let other stations play normally
             }
         }
 
@@ -435,7 +553,6 @@ namespace EasyDeliveryCoMods
         [HarmonyPrefix]
         private static bool Prefix_LimitFrameRate_Update()
         {
-            // Block game's internal 60 FPS limiter when unlock is enabled
             return !fpsUnlockEnabled.Value;
         }
 
@@ -457,10 +574,11 @@ namespace EasyDeliveryCoMods
                 currentShiftDownOut = false;
                 for (int i = 0; i < cachedRawAxes.Length; i++) cachedRawAxes[i] = 0f;
                 for (int b = 0; b < cachedRawButtons.Length; b++) cachedRawButtons[b] = false;
+                pedalsInitialized = false;
                 return;
             }
 
-            // Cache raw axes for display and input
+            // Read raw axes
             for (int i = 1; i <= 10; i++)
             {
                 try
@@ -473,7 +591,7 @@ namespace EasyDeliveryCoMods
                 }
             }
 
-            // Cache raw buttons
+            // Read raw buttons
             for (int b = 0; b < 20; b++)
             {
                 try
@@ -484,6 +602,15 @@ namespace EasyDeliveryCoMods
                 {
                     cachedRawButtons[b] = false;
                 }
+            }
+
+            // Learn resting positions of pedals once when wheel connects to guarantee zero phantom throttle
+            if (!pedalsInitialized)
+            {
+                throttleRestValue = GetRawAxis(wheelThrottleAxis.Value);
+                brakeRestValue = GetRawAxis(wheelBrakeAxis.Value);
+                pedalsInitialized = true;
+                Logger.LogInfo($"[Pedals Calibrated] Throttle rest: {throttleRestValue:F2}, Brake rest: {brakeRestValue:F2}");
             }
 
             // 1. Steering
@@ -512,8 +639,8 @@ namespace EasyDeliveryCoMods
                 float rawGas = GetRawAxis(wheelThrottleAxis.Value);
                 float rawBrake = GetRawAxis(wheelBrakeAxis.Value);
 
-                currentThrottleOut = NormalizePedal(rawGas, wheelInvertThrottle.Value, wheelPedalsMinusOneToOne.Value, wheelPedalDeadzone.Value);
-                currentBrakeOut = NormalizePedal(rawBrake, wheelInvertBrake.Value, wheelPedalsMinusOneToOne.Value, wheelPedalDeadzone.Value);
+                currentThrottleOut = ProcessPedalInput(rawGas, throttleRestValue, wheelInvertThrottle.Value, wheelPedalRestAtMinusOne.Value, wheelPedalDeadzone.Value);
+                currentBrakeOut = ProcessPedalInput(rawBrake, brakeRestValue, wheelInvertBrake.Value, wheelPedalRestAtMinusOne.Value, wheelPedalDeadzone.Value);
             }
             else
             {
@@ -524,7 +651,7 @@ namespace EasyDeliveryCoMods
                 currentBrakeOut = Mathf.Clamp01(-rawCombined);
             }
 
-            // 3. Shifters & Handbrake buttons
+            // 3. Shifters & Handbrake
             currentShiftUpOut = (wheelShiftUpButton.Value >= 0 && wheelShiftUpButton.Value < 20 && cachedRawButtons[wheelShiftUpButton.Value]);
             currentShiftDownOut = (wheelShiftDownButton.Value >= 0 && wheelShiftDownButton.Value < 20 && cachedRawButtons[wheelShiftDownButton.Value]);
             currentHandbrakeOut = (wheelHandbrakeButton.Value >= 0 && wheelHandbrakeButton.Value < 20 && cachedRawButtons[wheelHandbrakeButton.Value]);
@@ -539,33 +666,29 @@ namespace EasyDeliveryCoMods
             return 0f;
         }
 
-        private static float NormalizePedal(float raw, bool invert, bool minusOneToOne, float deadzone)
+        private static float ProcessPedalInput(float raw, float restValue, bool invert, bool restAtMinusOne, float deadzone)
         {
-            // If axis is centered at 0 or resting near 0, treat as unpressed unless configured
-            float norm;
-            if (minusOneToOne)
+            // If explicit restAtMinusOne is configured
+            if (restAtMinusOne)
             {
-                // Range [-1.0 .. 1.0] where -1.0 is released, 1.0 is fully pressed
-                norm = (raw + 1f) / 2f;
-            }
-            else
-            {
-                norm = Mathf.Max(0f, raw);
+                float norm = (raw + 1f) / 2f;
+                if (invert) norm = 1f - norm;
+                norm = Mathf.Clamp01(norm);
+                return (norm < deadzone) ? 0f : Mathf.Clamp01((norm - deadzone) / (1f - deadzone));
             }
 
-            if (invert)
+            // Intelligent resting baseline detection:
+            // Pedal output is 0.0 unless axis travels significantly away from its rest position!
+            float travel = Mathf.Abs(raw - restValue);
+            if (travel < deadzone)
             {
-                norm = 1f - norm;
+                return 0f; // 100% Guaranteed zero when pedal is not pressed
             }
 
-            norm = Mathf.Clamp01(norm);
-
-            if (norm < deadzone)
-            {
-                return 0f;
-            }
-
-            return Mathf.Clamp01((norm - deadzone) / (1f - deadzone));
+            // Direct mapping when pressed
+            float value = Mathf.Clamp01((travel - deadzone) / (1f - deadzone));
+            if (invert) value = 1f - value;
+            return value;
         }
 
         [HarmonyPatch(typeof(sInputManager), "GetInput")]
@@ -577,14 +700,14 @@ namespace EasyDeliveryCoMods
             string[] joys = Input.GetJoystickNames();
             if (joys == null || joys.Length == 0 || string.IsNullOrEmpty(joys[0])) return;
 
-            // Only override steering if wheel is actively turned, so keyboard A/D still works
+            // Only override steering if wheel is actively turned
             if (Mathf.Abs(currentSteerOut) > 0.02f)
             {
                 __instance.driveInput.x = currentSteerOut;
             }
 
-            // Only override throttle/brake if pedals are actively pressed, so keyboard W/S still works
-            if (currentThrottleOut > 0.05f || currentBrakeOut > 0.05f)
+            // Only override throttle/brake if pedal is actively pushed
+            if (currentThrottleOut > 0.02f || currentBrakeOut > 0.02f)
             {
                 if (currentBrakeOut > 0.05f)
                 {
@@ -616,11 +739,11 @@ namespace EasyDeliveryCoMods
 
         private void OnGUI()
         {
-            if (!wheelEnabled.Value || !wheelShowOverlay.Value) return;
+            if (!wheelShowOverlay.Value) return;
 
             GUI.color = Color.white;
-            int width = 360;
-            int height = 280;
+            int width = 380;
+            int height = 310;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
             GUI.Box(boxRect, "");
@@ -630,10 +753,10 @@ namespace EasyDeliveryCoMods
             GUIStyle titleStyle = new GUIStyle(GUI.skin.label)
             {
                 fontStyle = FontStyle.Bold,
-                fontSize = 13,
+                fontSize = 12,
                 normal = { textColor = Color.yellow }
             };
-            GUILayout.Label("=== WHEEL DIAGNOSTICS [F7 to Hide] ===", titleStyle);
+            GUILayout.Label("=== EASY DELIVERY CO MODS [F7: Hide] ===", titleStyle);
 
             GUIStyle textStyle = new GUIStyle(GUI.skin.label)
             {
@@ -644,16 +767,20 @@ namespace EasyDeliveryCoMods
             fpsDeltaTime += (Time.unscaledDeltaTime - fpsDeltaTime) * 0.1f;
             float currentFps = 1.0f / Mathf.Max(0.0001f, fpsDeltaTime);
 
+            sRadioSystem radio = sRadioSystem.instance;
+            string stationStr = (radio != null) ? $"{radio.Frequency()} FM" : "N/A";
+
             GUILayout.Label($"Device: {connectedJoyName}", textStyle);
-            GUILayout.Label($"FPS: {currentFps:0.} (Target: {(targetFrameRate.Value <= 0 ? "Unlimited" : targetFrameRate.Value.ToString())}, VSync: {(disableVSync.Value ? "Off" : "On")})", textStyle);
-            GUILayout.Label($"Radio: {radioStatusText}", textStyle);
+            GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
+            GUILayout.Label($"Track [{(loadedCustomClips.Count > 0 ? (currentTrackIndex + 1).ToString() : "0")}/{loadedCustomClips.Count}]: {currentTrackTitle}", textStyle);
+            GUILayout.Label($"Keys: ']' Next | '[' Prev | '\\' Radio | '.' / ',' Station", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label("--- Live Inputs to Game ---", textStyle);
-            GUILayout.Label($"Steering: {currentSteerOut:+0.00;-0.00;0.00}  |  Throttle: {currentThrottleOut:0.00}  |  Brake: {currentBrakeOut:0.00}", textStyle);
+            GUILayout.Label("--- Live Vehicle Control ---", textStyle);
+            GUILayout.Label($"Steer: {currentSteerOut:+0.00;-0.00;0.00} | Gas: {currentThrottleOut:0.00} | Brake: {currentBrakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label("--- Raw Joystick Axes (press pedals to check #) ---", textStyle);
+            GUILayout.Label("--- Raw Axes (press pedals to check #) ---", textStyle);
             for (int i = 1; i <= 6; i += 2)
             {
                 string ax1 = $"Axis {i}: {cachedRawAxes[i]:+0.00;-0.00;0.00}";
@@ -661,13 +788,13 @@ namespace EasyDeliveryCoMods
                 GUILayout.Label($"{ax1.PadRight(18)}  {ax2}", textStyle);
             }
 
-            GUILayout.Space(4);
+            GUILayout.Space(2);
             string pressedButtons = "";
             for (int b = 0; b < 16; b++)
             {
                 if (cachedRawButtons[b]) pressedButtons += $"Btn{b} ";
             }
-            GUILayout.Label($"Pressed Buttons: {(string.IsNullOrEmpty(pressedButtons) ? "None" : pressedButtons)}", textStyle);
+            GUILayout.Label($"Buttons: {(string.IsNullOrEmpty(pressedButtons) ? "None" : pressedButtons)}", textStyle);
 
             GUILayout.EndArea();
         }
