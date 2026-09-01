@@ -6,6 +6,7 @@
     <Description>Easy Delivery Co - Custom Radio, Wheel with FFB, and FPS Unlock</Description>
     <Version>5.3.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
