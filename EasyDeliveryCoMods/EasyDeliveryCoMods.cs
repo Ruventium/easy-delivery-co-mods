@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.1.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.2.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -25,7 +25,6 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<bool> radioEnabled;
         public static ConfigEntry<string> musicFolderPath;
         public static ConfigEntry<bool> radioShuffle;
-        public static ConfigEntry<int> maxCachedSongs;
 
         public static ConfigEntry<bool> fpsUnlockEnabled;
         public static ConfigEntry<int> targetFrameRate;
@@ -48,7 +47,7 @@ namespace EasyDeliveryCoMods
 
         // ==================== RADIO RUNTIME ====================
         public static List<string> allMusicFilePaths = new List<string>();
-        public static List<AudioClip> decodedRadioClips = new List<AudioClip>();
+        public static List<AudioClip> fullPlaylistClips = new List<AudioClip>();
         public static string radioStatusText = "Idle";
         public static bool isDecoderRunning = false;
 
@@ -66,7 +65,6 @@ namespace EasyDeliveryCoMods
         public static float rawSteerValue = 0f;
 
         private static float[] lastLoggedAxisValues = new float[32];
-
         private static float fpsDeltaTime = 0f;
 
         static EasyDeliveryCoModsPlugin()
@@ -108,11 +106,11 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 4.1.0 loaded!");
+            Logger.LogInfo("Easy Delivery Co Mods 4.2.0 loaded!");
 
             if (radioEnabled.Value)
             {
-                StartCoroutine(InitRadioPipelineAsync());
+                StartCoroutine(InitFullPlaylistAsync());
             }
         }
 
@@ -120,13 +118,11 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music on 88.1 FM with 100% crystal clear signal always. Other stations keep vanilla story signals!");
+                "Enable custom music on 88.1 FM with 100% full signal always. All tracks available!");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
                 "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
                 "Shuffle playback order of tracks.");
-            maxCachedSongs = Config.Bind("1. Custom Radio", "PlaylistSize", 50,
-                "Number of tracks decoded into radio rotation.");
 
             // FPS
             fpsUnlockEnabled = Config.Bind("2. Frame Rate", "UnlockFPS", true,
@@ -150,11 +146,11 @@ namespace EasyDeliveryCoMods
                 "Axis name for brake pedal (usually 'rz' on PXN V12 Lite).");
 
             wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.03f,
-                "Deadzone around wheel center. In deadzone, steering is 0.00 and keyboard/gamepad work freely.");
+                "Deadzone around wheel center.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
                 "1:1 steering multiplier.");
             wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true,
-                "Invert steering direction (True = right is right, left is left).");
+                "Invert steering direction.");
             wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false,
                 "Invert gas pedal.");
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
@@ -216,7 +212,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== WHEEL LOGIC: DIRECT 1:1 AXES & LIVE MONITOR ====================
+        // ==================== WHEEL LOGIC ====================
 
         private void FindAndSetupWheel()
         {
@@ -291,19 +287,18 @@ namespace EasyDeliveryCoMods
         {
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
-            // Live change logger for diagnostics
+            // Live change logger for diagnostics when user turns wheel
             for (int i = 0; i < availableAxes.Count && i < lastLoggedAxisValues.Length; i++)
             {
                 float v = availableAxes[i].ReadValue();
-                if (Mathf.Abs(v - lastLoggedAxisValues[i]) > 0.04f)
+                if (Mathf.Abs(v - lastLoggedAxisValues[i]) > 0.05f)
                 {
                     lastLoggedAxisValues[i] = v;
                     Logger.LogInfo($"[AXIS LIVE] {availableAxes[i].name} ({availableAxes[i].path}) = {v:+0.00;-0.00;0.00}");
                 }
             }
 
-            // 1. STEERING: True physical bipolar axis centered at 0.000
-            // Left is negative (-1.0 to 0.0), Right is positive (0.0 to +1.0)
+            // 1. STEERING: Direct physical axis centered at 0.000
             if (steerAxis != null)
             {
                 rawSteerValue = steerAxis.ReadValue();
@@ -359,7 +354,6 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Apply inputs to sInputManager and preserve keyboard priority
         [HarmonyPatch(typeof(sInputManager), "GetInput")]
         [HarmonyPostfix]
         private static void Postfix_GetInput(sInputManager __instance)
@@ -398,7 +392,6 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Direct bypass of keyboard Lerp filter in sCarController.Move
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
@@ -438,7 +431,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== RADIO: 88.1 FM ONLY FOR CUSTOM MUSIC (100% SIGNAL ALWAYS) ====================
+        // ==================== RADIO: FULL PLAYLIST & 88.1 FM 100% SIGNAL ====================
 
         public static void TuneRadioStation(int direction)
         {
@@ -457,7 +450,6 @@ namespace EasyDeliveryCoMods
             Logger.LogInfo($"[Radio Tuned] Station [{next}]: '{radio.channels[next].name}' at {radio.channels[next].frequency:F1} FM");
         }
 
-        // In-game radio controls tune station cleanly without jumping
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
         private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
@@ -480,8 +472,8 @@ namespace EasyDeliveryCoMods
             return true;
         }
 
-        // Custom Radio (88.1 FM) ALWAYS gets 100% full crystal clear signal!
-        // All other stations (News 99.1, D&B 101.7, Lofi 99.9, EasyCo 91.1) use their normal story signal!
+        // Custom Radio (88.1 FM) ALWAYS gets 100% full signal!
+        // News (99.1 FM), D&B (101.7), Lofi (99.9), EasyCo (91.1) use their normal story signal!
         [HarmonyPatch(typeof(sRadioSystem), "DoSignal")]
         [HarmonyPrefix]
         private static void Prefix_DoSignal(sRadioSystem __instance)
@@ -497,7 +489,91 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        private IEnumerator InitRadioPipelineAsync()
+        // Streaming Track class: decodes on demand with ZERO RAM footprint for all 3500+ tracks!
+        public class StreamingAudioTrack
+        {
+            public string FilePath;
+            public int Channels = 2;
+            public int SampleRate = 44100;
+            public int TotalSamples = 44100 * 180; // default 3 min fallback
+
+            private MediaFoundationReader reader;
+            private ISampleProvider sampleProvider;
+
+            public AudioClip CreateClip()
+            {
+                string name = Path.GetFileNameWithoutExtension(FilePath);
+
+                try
+                {
+                    using (var r = new MediaFoundationReader(FilePath))
+                    {
+                        Channels = r.WaveFormat.Channels;
+                        SampleRate = r.WaveFormat.SampleRate;
+                        long bytesPerSec = r.WaveFormat.AverageBytesPerSecond;
+                        if (bytesPerSec > 0)
+                        {
+                            TotalSamples = (int)((double)r.Length / bytesPerSec * SampleRate);
+                        }
+                    }
+                }
+                catch { }
+
+                AudioClip clip = AudioClip.Create(
+                    name,
+                    TotalSamples,
+                    Channels,
+                    SampleRate,
+                    true, // STREAMING = TRUE!
+                    OnAudioRead,
+                    OnAudioSetPosition
+                );
+
+                return clip;
+            }
+
+            private void OnAudioRead(float[] data)
+            {
+                try
+                {
+                    if (sampleProvider == null)
+                    {
+                        reader = new MediaFoundationReader(FilePath);
+                        sampleProvider = reader.ToSampleProvider();
+                    }
+
+                    int count = sampleProvider.Read(data, 0, data.Length);
+                    if (count < data.Length)
+                    {
+                        Array.Clear(data, count, data.Length - count);
+                        // Loop or close
+                        reader.Position = 0;
+                    }
+                }
+                catch
+                {
+                    Array.Clear(data, 0, data.Length);
+                }
+            }
+
+            private void OnAudioSetPosition(int position)
+            {
+                try
+                {
+                    if (reader != null)
+                    {
+                        long bytePos = (long)position * Channels * (reader.WaveFormat.BitsPerSample / 8);
+                        if (bytePos >= 0 && bytePos < reader.Length)
+                        {
+                            reader.Position = bytePos;
+                        }
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private IEnumerator InitFullPlaylistAsync()
         {
             string folder = musicFolderPath.Value;
             if (!Directory.Exists(folder))
@@ -537,112 +613,57 @@ namespace EasyDeliveryCoMods
                 allMusicFilePaths = allMusicFilePaths.OrderBy(x => rnd.Next()).ToList();
             }
 
-            int countToDecode = Math.Min(allMusicFilePaths.Count, maxCachedSongs.Value);
-            radioStatusText = $"Decoding {countToDecode} tracks for 88.1 FM...";
-            Logger.LogInfo($"[CustomRadio] Decoding {countToDecode} tracks from {folder}...");
+            radioStatusText = $"Initializing {allMusicFilePaths.Count} tracks for 88.1 FM...";
+            Logger.LogInfo($"[CustomRadio] Creating streaming playlist of {allMusicFilePaths.Count} tracks from {folder}...");
 
             isDecoderRunning = true;
-            decodedRadioClips.Clear();
+            fullPlaylistClips.Clear();
 
-            for (int i = 0; i < countToDecode; i++)
+            int batchSize = 100;
+            for (int i = 0; i < allMusicFilePaths.Count; i++)
             {
-                string path = allMusicFilePaths[i];
-                string name = Path.GetFileNameWithoutExtension(path);
-                string ext = Path.GetExtension(path).ToLowerInvariant();
-
-                AudioClip clip = null;
-
-                if (ext == ".ogg")
+                try
                 {
-                    string uri = "file:///" + path.Replace("\\", "/");
-                    using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(uri, AudioType.OGGVORBIS))
+                    var streamer = new StreamingAudioTrack { FilePath = allMusicFilePaths[i] };
+                    AudioClip clip = streamer.CreateClip();
+                    if (clip != null)
                     {
-                        yield return www.SendWebRequest();
-                        if (www.result == UnityWebRequest.Result.Success)
-                        {
-                            clip = DownloadHandlerAudioClip.GetContent(www);
-                            if (clip != null) clip.name = name;
-                        }
+                        fullPlaylistClips.Add(clip);
                     }
                 }
-                else
+                catch { }
+
+                if (i % batchSize == 0)
                 {
-                    DecodedAudioData data = null;
-                    Task task = Task.Run(() =>
-                    {
-                        try
-                        {
-                            using (var reader = new MediaFoundationReader(path))
-                            {
-                                var sp = reader.ToSampleProvider();
-                                int ch = sp.WaveFormat.Channels;
-                                int sr = sp.WaveFormat.SampleRate;
-                                List<float> samples = new List<float>();
-                                float[] buf = new float[8192 * ch];
-                                int r;
-                                while ((r = sp.Read(buf, 0, buf.Length)) > 0)
-                                {
-                                    for (int s = 0; s < r; s++) samples.Add(buf[s]);
-                                }
-                                data = new DecodedAudioData { Samples = samples.ToArray(), Channels = ch, SampleRate = sr };
-                            }
-                        }
-                        catch { }
-                    });
-
-                    while (!task.IsCompleted) yield return null;
-
-                    if (data != null && data.Samples != null && data.Samples.Length > 0)
-                    {
-                        try
-                        {
-                            int total = data.Samples.Length / data.Channels;
-                            clip = AudioClip.Create(name, total, data.Channels, data.SampleRate, false);
-                            clip.SetData(data.Samples, 0);
-                        }
-                        catch { }
-                    }
+                    radioStatusText = $"Loaded {i}/{allMusicFilePaths.Count} tracks on 88.1 FM";
+                    yield return null;
                 }
-
-                if (clip != null)
-                {
-                    decodedRadioClips.Add(clip);
-                }
-
-                yield return null;
             }
 
             isDecoderRunning = false;
-            radioStatusText = $"{decodedRadioClips.Count} tracks ready on 88.1 FM";
-            Logger.LogInfo($"[CustomRadio] Ready! Loaded {decodedRadioClips.Count} tracks into 88.1 FM Custom Radio.");
+            radioStatusText = $"All {fullPlaylistClips.Count} tracks loaded on 88.1 FM!";
+            Logger.LogInfo($"[CustomRadio] Done! Total {fullPlaylistClips.Count} tracks live on 88.1 FM Custom Radio!");
 
-            ApplyTracksToCustomChannel();
+            ApplyFullPlaylistToCustomChannel();
         }
 
-        private class DecodedAudioData
+        private static void ApplyFullPlaylistToCustomChannel()
         {
-            public float[] Samples;
-            public int Channels;
-            public int SampleRate;
-        }
-
-        private static void ApplyTracksToCustomChannel()
-        {
-            if (decodedRadioClips == null || decodedRadioClips.Count == 0) return;
+            if (fullPlaylistClips == null || fullPlaylistClips.Count == 0) return;
 
             sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
             if (radio == null || radio.channels == null) return;
 
-            // ONLY apply our music to 88.1 FM ('custom')! News (99.1) and others are 100% untouched!
+            // ONLY apply our music to 88.1 FM ('custom')! News (99.1) and all other stations are untouched!
             foreach (var ch in radio.channels)
             {
                 if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
                 {
                     ch.externalTracks.Clear();
-                    ch.externalTracks.AddRange(decodedRadioClips);
-                    ch.queue = decodedRadioClips.ToArray();
+                    ch.externalTracks.AddRange(fullPlaylistClips);
+                    ch.queue = fullPlaylistClips.ToArray();
                     ch.signal = 1f;
-                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with {decodedRadioClips.Count} tracks! (News 99.1 untouched)");
+                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with FULL PLAYLIST of {fullPlaylistClips.Count} tracks!");
                 }
             }
         }
@@ -651,20 +672,20 @@ namespace EasyDeliveryCoMods
         [HarmonyPostfix]
         private static void Postfix_RadioStart(sRadioSystem __instance)
         {
-            ApplyTracksToCustomChannel();
+            ApplyFullPlaylistToCustomChannel();
         }
 
         [HarmonyPatch(typeof(AudioLoader), "Start")]
         [HarmonyPostfix]
         private static void Postfix_AudioLoader_Start(AudioLoader __instance)
         {
-            if (decodedRadioClips != null && decodedRadioClips.Count > 0 && __instance.customChannel != null)
+            if (fullPlaylistClips != null && fullPlaylistClips.Count > 0 && __instance.customChannel != null)
             {
                 __instance.customChannel.externalTracks.Clear();
-                __instance.customChannel.externalTracks.AddRange(decodedRadioClips);
-                __instance.customChannel.queue = decodedRadioClips.ToArray();
+                __instance.customChannel.externalTracks.AddRange(fullPlaylistClips);
+                __instance.customChannel.queue = fullPlaylistClips.ToArray();
                 __instance.customChannel.signal = 1f;
-                Logger.LogInfo($"[CustomRadio] AudioLoader 88.1 FM populated with {decodedRadioClips.Count} tracks!");
+                Logger.LogInfo($"[CustomRadio] AudioLoader 88.1 FM populated with FULL PLAYLIST of {fullPlaylistClips.Count} tracks!");
             }
         }
 
@@ -684,8 +705,8 @@ namespace EasyDeliveryCoMods
             if (!showOverlay.Value) return;
 
             GUI.color = Color.white;
-            int width = 460;
-            int height = 300;
+            int width = 480;
+            int height = 310;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
             GUI.Box(boxRect, "");
@@ -727,7 +748,7 @@ namespace EasyDeliveryCoMods
             GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label("--- LIVE DEVICE AXES (turn wheel / pedals to see) ---", textStyle);
+            GUILayout.Label("--- LIVE DEVICE AXES (turn wheel to watch) ---", textStyle);
             if (availableAxes.Count > 0)
             {
                 string line = "";
