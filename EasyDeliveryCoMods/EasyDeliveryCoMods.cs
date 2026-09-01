@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using BepInEx;
 using BepInEx.Configuration;
@@ -18,7 +19,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.4.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.5.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -41,10 +42,9 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<bool> wheelInvertGas;
         public static ConfigEntry<bool> wheelInvertBrake;
 
-        // Handbrake & Paddle Buttons
-        public static ConfigEntry<string> handbrakeButtonName;
-        public static ConfigEntry<string> shiftUpButtonName;
-        public static ConfigEntry<string> shiftDownButtonName;
+        // Handbrake Configuration
+        public static ConfigEntry<int> handbrakeButtonIndex;
+        public static ConfigEntry<string> handbrakeAxisName;
 
         // Force Feedback
         public static ConfigEntry<bool> ffbEnabled;
@@ -74,9 +74,7 @@ namespace EasyDeliveryCoMods
         public static float rawSteerValue = 0f;
 
         public static bool handbrakeActive = false;
-        public static bool shiftUpActive = false;
-        public static bool shiftDownActive = false;
-        public static string lastPressedControl = "None";
+        public static string activePressedButtonsList = "None";
 
         // ==================== FORCE FEEDBACK RUNTIME (DirectInput 8) ====================
         private static DirectInput directInput = null;
@@ -129,7 +127,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 5.4.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 5.5.0 initialized!");
 
             if (radioEnabled.Value)
             {
@@ -172,13 +170,11 @@ namespace EasyDeliveryCoMods
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
                 "Invert brake pedal.");
 
-            // Handbrake and Shifter mapping
-            handbrakeButtonName = Config.Bind("3. Steering Wheel", "HandbrakeButton", "button5",
-                "Button or control name for handbrake (e.g. 'button5', 'button6', 'slider', 'rx', 'ry'). Check F7 overlay.");
-            shiftUpButtonName = Config.Bind("3. Steering Wheel", "ShiftUpButton", "button5",
-                "Button name for Shift Up (Right paddle).");
-            shiftDownButtonName = Config.Bind("3. Steering Wheel", "ShiftDownButton", "button4",
-                "Button name for Shift Down (Left paddle).");
+            // Handbrake
+            handbrakeButtonIndex = Config.Bind("3. Steering Wheel", "HandbrakeButtonIndex", 4,
+                "Wheel button index for handbrake (e.g. 4 for Left Upper Paddle, 5 for Right Upper Paddle). See F7 overlay.");
+            handbrakeAxisName = Config.Bind("3. Steering Wheel", "HandbrakeAxisName", "rx",
+                "Analog axis name for upper clutch/handbrake paddle (e.g. 'rx', 'ry', 'slider'). Check F7 overlay.");
 
             // Force Feedback
             ffbEnabled = Config.Bind("4. Force Feedback", "Enabled", true,
@@ -239,7 +235,7 @@ namespace EasyDeliveryCoMods
                 TuneRadioPrev();
             }
 
-            // Initialize FFB if not ready
+            // Robust FFB Initializer
             if (ffbEnabled.Value && !ffbReady)
             {
                 ffbInitTimer += Time.unscaledDeltaTime;
@@ -330,9 +326,6 @@ namespace EasyDeliveryCoMods
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
             // 1. STEERING MATHEMATICAL OVERFLOW FIX:
-            // PXN V12 Lite sends an unsigned 16-bit word (0 to 65535).
-            // Center is 32768 (0x8000). Unity's HID driver mistakenly reads this as signed short -32768 (-1.00)!
-            // We convert the two's complement short back to ushort (0..65535) and map to -1.0 .. 0.0 .. +1.0!
             if (steerAxis != null)
             {
                 rawSteerValue = steerAxis.ReadValue();
@@ -394,56 +387,50 @@ namespace EasyDeliveryCoMods
                 }
             }
 
-            // 4. BUTTONS & HANDBRAKE / PADDLES
+            // 4. BUTTONS & HANDBRAKE DETECTION
             handbrakeActive = false;
-            shiftUpActive = false;
-            shiftDownActive = false;
+            string pressed = "";
 
-            for (int i = 0; i < activeDeviceButtons.Count; i++)
+            // Check Unity KeyCode joystick buttons (Button 0 to 19)
+            for (int b = 0; b < 20; b++)
             {
-                var btn = activeDeviceButtons[i];
-                if (btn.isPressed)
+                if (Input.GetKey((KeyCode)((int)KeyCode.JoystickButton0 + b)))
                 {
-                    lastPressedControl = btn.name;
-
-                    if (btn.name.Equals(handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
-                        btn.path.EndsWith("/" + handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                    pressed += $"Btn{b} ";
+                    if (b == handbrakeButtonIndex.Value)
                     {
                         handbrakeActive = true;
-                    }
-
-                    if (btn.name.Equals(shiftUpButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
-                        btn.path.EndsWith("/" + shiftUpButtonName.Value, StringComparison.OrdinalIgnoreCase))
-                    {
-                        shiftUpActive = true;
-                    }
-
-                    if (btn.name.Equals(shiftDownButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
-                        btn.path.EndsWith("/" + shiftDownButtonName.Value, StringComparison.OrdinalIgnoreCase))
-                    {
-                        shiftDownActive = true;
                     }
                 }
             }
 
-            // Check if upper paddle is an analog axis (e.g. 'slider', 'rx', 'ry')
+            // Check Spacebar on keyboard
+            if (Input.GetKey(KeyCode.Space))
+            {
+                pressed += "Space ";
+                handbrakeActive = true;
+            }
+
+            // Check if upper paddle is mapped as an analog axis (e.g. 'rx', 'ry', 'slider')
             foreach (var ax in activeDeviceAxes)
             {
-                if (ax.name.Equals(handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
-                    ax.path.EndsWith("/" + handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                if (ax.name.Equals(handbrakeAxisName.Value, StringComparison.OrdinalIgnoreCase) ||
+                    ax.path.EndsWith("/" + handbrakeAxisName.Value, StringComparison.OrdinalIgnoreCase))
                 {
-                    float val = ax.ReadValue();
-                    // Upper paddle pulled past 0.3
-                    if (val > -0.7f && val > 0.2f)
+                    float v = ax.ReadValue();
+                    // If pulled from -1.0 to > -0.4
+                    if (v > -0.4f)
                     {
                         handbrakeActive = true;
-                        lastPressedControl = $"{ax.name} (paddle)";
+                        pressed += $"{ax.name}(Paddle) ";
                     }
                 }
             }
+
+            activePressedButtonsList = string.IsNullOrEmpty(pressed) ? "None" : pressed.Trim();
         }
 
-        // Apply inputs to sInputManager and preserve keyboard priority
+        // Apply inputs to sInputManager: triggers TRUE Spacebar ("Break" action) when handbrake is on!
         [HarmonyPatch(typeof(sInputManager), "GetInput")]
         [HarmonyPostfix]
         private static void Postfix_GetInput(sInputManager __instance)
@@ -463,12 +450,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
+                if (gasOut > 0.02f || brakeOut > 0.02f)
                 {
-                    if (brakeOut > 0.05f || handbrakeActive)
+                    if (brakeOut > 0.05f)
                     {
                         __instance.brakePressed = true;
-                        __instance.driveInput.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
+                        __instance.driveInput.y = gasOut > 0.05f ? gasOut : -brakeOut;
                     }
                     else
                     {
@@ -481,22 +468,15 @@ namespace EasyDeliveryCoMods
                 }
             }
 
+            // TRIGGER TRUE SPACEBAR / HANDBRAKE
             if (handbrakeActive)
             {
                 __instance.brakePressed = true;
-            }
-
-            if (shiftUpActive)
-            {
-                __instance.shiftUp = true;
-            }
-            if (shiftDownActive)
-            {
-                __instance.shiftDown = true;
+                __instance.backPressed = true;
             }
         }
 
-        // Direct bypass of keyboard Lerp filter in sCarController.Move + FORCE FEEDBACK CALCULATION
+        // Direct bypass of keyboard Lerp filter in sCarController.Move + HANDBRAKE LOCK + FFB
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
@@ -516,12 +496,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
+                if (gasOut > 0.02f || brakeOut > 0.02f)
                 {
-                    if (brakeOut > 0.05f || handbrakeActive)
+                    if (brakeOut > 0.05f)
                     {
                         __instance.SetBreaking(true);
-                        __instance.input.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
+                        __instance.input.y = gasOut > 0.05f ? gasOut : -brakeOut;
                     }
                     else
                     {
@@ -533,6 +513,13 @@ namespace EasyDeliveryCoMods
                 {
                     __instance.input.y = 0f;
                 }
+            }
+
+            // ENGAGE TRUE HANDBRAKE IN VEHICLE PHYSICS
+            if (handbrakeActive)
+            {
+                __instance.SetBreaking(true);
+                __instance.handbreakOn = true;
             }
 
             // ==================== LIVE FORCE FEEDBACK (FFB) ====================
@@ -573,20 +560,31 @@ namespace EasyDeliveryCoMods
 
         // ==================== DIRECTINPUT 8 FORCE FEEDBACK (FFB) ====================
 
-        [DllImport("user32.dll")]
-        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetForegroundWindow();
+        delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+        [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
+        [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr hWnd);
+        [DllImport("user32.dll")] static extern IntPtr GetForegroundWindow();
 
         private void TryInitFFB()
         {
             if (ffbReady || !ffbEnabled.Value) return;
 
-            IntPtr hwnd = FindWindow("UnityWndClass", null);
-            if (hwnd == IntPtr.Zero)
+            // Find Unity game window handle via Process ID
+            IntPtr hwnd = IntPtr.Zero;
+            uint myPid = (uint)Process.GetCurrentProcess().Id;
+
+            EnumWindows((h, l) =>
             {
-                try { hwnd = Process.GetCurrentProcess().MainWindowHandle; } catch { }
-            }
+                GetWindowThreadProcessId(h, out uint winPid);
+                if (winPid == myPid && IsWindowVisible(h))
+                {
+                    hwnd = h;
+                    return false; // Found! Stop enumerating
+                }
+                return true;
+            }, IntPtr.Zero);
+
             if (hwnd == IntPtr.Zero)
             {
                 hwnd = GetForegroundWindow();
@@ -647,7 +645,7 @@ namespace EasyDeliveryCoMods
 
                     ffbReady = true;
                     ffbStatus = "ACTIVE (DirectInput 8 ConstantForce)";
-                    Logger.LogInfo($"[FFB] DirectInput 8 Force Feedback successfully attached to '{targetDevice.InstanceName}'!");
+                    Logger.LogInfo($"[FFB] DirectInput 8 Force Feedback successfully attached to '{targetDevice.InstanceName}' on HWND={hwnd}!");
                 }
                 else
                 {
@@ -1079,13 +1077,13 @@ namespace EasyDeliveryCoMods
             string steerName = steerAxis != null ? steerAxis.path : "none";
             string gasName = gasAxis != null ? gasAxis.name : "none";
             string brakeName = brakeAxis != null ? brakeAxis.name : "none";
-            string hbStr = handbrakeActive ? "<color=red>ACTIVE</color>" : "Off";
+            string hbStr = handbrakeActive ? "<color=red>ACTIVE (SPACE / PADDLE)</color>" : "Off";
             GUILayout.Label($"Steer({steerName}): Raw={rawSteerValue:+0.00;-0.00;0.00} -> Out={steerOut:+0.00;-0.00;0.00}", textStyle);
             GUILayout.Label($"Gas: {gasOut:0.00} | Brake: {brakeOut:0.00} | Handbrake: {hbStr}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label($"Force Feedback: {ffbStatus}", textStyle);
-            GUILayout.Label($"Last Input: {lastPressedControl}", textStyle);
+            GUILayout.Label($"Force Feedback (FFB): {ffbStatus}", textStyle);
+            GUILayout.Label($"Pressed Buttons: {activePressedButtonsList}", textStyle);
 
             GUILayout.EndArea();
         }
