@@ -71,6 +71,32 @@ namespace EasyDeliveryCoMods
         private static string connectedJoyName = "None";
         private static float fpsDeltaTime = 0f;
 
+        static EasyDeliveryCoModsPlugin()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
+            {
+                try
+                {
+                    string name = new System.Reflection.AssemblyName(args.Name).Name;
+                    if (name == "NAudio.Core" || name == "NAudio.Wasapi")
+                    {
+                        var asm = typeof(EasyDeliveryCoModsPlugin).Assembly;
+                        using (var stream = asm.GetManifestResourceStream("EasyDeliveryCoMods." + name + ".dll"))
+                        {
+                            if (stream != null)
+                            {
+                                byte[] data = new byte[stream.Length];
+                                stream.Read(data, 0, data.Length);
+                                return System.Reflection.Assembly.Load(data);
+                            }
+                        }
+                    }
+                }
+                catch { }
+                return null;
+            };
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -79,6 +105,11 @@ namespace EasyDeliveryCoMods
             InitConfig();
 
             ApplyFpsSettings();
+
+            if (radioEnabled.Value)
+            {
+                StartCoroutine(LoadMusicFolderAsync());
+            }
 
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
@@ -101,10 +132,6 @@ namespace EasyDeliveryCoMods
 
         private void Start()
         {
-            if (radioEnabled.Value)
-            {
-                StartCoroutine(LoadMusicFolderAsync());
-            }
         }
 
         private void Update()
