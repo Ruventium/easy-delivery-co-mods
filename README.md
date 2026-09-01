@@ -1,101 +1,69 @@
-# Easy Delivery Co - Custom Radio, Steering Wheel & FPS Unlock Mod
+# Easy Delivery Co — Custom Radio, Wheel & FPS Unlock Mod
 
-Качественный и стабильный BepInEx-мод для игры **Easy Delivery Co**, добавляющий полноценную поддержку 900-градусных рулей с педалями и ручником, кастомного радио (с поддержкой FLAC, M4A, AAC, MP3, WAV, WMA, OGG) и разблокировку FPS.
-
----
-
-## 📻 1. Кастомное радио (Custom Radio)
-
-- **Потоковый стриминг прямо из папки**: воспроизводит треки напрямую из `C:\Music` (включая все вложенные подпапки) через фоновый декодер Windows Media Foundation (NAudio). Нулевое потребление оперативной памяти даже при библиотеке в 3500+ песен, без микрофризов и лагов.
-- **Поддерживаемые форматы**:
-  - `FLAC` (`.flac`)
-  - `M4A / AAC` (`.m4a`, `.aac`)
-  - `MP3` (`.mp3`)
-  - `WAV` (`.wav`)
-  - `OGG` (`.ogg`)
-  - `WMA` (`.wma`)
-- **Своя выделенная станция (88.1 FM)**:
-  - Твоя музыка играет на отдельной станции **88.1 FM (Custom Radio)** со **100% кристально чистым сигналом** без помех по всей карте.
-- **Оригинальные станции игры**:
-  - **99.1 FM (Новости)**, **101.7 FM (D&B)**, **99.9 FM (Lofi)** и **91.1 FM (EasyCo)** работают в оригинальном виде.
-  - По мере приближения к вышке конкретной станции её сигнал плавно вырастает вплоть до **100% чистейшего звука прямо под вышкой**.
-  - Станции свободно переключаются штатными кнопками в машине или клавишами **`.` (точка)** и **`,` (запятая)** на клавиатуре.
+> 🤖 **100% AI-Generated Mod**  
+> Этот мод полностью разработан искусственным интеллектом (OpenCode AI Agent / Gemini 3.7 & Claude) автономно: от анализа декомпилированного кода игры до реверс-инжиниринга ввода и написания DLL.  
+> *This entire mod was created autonomously by an AI agent (OpenCode AI): from decompiled game code analysis and input reverse-engineering to C# DLL development.*
 
 ---
 
-## 🏎️ 2. Поддержка руля (Steering Wheel / PXN V12 Lite)
+## 🇷🇺 Описание (RU)
 
-- **Прямой симуляторный ввод 1:1**:
-  - Полная поддержка 900-градусных рулей (**PXN V12 Lite**, Logitech G25/G27/G29/G920, Thrustmaster, Fanatec и любых DirectInput/HID контроллеров).
-  - Устранено 16-битное знаковое переполнение Unity HID: нейтральное положение руля держит **строгий ноль `0.00`** без паразитного дрейфа.
-  - Полный диапазон 900 градусов вращается плавно от упора до упора.
-- **Педали**:
-  - Раздельные педали (газ — `z`, тормоз — `rz`).
-  - Плавная прогрессивная кривая нажатия газа без резких рывков с места.
-- **Ручник (Пробел) на лепестке**:
-  - Зажатие верхнего лепестка (или назначенной кнопки) активирует **настоящее игровое действие Пробела (`Break`)** и намертво блокирует задние колёса для разворотов и парковки.
-- **Параллельная работа с клавиатурой и геймпадом**:
-  - Клавиатура (A/D, W/S, стрелки) и стики геймпада имеют полный приоритет и не отваливаются при подключенном руле.
-- **Диагностический экран (F7)**:
-  - Нажми **F7** прямо в игре для открытия/скрытия панели диагностики: отображает в реальном времени текущий FPS, название станции, выбранную ось руля, газ, тормоз, ручник и нажатые кнопки.
+Комплексный BepInEx-мод для **Easy Delivery Co**, исправляющий проблемы управления и расширяющий возможности игры:
 
----
+### 1. 📻 Кастомное радио (88.1 FM)
+- Потоковый стриминг всей вашей музыки из `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) без расхода оперативной памяти.
+- Выделенная станция **88.1 FM (Custom)** со 100% чистым сигналом всегда.
+- Оригинальные станции (99.1 Новости, 101.7 D&B, 99.9 Lofi, 91.1 EasyCo) сохранены: по мере приближения к вышкам сигнал плавно вырастает до 100% прямо под ними.
+- Быстрое переключение станций штатными кнопками машины или клавишами `.` и `,`.
 
-## ⚡ 3. Разблокировка частоты кадров (FPS Unlock)
+### 2. 🏎️ Поддержка руля (PXN V12 Lite, Logitech, Thrustmaster, DirectInput)
+- Честный симуляторный ввод 1:1 на полные **900 градусов** в обход геймпадовских кривых.
+- Исправлено знаковое переполнение Unity HID: нейтраль держит **строгий ноль `0.00`** без дрейфа в сторону.
+- Педали: плавный газ (`z`) и тормоз (`rz`).
+- Ручной тормоз: верхний лепесток или кнопка вызывают настоящее действие Пробела (`Break`) с блокировкой задней оси.
+- Клавиатура и геймпад работают параллельно без конфликтов.
+- **F7**: экран живой диагностики осей и кнопок.
 
-- Игра содержит внутренний скрипт `LimitFrameRate`, который при загрузке локаций принудительно сбрасывает частоту кадров до 60 FPS. Мод блокирует этот скрипт и удерживает заданную частоту кадров (по умолчанию 240 FPS, либо `0` для полного анлока).
-- Отключен VSync для минимальной задержки ввода.
+### 3. ⚡ Разблокировка FPS
+- Блокирует встроенный скрипт игры `LimitFrameRate`, удерживая 240 FPS (или безлимит) без сброса на 60.
 
 ---
 
-## 📦 Установка
+## 🇬🇧 Description (EN)
 
-1. Скачай и установи **[BepInEx 5.4.23.5 (x64)](https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_win_x64_5.4.23.5.zip)** в папку с игрой:
-   `...\steamapps\common\Easy Delivery Co\`
-2. Скачай архив **`EasyDeliveryCo-Mods-v1.0.0.zip`** из раздела **[Releases](../../releases/latest)**.
-3. Распакуй содержимое архива в папку `BepInEx\plugins\`:
+A clean BepInEx mod for **Easy Delivery Co** adding wheel support, audio streaming, and uncapped FPS:
+
+### 1. 📻 Custom Radio (88.1 FM)
+- On-demand streaming from `C:\Music` (FLAC, M4A, AAC, MP3, WAV, WMA, OGG) with minimal RAM usage.
+- Dedicated **88.1 FM (Custom)** station with 100% clear signal across the map.
+- Original radio stations kept intact with realistic proximity signal scaling up to 100% near towers.
+- Clean station tuning with in-car controls or keyboard shortcuts (`.` and `,`).
+
+### 2. 🏎️ Steering Wheel Support (PXN V12 Lite & DirectInput)
+- Direct 1:1 steering across full **900 degrees** (bypasses gamepad smoothing curve).
+- Fixed 16-bit signed/unsigned HID overflow: holds an exact **`0.00` center** with zero phantom drift.
+- Progressive throttle (`z`) and brake (`rz`) pedal curves.
+- Handbrake paddle: triggers true in-game Spacebar (`Break`) action to lock rear wheels.
+- Seamless multi-device priority: keyboard/gamepad always work alongside the wheel.
+- **F7**: in-game live diagnostics overlay.
+
+### 3. ⚡ FPS Unlocker
+- Overrides the internal `LimitFrameRate` component to maintain 240 FPS (or uncapped) without dropping to 60.
+
+---
+
+## 📦 Установка / Installation
+
+1. Установите / Install [BepInEx 5.4.23.5 (x64)](https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_win_x64_5.4.23.5.zip).
+2. Скачайте архив / Download `EasyDeliveryCo-Mods-v1.0.0.zip` из [Releases](../../releases/latest).
+3. Распакуйте файлы в / Extract all files to `Easy Delivery Co/BepInEx/plugins/`:
    - `EasyDeliveryCoMods.dll`
    - `NAudio.Core.dll`
    - `NAudio.Wasapi.dll`
-4. Положи свою музыку в папку `C:\Music` (или укажи свой путь в конфиге).
-5. Запусти игру!
+4. Положите треки в / Put music in `C:\Music\`.
+5. Играйте / Run the game!
 
 ---
 
-## ⚙️ Настройка
-
-Конфигурационный файл создаётся автоматически после первого запуска игры:  
-`...\Easy Delivery Co\BepInEx\config\opencode.easydeliveryco.mods.cfg`
-
-```ini
-[1. Custom Radio]
-Enabled = true
-MusicFolder = C:\Music
-Shuffle = true
-
-[2. Frame Rate]
-UnlockFPS = true
-TargetFPS = 240
-DisableVSync = true
-
-[3. Steering Wheel]
-Enabled = true
-DeviceFilter = pxn
-SteerDeadzone = 0.02
-SteerSensitivity = 1
-InvertSteering = false
-InvertGas = false
-InvertBrake = false
-HandbrakeButtonIndex = 4
-HandbrakeAxisName = rx
-
-[4. Overlay]
-ShowOverlay = true
-ToggleKey = F7
-```
-
----
-
-## 📄 Лицензия
-
-MIT License — см. файл [LICENSE](LICENSE).
+## 📄 License
+MIT License
