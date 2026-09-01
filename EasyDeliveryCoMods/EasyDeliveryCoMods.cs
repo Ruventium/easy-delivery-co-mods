@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -17,7 +18,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.3.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "5.4.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -40,6 +41,11 @@ namespace EasyDeliveryCoMods
         public static ConfigEntry<bool> wheelInvertGas;
         public static ConfigEntry<bool> wheelInvertBrake;
 
+        // Handbrake & Paddle Buttons
+        public static ConfigEntry<string> handbrakeButtonName;
+        public static ConfigEntry<string> shiftUpButtonName;
+        public static ConfigEntry<string> shiftDownButtonName;
+
         // Force Feedback
         public static ConfigEntry<bool> ffbEnabled;
         public static ConfigEntry<float> ffbGain;
@@ -56,6 +62,7 @@ namespace EasyDeliveryCoMods
         // ==================== WHEEL INPUT RUNTIME (InputSystem) ====================
         public static InputDevice activeWheelDevice = null;
         public static List<AxisControl> activeDeviceAxes = new List<AxisControl>();
+        public static List<ButtonControl> activeDeviceButtons = new List<ButtonControl>();
 
         public static AxisControl steerAxis = null;
         public static AxisControl gasAxis = null;
@@ -66,13 +73,19 @@ namespace EasyDeliveryCoMods
         public static float brakeOut = 0f;
         public static float rawSteerValue = 0f;
 
+        public static bool handbrakeActive = false;
+        public static bool shiftUpActive = false;
+        public static bool shiftDownActive = false;
+        public static string lastPressedControl = "None";
+
         // ==================== FORCE FEEDBACK RUNTIME (DirectInput 8) ====================
         private static DirectInput directInput = null;
         private static SharpDX.DirectInput.Joystick dinputWheel = null;
         private static Effect ffbEffect = null;
         private static SharpDX.DirectInput.ConstantForce constantForce = null;
         private static bool ffbReady = false;
-        private static string ffbStatus = "Initializing...";
+        private static string ffbStatus = "Searching window...";
+        private static float ffbInitTimer = 0f;
 
         private static float fpsDeltaTime = 0f;
 
@@ -116,7 +129,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 5.3.0 initialized!");
+            Logger.LogInfo("Easy Delivery Co Mods 5.4.0 initialized!");
 
             if (radioEnabled.Value)
             {
@@ -159,6 +172,14 @@ namespace EasyDeliveryCoMods
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
                 "Invert brake pedal.");
 
+            // Handbrake and Shifter mapping
+            handbrakeButtonName = Config.Bind("3. Steering Wheel", "HandbrakeButton", "button5",
+                "Button or control name for handbrake (e.g. 'button5', 'button6', 'slider', 'rx', 'ry'). Check F7 overlay.");
+            shiftUpButtonName = Config.Bind("3. Steering Wheel", "ShiftUpButton", "button5",
+                "Button name for Shift Up (Right paddle).");
+            shiftDownButtonName = Config.Bind("3. Steering Wheel", "ShiftDownButton", "button4",
+                "Button name for Shift Down (Left paddle).");
+
             // Force Feedback
             ffbEnabled = Config.Bind("4. Force Feedback", "Enabled", true,
                 "Enable DirectInput Force Feedback (FFB) on the wheel motor.");
@@ -188,7 +209,6 @@ namespace EasyDeliveryCoMods
         private void Start()
         {
             FindAndSetupWheel();
-            StartCoroutine(InitFFBAsync());
         }
 
         private void OnDestroy()
@@ -217,6 +237,17 @@ namespace EasyDeliveryCoMods
             if (Input.GetKeyDown(KeyCode.Comma))
             {
                 TuneRadioPrev();
+            }
+
+            // Initialize FFB if not ready
+            if (ffbEnabled.Value && !ffbReady)
+            {
+                ffbInitTimer += Time.unscaledDeltaTime;
+                if (ffbInitTimer > 0.5f)
+                {
+                    ffbInitTimer = 0f;
+                    TryInitFFB();
+                }
             }
 
             if (wheelEnabled.Value)
@@ -259,12 +290,17 @@ namespace EasyDeliveryCoMods
                     Logger.LogInfo($"[Wheel] Selected device: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
 
                     activeDeviceAxes.Clear();
+                    activeDeviceButtons.Clear();
 
                     foreach (var ctrl in activeWheelDevice.allControls)
                     {
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             activeDeviceAxes.Add(axis);
+                        }
+                        else if (ctrl is ButtonControl btn)
+                        {
+                            activeDeviceButtons.Add(btn);
                         }
                     }
 
@@ -357,6 +393,54 @@ namespace EasyDeliveryCoMods
                     brakeOut = Mathf.Clamp01((norm - 0.06f) / 0.94f);
                 }
             }
+
+            // 4. BUTTONS & HANDBRAKE / PADDLES
+            handbrakeActive = false;
+            shiftUpActive = false;
+            shiftDownActive = false;
+
+            for (int i = 0; i < activeDeviceButtons.Count; i++)
+            {
+                var btn = activeDeviceButtons[i];
+                if (btn.isPressed)
+                {
+                    lastPressedControl = btn.name;
+
+                    if (btn.name.Equals(handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
+                        btn.path.EndsWith("/" + handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        handbrakeActive = true;
+                    }
+
+                    if (btn.name.Equals(shiftUpButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
+                        btn.path.EndsWith("/" + shiftUpButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        shiftUpActive = true;
+                    }
+
+                    if (btn.name.Equals(shiftDownButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
+                        btn.path.EndsWith("/" + shiftDownButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                    {
+                        shiftDownActive = true;
+                    }
+                }
+            }
+
+            // Check if upper paddle is an analog axis (e.g. 'slider', 'rx', 'ry')
+            foreach (var ax in activeDeviceAxes)
+            {
+                if (ax.name.Equals(handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase) ||
+                    ax.path.EndsWith("/" + handbrakeButtonName.Value, StringComparison.OrdinalIgnoreCase))
+                {
+                    float val = ax.ReadValue();
+                    // Upper paddle pulled past 0.3
+                    if (val > -0.7f && val > 0.2f)
+                    {
+                        handbrakeActive = true;
+                        lastPressedControl = $"{ax.name} (paddle)";
+                    }
+                }
+            }
         }
 
         // Apply inputs to sInputManager and preserve keyboard priority
@@ -379,12 +463,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f)
+                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
                 {
-                    if (brakeOut > 0.05f)
+                    if (brakeOut > 0.05f || handbrakeActive)
                     {
                         __instance.brakePressed = true;
-                        __instance.driveInput.y = gasOut > 0.05f ? gasOut : -brakeOut;
+                        __instance.driveInput.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
                     }
                     else
                     {
@@ -395,6 +479,20 @@ namespace EasyDeliveryCoMods
                 {
                     __instance.driveInput.y = 0f;
                 }
+            }
+
+            if (handbrakeActive)
+            {
+                __instance.brakePressed = true;
+            }
+
+            if (shiftUpActive)
+            {
+                __instance.shiftUp = true;
+            }
+            if (shiftDownActive)
+            {
+                __instance.shiftDown = true;
             }
         }
 
@@ -418,12 +516,12 @@ namespace EasyDeliveryCoMods
 
             if (!keyboardThrottle)
             {
-                if (gasOut > 0.02f || brakeOut > 0.02f)
+                if (gasOut > 0.02f || brakeOut > 0.02f || handbrakeActive)
                 {
-                    if (brakeOut > 0.05f)
+                    if (brakeOut > 0.05f || handbrakeActive)
                     {
                         __instance.SetBreaking(true);
-                        __instance.input.y = gasOut > 0.05f ? gasOut : -brakeOut;
+                        __instance.input.y = (gasOut > 0.05f && !handbrakeActive) ? gasOut : -Mathf.Max(brakeOut, handbrakeActive ? 1f : 0f);
                     }
                     else
                     {
@@ -477,28 +575,27 @@ namespace EasyDeliveryCoMods
 
         [DllImport("user32.dll")]
         private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
 
-        private IEnumerator InitFFBAsync()
+        private void TryInitFFB()
         {
-            if (!ffbEnabled.Value) yield break;
+            if (ffbReady || !ffbEnabled.Value) return;
 
-            // Wait until Unity creates its main window
-            IntPtr hwnd = IntPtr.Zero;
-            int retries = 0;
-            while (hwnd == IntPtr.Zero && retries < 20)
+            IntPtr hwnd = FindWindow("UnityWndClass", null);
+            if (hwnd == IntPtr.Zero)
             {
-                hwnd = FindWindow("UnityWndClass", null);
-                if (hwnd == IntPtr.Zero)
-                {
-                    retries++;
-                    yield return new WaitForSeconds(0.5f);
-                }
+                try { hwnd = Process.GetCurrentProcess().MainWindowHandle; } catch { }
+            }
+            if (hwnd == IntPtr.Zero)
+            {
+                hwnd = GetForegroundWindow();
             }
 
             if (hwnd == IntPtr.Zero)
             {
-                ffbStatus = "Unity window not found";
-                yield break;
+                ffbStatus = "Waiting for game window...";
+                return;
             }
 
             try
@@ -549,17 +646,17 @@ namespace EasyDeliveryCoMods
                     ffbEffect.Start(1, EffectPlayFlags.None);
 
                     ffbReady = true;
-                    ffbStatus = "Active (DirectInput 8 ConstantForce)";
-                    Logger.LogInfo($"[FFB] Successfully attached Force Feedback to '{targetDevice.InstanceName}'!");
+                    ffbStatus = "ACTIVE (DirectInput 8 ConstantForce)";
+                    Logger.LogInfo($"[FFB] DirectInput 8 Force Feedback successfully attached to '{targetDevice.InstanceName}'!");
                 }
                 else
                 {
-                    ffbStatus = "No FFB wheel found";
+                    ffbStatus = "No FFB device found";
                 }
             }
             catch (Exception ex)
             {
-                ffbStatus = $"Error: {ex.Message}";
+                ffbStatus = $"FFB Error: {ex.Message}";
                 Logger.LogWarning($"[FFB Init] {ex.Message}");
             }
         }
@@ -941,8 +1038,8 @@ namespace EasyDeliveryCoMods
             if (!showOverlay.Value) return;
 
             GUI.color = Color.white;
-            int width = 480;
-            int height = 310;
+            int width = 500;
+            int height = 330;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
             GUI.Box(boxRect, "");
@@ -982,11 +1079,13 @@ namespace EasyDeliveryCoMods
             string steerName = steerAxis != null ? steerAxis.path : "none";
             string gasName = gasAxis != null ? gasAxis.name : "none";
             string brakeName = brakeAxis != null ? brakeAxis.name : "none";
+            string hbStr = handbrakeActive ? "<color=red>ACTIVE</color>" : "Off";
             GUILayout.Label($"Steer({steerName}): Raw={rawSteerValue:+0.00;-0.00;0.00} -> Out={steerOut:+0.00;-0.00;0.00}", textStyle);
-            GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
+            GUILayout.Label($"Gas: {gasOut:0.00} | Brake: {brakeOut:0.00} | Handbrake: {hbStr}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label($"Force Feedback (FFB): {ffbStatus}", textStyle);
+            GUILayout.Label($"Force Feedback: {ffbStatus}", textStyle);
+            GUILayout.Label($"Last Input: {lastPressedControl}", textStyle);
 
             GUILayout.EndArea();
         }
