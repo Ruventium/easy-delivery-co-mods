@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.2.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.3.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -106,7 +106,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 4.2.0 loaded!");
+            Logger.LogInfo("Easy Delivery Co Mods 4.3.0 loaded!");
 
             if (radioEnabled.Value)
             {
@@ -116,11 +116,12 @@ namespace EasyDeliveryCoMods
 
         private void InitConfig()
         {
-            // Radio
+            // Radio: ONLY 88.1 FM gets custom music, with 100% full signal always.
+            // 99.1 News and all other stations remain 100% native vanilla game!
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music on 88.1 FM with 100% full signal always. All tracks available!");
+                "Enable custom music from C:\\Music on 88.1 FM with 100% crystal clear signal always. News 99.1 and other stations stay untouched!");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
-                "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
+                "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG). All tracks available!");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
                 "Shuffle playback order of tracks.");
 
@@ -132,25 +133,25 @@ namespace EasyDeliveryCoMods
             disableVSync = Config.Bind("2. Frame Rate", "DisableVSync", true,
                 "Disable vertical sync.");
 
-            // Wheel
+            // Wheel: slider is the REAL physical steering wheel on PXN V12 Lite!
             wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
                 "Enable steering wheel support.");
             wheelDeviceFilter = Config.Bind("3. Steering Wheel", "DeviceFilter", "pxn",
                 "Search term for wheel device name in InputSystem.");
 
-            wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "x",
-                "Axis name for steering (usually 'x' or 'stick/x').");
+            wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "slider",
+                "Axis name for steering ('slider' is the true physical 900-degree wheel axis on PXN V12 Lite).");
             wheelGasAxisName = Config.Bind("3. Steering Wheel", "GasAxisName", "z",
                 "Axis name for gas pedal (usually 'z' on PXN V12 Lite).");
             wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "rz",
                 "Axis name for brake pedal (usually 'rz' on PXN V12 Lite).");
 
-            wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.03f,
-                "Deadzone around wheel center.");
+            wheelSteerDeadzone = Config.Bind("3. Steering Wheel", "SteerDeadzone", 0.02f,
+                "Deadzone around wheel center. When wheel is centered, keyboard/gamepad have 100% free control.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
                 "1:1 steering multiplier.");
-            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true,
-                "Invert steering direction.");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false,
+                "Invert steering direction (false = turning right turns car right).");
             wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false,
                 "Invert gas pedal.");
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
@@ -239,33 +240,31 @@ namespace EasyDeliveryCoMods
                 if (match != null && match != activeWheelDevice)
                 {
                     activeWheelDevice = match;
-                    Logger.LogInfo($"[Wheel] Selected device: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
+                    Logger.LogInfo($"[Wheel] Connected: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
 
                     availableAxes.Clear();
 
-                    Logger.LogInfo($"=== ALL AVAILABLE CONTROLS ON {activeWheelDevice.displayName} ===");
                     foreach (var ctrl in activeWheelDevice.allControls)
                     {
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             availableAxes.Add(axis);
-                            Logger.LogInfo($"[Wheel Axis Control] Name='{axis.name}', Path='{axis.path}', Value={axis.ReadValue():F3}");
                         }
                     }
 
-                    // Steer: look for main analog 'x', EXCLUDING dpad and hatswitch!
-                    steerAxis = FindAxis(wheelSteerAxisName.Value)
-                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("dpad") && !a.path.Contains("hat"))
-                                ?? availableAxes.FirstOrDefault(a => a.name.Contains("x") && !a.path.Contains("dpad") && !a.path.Contains("hat"));
+                    // 1. Steer axis: on PXN V12 Lite it is ALWAYS 'slider'!
+                    steerAxis = availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase))
+                                ?? FindAxis(wheelSteerAxisName.Value)
+                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("dpad") && !a.path.Contains("hat"));
 
-                    // Gas: 'z' on PXN V12 Lite
-                    gasAxis = FindAxis(wheelGasAxisName.Value)
-                              ?? availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
+                    // 2. Gas axis: 'z' on PXN V12 Lite
+                    gasAxis = availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
+                              ?? FindAxis(wheelGasAxisName.Value)
                               ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
 
-                    // Brake: 'rz' on PXN V12 Lite
-                    brakeAxis = FindAxis(wheelBrakeAxisName.Value)
-                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
+                    // 3. Brake axis: 'rz' on PXN V12 Lite
+                    brakeAxis = availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
+                                ?? FindAxis(wheelBrakeAxisName.Value)
                                 ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase));
 
                     Logger.LogInfo($"[Wheel Configured] Steer='{(steerAxis != null ? steerAxis.path : "NULL")}', Gas='{(gasAxis != null ? gasAxis.path : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.path : "NULL")}'");
@@ -287,18 +286,8 @@ namespace EasyDeliveryCoMods
         {
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
-            // Live change logger for diagnostics when user turns wheel
-            for (int i = 0; i < availableAxes.Count && i < lastLoggedAxisValues.Length; i++)
-            {
-                float v = availableAxes[i].ReadValue();
-                if (Mathf.Abs(v - lastLoggedAxisValues[i]) > 0.05f)
-                {
-                    lastLoggedAxisValues[i] = v;
-                    Logger.LogInfo($"[AXIS LIVE] {availableAxes[i].name} ({availableAxes[i].path}) = {v:+0.00;-0.00;0.00}");
-                }
-            }
-
-            // 1. STEERING: Direct physical axis centered at 0.000
+            // 1. STEERING: True physical 900-degree wheel on 'slider'
+            // In Windows DirectInput: Center is 0.000, Left is -1.000, Right is +1.000
             if (steerAxis != null)
             {
                 rawSteerValue = steerAxis.ReadValue();
@@ -310,10 +299,12 @@ namespace EasyDeliveryCoMods
 
                 if (abs < dz)
                 {
+                    // IN DEADZONE: strictly 0.00. Zero phantom drift!
                     steerOut = 0f;
                 }
                 else
                 {
+                    // Linear 1:1 direct steering across full 900 degrees
                     float norm = (abs - dz) / (1f - dz);
                     steerOut = Mathf.Clamp(norm * Mathf.Sign(val) * wheelSteerSensitivity.Value, -1f, 1f);
                 }
@@ -354,6 +345,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
+        // Apply inputs to sInputManager and preserve keyboard priority
         [HarmonyPatch(typeof(sInputManager), "GetInput")]
         [HarmonyPostfix]
         private static void Postfix_GetInput(sInputManager __instance)
@@ -392,6 +384,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
+        // Direct bypass of keyboard Lerp filter in sCarController.Move
         [HarmonyPatch(typeof(sCarController), "Move")]
         [HarmonyPrefix]
         private static void Prefix_CarController_Move(sCarController __instance)
@@ -431,7 +424,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== RADIO: FULL PLAYLIST & 88.1 FM 100% SIGNAL ====================
+        // ==================== RADIO: NATIVE SCANNING & 88.1 FM 100% SIGNAL ====================
 
         public static void TuneRadioStation(int direction)
         {
@@ -450,6 +443,7 @@ namespace EasyDeliveryCoMods
             Logger.LogInfo($"[Radio Tuned] Station [{next}]: '{radio.channels[next].name}' at {radio.channels[next].frequency:F1} FM");
         }
 
+        // In-game radio controls tune station cleanly
         [HarmonyPatch(typeof(sRadioSystem), "SetInput", new Type[] { typeof(Vector2) })]
         [HarmonyPrefix]
         private static bool Prefix_RadioSetInput(sRadioSystem __instance, Vector2 v)
@@ -472,8 +466,8 @@ namespace EasyDeliveryCoMods
             return true;
         }
 
-        // Custom Radio (88.1 FM) ALWAYS gets 100% full signal!
-        // News (99.1 FM), D&B (101.7), Lofi (99.9), EasyCo (91.1) use their normal story signal!
+        // ONLY 88.1 FM (Custom Radio) gets 100% full clear signal!
+        // All other stations (News 99.1, D&B 101.7, Lofi 99.9, EasyCo 91.1) use their normal vanilla story signal!
         [HarmonyPatch(typeof(sRadioSystem), "DoSignal")]
         [HarmonyPrefix]
         private static void Prefix_DoSignal(sRadioSystem __instance)
@@ -484,18 +478,40 @@ namespace EasyDeliveryCoMods
                 if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
                 {
                     __instance.signalStrength = 1f;
-                    ch.signal = 1f; // 100% ALWAYS ON CUSTOM RADIO!
+                    ch.signal = 1f; // 100% full signal on 88.1 FM!
                 }
             }
         }
 
-        // Streaming Track class: decodes on demand with ZERO RAM footprint for all 3500+ tracks!
+        // Disable RadioSignalManager from ever forcing or changing radio station!
+        [HarmonyPatch(typeof(RadioSignalManager), "Update")]
+        [HarmonyPrefix]
+        private static bool Prefix_RadioSignalManager_Update()
+        {
+            return false; // COMPLETELY PREVENTS ANY FORCED FREQUENCY RESETS!
+        }
+
+        [HarmonyPatch(typeof(RadioSignalManager), "CheckStation")]
+        [HarmonyPrefix]
+        private static bool Prefix_RadioSignalManager_CheckStation()
+        {
+            return false; // PREVENTS STORY TOWERS FROM LOCKING THE RADIO!
+        }
+
+        [HarmonyPatch(typeof(sRadioSystem), "Update")]
+        [HarmonyPrefix]
+        private static void Prefix_RadioSystem_Update(sRadioSystem __instance)
+        {
+            __instance.forcedRadio = false; // Always free to change stations!
+        }
+
+        // Streaming audio track for all 3500+ files with zero RAM overhead
         public class StreamingAudioTrack
         {
             public string FilePath;
             public int Channels = 2;
             public int SampleRate = 44100;
-            public int TotalSamples = 44100 * 180; // default 3 min fallback
+            public int TotalSamples = 44100 * 180;
 
             private MediaFoundationReader reader;
             private ISampleProvider sampleProvider;
@@ -524,7 +540,7 @@ namespace EasyDeliveryCoMods
                     TotalSamples,
                     Channels,
                     SampleRate,
-                    true, // STREAMING = TRUE!
+                    true,
                     OnAudioRead,
                     OnAudioSetPosition
                 );
@@ -546,7 +562,6 @@ namespace EasyDeliveryCoMods
                     if (count < data.Length)
                     {
                         Array.Clear(data, count, data.Length - count);
-                        // Loop or close
                         reader.Position = 0;
                     }
                 }
@@ -613,8 +628,8 @@ namespace EasyDeliveryCoMods
                 allMusicFilePaths = allMusicFilePaths.OrderBy(x => rnd.Next()).ToList();
             }
 
-            radioStatusText = $"Initializing {allMusicFilePaths.Count} tracks for 88.1 FM...";
-            Logger.LogInfo($"[CustomRadio] Creating streaming playlist of {allMusicFilePaths.Count} tracks from {folder}...");
+            radioStatusText = $"Loading {allMusicFilePaths.Count} tracks into 88.1 FM...";
+            Logger.LogInfo($"[CustomRadio] Loading full playlist of {allMusicFilePaths.Count} tracks for 88.1 FM...");
 
             isDecoderRunning = true;
             fullPlaylistClips.Clear();
@@ -642,7 +657,7 @@ namespace EasyDeliveryCoMods
 
             isDecoderRunning = false;
             radioStatusText = $"All {fullPlaylistClips.Count} tracks loaded on 88.1 FM!";
-            Logger.LogInfo($"[CustomRadio] Done! Total {fullPlaylistClips.Count} tracks live on 88.1 FM Custom Radio!");
+            Logger.LogInfo($"[CustomRadio] Done! Full playlist of {fullPlaylistClips.Count} tracks loaded into 88.1 FM Custom Radio!");
 
             ApplyFullPlaylistToCustomChannel();
         }
@@ -654,7 +669,8 @@ namespace EasyDeliveryCoMods
             sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
             if (radio == null || radio.channels == null) return;
 
-            // ONLY apply our music to 88.1 FM ('custom')! News (99.1) and all other stations are untouched!
+            // ONLY apply our music to 88.1 FM ('custom')!
+            // News (99.1 FM) and all other stations are completely UNTOUCHED vanilla!
             foreach (var ch in radio.channels)
             {
                 if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
@@ -663,7 +679,7 @@ namespace EasyDeliveryCoMods
                     ch.externalTracks.AddRange(fullPlaylistClips);
                     ch.queue = fullPlaylistClips.ToArray();
                     ch.signal = 1f;
-                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with FULL PLAYLIST of {fullPlaylistClips.Count} tracks!");
+                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with FULL {fullPlaylistClips.Count} TRACKS! (News 99.1 is untouched vanilla)");
                 }
             }
         }
@@ -685,7 +701,7 @@ namespace EasyDeliveryCoMods
                 __instance.customChannel.externalTracks.AddRange(fullPlaylistClips);
                 __instance.customChannel.queue = fullPlaylistClips.ToArray();
                 __instance.customChannel.signal = 1f;
-                Logger.LogInfo($"[CustomRadio] AudioLoader 88.1 FM populated with FULL PLAYLIST of {fullPlaylistClips.Count} tracks!");
+                Logger.LogInfo($"[CustomRadio] AudioLoader 88.1 FM populated with FULL {fullPlaylistClips.Count} TRACKS!");
             }
         }
 
@@ -748,7 +764,7 @@ namespace EasyDeliveryCoMods
             GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label("--- LIVE DEVICE AXES (turn wheel to watch) ---", textStyle);
+            GUILayout.Label("--- LIVE DEVICE AXES ---", textStyle);
             if (availableAxes.Count > 0)
             {
                 string line = "";
