@@ -133,14 +133,14 @@ namespace EasyDeliveryCoMods
             disableVSync = Config.Bind("2. Frame Rate", "DisableVSync", true,
                 "Disable vertical sync.");
 
-            // Wheel: slider is the REAL physical steering wheel on PXN V12 Lite!
+            // Wheel: 'stick/x' is the REAL physical steering wheel Axis X on PXN V12 Lite!
             wheelEnabled = Config.Bind("3. Steering Wheel", "Enabled", true,
                 "Enable steering wheel support.");
             wheelDeviceFilter = Config.Bind("3. Steering Wheel", "DeviceFilter", "pxn",
                 "Search term for wheel device name in InputSystem.");
 
-            wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "slider",
-                "Axis name for steering ('slider' is the true physical 900-degree wheel axis on PXN V12 Lite).");
+            wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "stick/x",
+                "Axis name for steering ('stick/x' is the true physical 900-degree wheel Axis X on PXN V12 Lite).");
             wheelGasAxisName = Config.Bind("3. Steering Wheel", "GasAxisName", "z",
                 "Axis name for gas pedal (usually 'z' on PXN V12 Lite).");
             wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "rz",
@@ -150,8 +150,8 @@ namespace EasyDeliveryCoMods
                 "Deadzone around wheel center. When wheel is centered, keyboard/gamepad have 100% free control.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
                 "1:1 steering multiplier.");
-            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false,
-                "Invert steering direction (false = turning right turns car right).");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true,
+                "Invert steering direction (True = turning right turns car right on PXN V12 Lite).");
             wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false,
                 "Invert gas pedal.");
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
@@ -252,20 +252,20 @@ namespace EasyDeliveryCoMods
                         }
                     }
 
-                    // 1. Steer axis: on PXN V12 Lite it is ALWAYS 'slider'!
-                    steerAxis = availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase))
-                                ?? FindAxis(wheelSteerAxisName.Value)
-                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("dpad") && !a.path.Contains("hat"));
+                    // 1. Steer: on PXN V12 Lite, Axis X is 'stick/x'! (slider was clutch, hat/x was D-Pad)
+                    steerAxis = availableAxes.FirstOrDefault(a => a.path.EndsWith("/stick/x", StringComparison.OrdinalIgnoreCase))
+                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("hat") && !a.path.Contains("dpad"))
+                                ?? FindAxis(wheelSteerAxisName.Value);
 
                     // 2. Gas axis: 'z' on PXN V12 Lite
-                    gasAxis = availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
-                              ?? FindAxis(wheelGasAxisName.Value)
-                              ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase));
+                    gasAxis = availableAxes.FirstOrDefault(a => a.path.EndsWith("/z", StringComparison.OrdinalIgnoreCase))
+                              ?? availableAxes.FirstOrDefault(a => a.name.Equals("z", StringComparison.OrdinalIgnoreCase) && !a.name.Contains("rz"))
+                              ?? FindAxis(wheelGasAxisName.Value);
 
                     // 3. Brake axis: 'rz' on PXN V12 Lite
-                    brakeAxis = availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
-                                ?? FindAxis(wheelBrakeAxisName.Value)
-                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("slider", StringComparison.OrdinalIgnoreCase));
+                    brakeAxis = availableAxes.FirstOrDefault(a => a.path.EndsWith("/rz", StringComparison.OrdinalIgnoreCase))
+                                ?? availableAxes.FirstOrDefault(a => a.name.Equals("rz", StringComparison.OrdinalIgnoreCase))
+                                ?? FindAxis(wheelBrakeAxisName.Value);
 
                     Logger.LogInfo($"[Wheel Configured] Steer='{(steerAxis != null ? steerAxis.path : "NULL")}', Gas='{(gasAxis != null ? gasAxis.path : "NULL")}', Brake='{(brakeAxis != null ? brakeAxis.path : "NULL")}'");
                 }
