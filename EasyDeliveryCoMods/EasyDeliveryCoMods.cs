@@ -15,7 +15,7 @@ using UnityEngine.InputSystem.Controls;
 
 namespace EasyDeliveryCoMods
 {
-    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.0.0")]
+    [BepInPlugin("opencode.easydeliveryco.mods", "Easy Delivery Co - Custom Radio & Wheel", "4.1.0")]
     public class EasyDeliveryCoModsPlugin : BaseUnityPlugin
     {
         public static EasyDeliveryCoModsPlugin Instance { get; private set; }
@@ -65,6 +65,8 @@ namespace EasyDeliveryCoMods
         public static float brakeOut = 0f;
         public static float rawSteerValue = 0f;
 
+        private static float[] lastLoggedAxisValues = new float[32];
+
         private static float fpsDeltaTime = 0f;
 
         static EasyDeliveryCoModsPlugin()
@@ -106,7 +108,7 @@ namespace EasyDeliveryCoMods
             Harmony harmony = new Harmony("opencode.easydeliveryco.mods");
             harmony.PatchAll(typeof(EasyDeliveryCoModsPlugin));
 
-            Logger.LogInfo("Easy Delivery Co Mods 4.0.0 (Radio & Wheel Fix) loaded!");
+            Logger.LogInfo("Easy Delivery Co Mods 4.1.0 loaded!");
 
             if (radioEnabled.Value)
             {
@@ -118,7 +120,7 @@ namespace EasyDeliveryCoMods
         {
             // Radio
             radioEnabled = Config.Bind("1. Custom Radio", "Enabled", true,
-                "Enable custom music on 88.1 FM and 99.1 FM with 100% full clear signal on all stations.");
+                "Enable custom music on 88.1 FM with 100% crystal clear signal always. Other stations keep vanilla story signals!");
             musicFolderPath = Config.Bind("1. Custom Radio", "MusicFolder", @"C:\Music",
                 "Folder containing your music (FLAC, M4A, AAC, MP3, WAV, WMA, OGG).");
             radioShuffle = Config.Bind("1. Custom Radio", "Shuffle", true,
@@ -141,7 +143,7 @@ namespace EasyDeliveryCoMods
                 "Search term for wheel device name in InputSystem.");
 
             wheelSteerAxisName = Config.Bind("3. Steering Wheel", "SteerAxisName", "x",
-                "Axis name for steering (usually 'x').");
+                "Axis name for steering (usually 'x' or 'stick/x').");
             wheelGasAxisName = Config.Bind("3. Steering Wheel", "GasAxisName", "z",
                 "Axis name for gas pedal (usually 'z' on PXN V12 Lite).");
             wheelBrakeAxisName = Config.Bind("3. Steering Wheel", "BrakeAxisName", "rz",
@@ -151,8 +153,8 @@ namespace EasyDeliveryCoMods
                 "Deadzone around wheel center. In deadzone, steering is 0.00 and keyboard/gamepad work freely.");
             wheelSteerSensitivity = Config.Bind("3. Steering Wheel", "SteerSensitivity", 1.0f,
                 "1:1 steering multiplier.");
-            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", false,
-                "Invert steering direction.");
+            wheelInvertSteer = Config.Bind("3. Steering Wheel", "InvertSteering", true,
+                "Invert steering direction (True = right is right, left is left).");
             wheelInvertGas = Config.Bind("3. Steering Wheel", "InvertGas", false,
                 "Invert gas pedal.");
             wheelInvertBrake = Config.Bind("3. Steering Wheel", "InvertBrake", false,
@@ -214,7 +216,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== WHEEL LOGIC: BULLETPROOF 1:1 DIRECT BIPOLAR STEERING ====================
+        // ==================== WHEEL LOGIC: DIRECT 1:1 AXES & LIVE MONITOR ====================
 
         private void FindAndSetupWheel()
         {
@@ -241,16 +243,17 @@ namespace EasyDeliveryCoMods
                 if (match != null && match != activeWheelDevice)
                 {
                     activeWheelDevice = match;
-                    Logger.LogInfo($"[Wheel] Connected: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
+                    Logger.LogInfo($"[Wheel] Selected device: '{activeWheelDevice.displayName}' ({activeWheelDevice.layout})");
 
                     availableAxes.Clear();
 
+                    Logger.LogInfo($"=== ALL AVAILABLE CONTROLS ON {activeWheelDevice.displayName} ===");
                     foreach (var ctrl in activeWheelDevice.allControls)
                     {
                         if (ctrl is AxisControl axis && !(ctrl is ButtonControl))
                         {
                             availableAxes.Add(axis);
-                            Logger.LogInfo($"[Wheel Axis] Name='{axis.name}', Path='{axis.path}'");
+                            Logger.LogInfo($"[Wheel Axis Control] Name='{axis.name}', Path='{axis.path}', Value={axis.ReadValue():F3}");
                         }
                     }
 
@@ -288,8 +291,19 @@ namespace EasyDeliveryCoMods
         {
             if (activeWheelDevice == null || !activeWheelDevice.added) return;
 
-            // 1. STEERING: Direct physical axis centered at 0.000
-            // Left is -1.0 to 0.0, Right is 0.0 to +1.0
+            // Live change logger for diagnostics
+            for (int i = 0; i < availableAxes.Count && i < lastLoggedAxisValues.Length; i++)
+            {
+                float v = availableAxes[i].ReadValue();
+                if (Mathf.Abs(v - lastLoggedAxisValues[i]) > 0.04f)
+                {
+                    lastLoggedAxisValues[i] = v;
+                    Logger.LogInfo($"[AXIS LIVE] {availableAxes[i].name} ({availableAxes[i].path}) = {v:+0.00;-0.00;0.00}");
+                }
+            }
+
+            // 1. STEERING: True physical bipolar axis centered at 0.000
+            // Left is negative (-1.0 to 0.0), Right is positive (0.0 to +1.0)
             if (steerAxis != null)
             {
                 rawSteerValue = steerAxis.ReadValue();
@@ -301,12 +315,10 @@ namespace EasyDeliveryCoMods
 
                 if (abs < dz)
                 {
-                    // IN DEADZONE: strictly 0.00. Zero phantom drift!
                     steerOut = 0f;
                 }
                 else
                 {
-                    // Linear 1:1 direct steering
                     float norm = (abs - dz) / (1f - dz);
                     steerOut = Mathf.Clamp(norm * Mathf.Sign(val) * wheelSteerSensitivity.Value, -1f, 1f);
                 }
@@ -347,7 +359,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // Apply inputs cleanly to sInputManager and preserve keyboard/gamepad priority!
+        // Apply inputs to sInputManager and preserve keyboard priority
         [HarmonyPatch(typeof(sInputManager), "GetInput")]
         [HarmonyPostfix]
         private static void Postfix_GetInput(sInputManager __instance)
@@ -426,7 +438,7 @@ namespace EasyDeliveryCoMods
             }
         }
 
-        // ==================== RADIO: FULL CRISP SIGNAL & NATIVE TUNING ====================
+        // ==================== RADIO: 88.1 FM ONLY FOR CUSTOM MUSIC (100% SIGNAL ALWAYS) ====================
 
         public static void TuneRadioStation(int direction)
         {
@@ -468,40 +480,21 @@ namespace EasyDeliveryCoMods
             return true;
         }
 
-        // 100% MAXIMUM CRYSTAL CLEAR SIGNAL ON ALL STATIONS (no static, full volume!)
+        // Custom Radio (88.1 FM) ALWAYS gets 100% full crystal clear signal!
+        // All other stations (News 99.1, D&B 101.7, Lofi 99.9, EasyCo 91.1) use their normal story signal!
         [HarmonyPatch(typeof(sRadioSystem), "DoSignal")]
         [HarmonyPrefix]
         private static void Prefix_DoSignal(sRadioSystem __instance)
         {
-            __instance.signalStrength = 1f;
             if (__instance.currentChannelIndex >= 0 && __instance.currentChannelIndex < __instance.channels.Count)
             {
-                if (__instance.channels[__instance.currentChannelIndex] != null)
+                var ch = __instance.channels[__instance.currentChannelIndex];
+                if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
                 {
-                    __instance.channels[__instance.currentChannelIndex].signal = 1f;
+                    __instance.signalStrength = 1f;
+                    ch.signal = 1f; // 100% ALWAYS ON CUSTOM RADIO!
                 }
             }
-        }
-
-        // Keep signals at 1.0f and prevent RadioSignalManager from hijacking frequency back to 99.1 FM
-        [HarmonyPatch(typeof(RadioSignalManager), "Update")]
-        [HarmonyPrefix]
-        private static bool Prefix_RadioSignalManager_Update()
-        {
-            var radio = sRadioSystem.instance;
-            if (radio != null && radio.channels != null)
-            {
-                radio.forcedRadio = false;
-                radio.signalStrength = 1f;
-                for (int i = 0; i < radio.channels.Count; i++)
-                {
-                    if (radio.channels[i] != null)
-                    {
-                        radio.channels[i].signal = 1f;
-                    }
-                }
-            }
-            return false; // Prevent forced hijacking
         }
 
         private IEnumerator InitRadioPipelineAsync()
@@ -545,7 +538,7 @@ namespace EasyDeliveryCoMods
             }
 
             int countToDecode = Math.Min(allMusicFilePaths.Count, maxCachedSongs.Value);
-            radioStatusText = $"Decoding {countToDecode} tracks...";
+            radioStatusText = $"Decoding {countToDecode} tracks for 88.1 FM...";
             Logger.LogInfo($"[CustomRadio] Decoding {countToDecode} tracks from {folder}...");
 
             isDecoderRunning = true;
@@ -620,10 +613,10 @@ namespace EasyDeliveryCoMods
             }
 
             isDecoderRunning = false;
-            radioStatusText = $"{decodedRadioClips.Count} tracks ready on 88.1 & 99.1 FM";
-            Logger.LogInfo($"[CustomRadio] Ready! Loaded {decodedRadioClips.Count} tracks into radio.");
+            radioStatusText = $"{decodedRadioClips.Count} tracks ready on 88.1 FM";
+            Logger.LogInfo($"[CustomRadio] Ready! Loaded {decodedRadioClips.Count} tracks into 88.1 FM Custom Radio.");
 
-            ApplyTracksToGameRadio();
+            ApplyTracksToCustomChannel();
         }
 
         private class DecodedAudioData
@@ -633,24 +626,23 @@ namespace EasyDeliveryCoMods
             public int SampleRate;
         }
 
-        private static void ApplyTracksToGameRadio()
+        private static void ApplyTracksToCustomChannel()
         {
             if (decodedRadioClips == null || decodedRadioClips.Count == 0) return;
 
             sRadioSystem radio = UnityEngine.Object.FindFirstObjectByType<sRadioSystem>();
             if (radio == null || radio.channels == null) return;
 
-            // Apply our music to 88.1 FM ('custom') and 99.1 FM ('News')
+            // ONLY apply our music to 88.1 FM ('custom')! News (99.1) and others are 100% untouched!
             foreach (var ch in radio.channels)
             {
-                if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom") ||
-                                   ch.frequency == 99.1f || ch.name.ToLowerInvariant().Contains("news")))
+                if (ch != null && (ch.frequency == 88.1f || ch.name.ToLowerInvariant().Contains("custom")))
                 {
                     ch.externalTracks.Clear();
                     ch.externalTracks.AddRange(decodedRadioClips);
                     ch.queue = decodedRadioClips.ToArray();
                     ch.signal = 1f;
-                    Logger.LogInfo($"[CustomRadio] Populated '{ch.name}' ({ch.frequency} FM) with {decodedRadioClips.Count} tracks!");
+                    Logger.LogInfo($"[CustomRadio] Populated 88.1 FM '{ch.name}' with {decodedRadioClips.Count} tracks! (News 99.1 untouched)");
                 }
             }
         }
@@ -659,7 +651,7 @@ namespace EasyDeliveryCoMods
         [HarmonyPostfix]
         private static void Postfix_RadioStart(sRadioSystem __instance)
         {
-            ApplyTracksToGameRadio();
+            ApplyTracksToCustomChannel();
         }
 
         [HarmonyPatch(typeof(AudioLoader), "Start")]
@@ -672,7 +664,7 @@ namespace EasyDeliveryCoMods
                 __instance.customChannel.externalTracks.AddRange(decodedRadioClips);
                 __instance.customChannel.queue = decodedRadioClips.ToArray();
                 __instance.customChannel.signal = 1f;
-                Logger.LogInfo($"[CustomRadio] AudioLoader customChannel ready with {decodedRadioClips.Count} tracks!");
+                Logger.LogInfo($"[CustomRadio] AudioLoader 88.1 FM populated with {decodedRadioClips.Count} tracks!");
             }
         }
 
@@ -693,7 +685,7 @@ namespace EasyDeliveryCoMods
 
             GUI.color = Color.white;
             int width = 460;
-            int height = 280;
+            int height = 300;
             Rect boxRect = new Rect(Screen.width - width - 15, 15, width, height);
 
             GUI.Box(boxRect, "");
@@ -723,9 +715,8 @@ namespace EasyDeliveryCoMods
 
             string devName = activeWheelDevice != null ? activeWheelDevice.displayName : "No Wheel detected";
             GUILayout.Label($"Device: {devName}", textStyle);
-            GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr} (Signal: 100%)", textStyle);
-            GUILayout.Label($"Radio Status: {radioStatusText}", textStyle);
-            GUILayout.Label($"Tune Stations: Left/Right on car radio, or '.' and ',' on keyboard", textStyle);
+            GUILayout.Label($"FPS: {currentFps:0.}  |  Station: {stationStr}", textStyle);
+            GUILayout.Label($"88.1 FM Custom: {radioStatusText}", textStyle);
 
             GUILayout.Space(4);
             GUILayout.Label("--- Vehicle Control ---", textStyle);
@@ -736,14 +727,14 @@ namespace EasyDeliveryCoMods
             GUILayout.Label($"Gas({gasName}): {gasOut:0.00} | Brake({brakeName}): {brakeOut:0.00}", textStyle);
 
             GUILayout.Space(4);
-            GUILayout.Label("--- Live Device Axes ---", textStyle);
+            GUILayout.Label("--- LIVE DEVICE AXES (turn wheel / pedals to see) ---", textStyle);
             if (availableAxes.Count > 0)
             {
                 string line = "";
                 for (int i = 0; i < availableAxes.Count; i++)
                 {
                     float val = availableAxes[i].ReadValue();
-                    line += $"{availableAxes[i].name}:{val:+0.00;-0.00;0.00} ";
+                    line += $"{availableAxes[i].name}:{val:+0.00;-0.00;0.00}  ";
                     if ((i + 1) % 4 == 0)
                     {
                         GUILayout.Label(line, textStyle);
