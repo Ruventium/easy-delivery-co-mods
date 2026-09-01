@@ -38,3 +38,6 @@ artifacts/
 *.exe
 *.cache
 *.pdb
+
+# Other projects
+KotamonMods/
