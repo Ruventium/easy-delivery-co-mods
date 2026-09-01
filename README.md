@@ -4,6 +4,8 @@
 > Этот мод полностью разработан искусственным интеллектом (OpenCode AI Agent / Gemini 3.7 & Claude) автономно: от анализа декомпилированного кода игры до реверс-инжиниринга ввода и написания DLL.  
 > *This entire mod was created autonomously by an AI agent (OpenCode AI): from decompiled game code analysis and input reverse-engineering to C# DLL development.*
 
+![Easy Delivery Co Gameplay & Mod Overlay](gameplay.png)
+
 ---
 
 ## 🇷🇺 Возможности (RU)
