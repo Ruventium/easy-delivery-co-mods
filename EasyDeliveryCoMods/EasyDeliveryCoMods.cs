@@ -444,7 +444,21 @@ namespace EasyDeliveryCoMods
         private void PollWheelInput()
         {
             string[] joys = Input.GetJoystickNames();
-            connectedJoyName = (joys != null && joys.Length > 0 && !string.IsNullOrEmpty(joys[0])) ? joys[0] : "No Joystick detected";
+            bool hasJoy = (joys != null && joys.Length > 0 && !string.IsNullOrEmpty(joys[0]));
+            connectedJoyName = hasJoy ? joys[0] : "No Joystick detected";
+
+            if (!hasJoy)
+            {
+                currentSteerOut = 0f;
+                currentThrottleOut = 0f;
+                currentBrakeOut = 0f;
+                currentHandbrakeOut = false;
+                currentShiftUpOut = false;
+                currentShiftDownOut = false;
+                for (int i = 0; i < cachedRawAxes.Length; i++) cachedRawAxes[i] = 0f;
+                for (int b = 0; b < cachedRawButtons.Length; b++) cachedRawButtons[b] = false;
+                return;
+            }
 
             // Cache raw axes for display and input
             for (int i = 1; i <= 10; i++)
@@ -527,15 +541,16 @@ namespace EasyDeliveryCoMods
 
         private static float NormalizePedal(float raw, bool invert, bool minusOneToOne, float deadzone)
         {
+            // If axis is centered at 0 or resting near 0, treat as unpressed unless configured
             float norm;
             if (minusOneToOne)
             {
-                // Range [-1.0 .. 1.0] where -1.0 is released, 1.0 is pressed
+                // Range [-1.0 .. 1.0] where -1.0 is released, 1.0 is fully pressed
                 norm = (raw + 1f) / 2f;
             }
             else
             {
-                norm = Mathf.Abs(raw);
+                norm = Mathf.Max(0f, raw);
             }
 
             if (invert)
@@ -559,38 +574,41 @@ namespace EasyDeliveryCoMods
         {
             if (!wheelEnabled.Value) return;
 
-            // Only override if wheel is connected or input is being registered
-            if (Mathf.Abs(currentSteerOut) > 0.001f || currentThrottleOut > 0.001f || currentBrakeOut > 0.001f || currentHandbrakeOut)
-            {
-                // Steer
-                __instance.driveInput.x = currentSteerOut;
+            string[] joys = Input.GetJoystickNames();
+            if (joys == null || joys.Length == 0 || string.IsNullOrEmpty(joys[0])) return;
 
-                // Throttle / Brake
-                // In game: positive Y is forward, negative Y is reverse / brake when moving
+            // Only override steering if wheel is actively turned, so keyboard A/D still works
+            if (Mathf.Abs(currentSteerOut) > 0.02f)
+            {
+                __instance.driveInput.x = currentSteerOut;
+            }
+
+            // Only override throttle/brake if pedals are actively pressed, so keyboard W/S still works
+            if (currentThrottleOut > 0.05f || currentBrakeOut > 0.05f)
+            {
                 if (currentBrakeOut > 0.05f)
                 {
                     __instance.brakePressed = true;
-                    // When brake is pressed and car is near stop, allow reverse with brake
                     __instance.driveInput.y = currentThrottleOut > 0.05f ? currentThrottleOut : -currentBrakeOut;
                 }
                 else
                 {
                     __instance.driveInput.y = currentThrottleOut;
                 }
+            }
 
-                if (currentHandbrakeOut)
-                {
-                    __instance.brakePressed = true;
-                }
+            if (currentHandbrakeOut)
+            {
+                __instance.brakePressed = true;
+            }
 
-                if (currentShiftUpOut)
-                {
-                    __instance.shiftUp = true;
-                }
-                if (currentShiftDownOut)
-                {
-                    __instance.shiftDown = true;
-                }
+            if (currentShiftUpOut)
+            {
+                __instance.shiftUp = true;
+            }
+            if (currentShiftDownOut)
+            {
+                __instance.shiftDown = true;
             }
         }
 
