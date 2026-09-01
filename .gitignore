@@ -5,13 +5,27 @@
 [Rr]elease/
 [Bb]in/
 [Oo]bj/
+bin/
+obj/
 
 # Visual Studio
 .vs/
 *.suo
 *.user
 
-# Others
+# Logs and temps
 *.log
 *.cache
 *.pdb
+
+# Other projects
+Kotamon*
+NativeDisasm*
+.opencode/
+.playwright-mcp/
+docs/
+EasyDeliveryCoEnhancements/
+EasyDeliveryCoCustomRadio/
+EasyDeliveryCoFpsUnlock/
+EasyDeliveryCoSteeringWheel/
+EasyDeliveryCoVR/

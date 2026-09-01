@@ -1,199 +1,136 @@
-# Easy Delivery Co - Complete Enhancement Pack
+# Easy Delivery Co - Custom Radio & Steering Wheel Mod
 
-> **🤖 AI-Generated Mod** - This entire mod was created by OpenCode AI Agent using Claude Opus 5. The code, configuration, and documentation were written autonomously based on game analysis and modding requirements.
+Качественный и стабильный BepInEx-мод для игры **Easy Delivery Co**, добавляющий полноценную поддержку рулей и кастомного радио с конвертацией любых аудиоформатов на лету.
 
-Универсальный мод для Easy Delivery Co, объединяющий все улучшения в одном пакете с модульной архитектурой.
+---
 
-## Возможности
+## 📻 1. Кастомное радио (Custom Radio)
 
-### 1. FPS Unlock
-- Разблокировка частоты кадров (до 240 FPS или безлимит)
-- Отключение VSync
-- Настройка целевого FPS
+- **Конвертация на лету**: использует встроенный декодер Windows Media Foundation (NAudio) — декодирует треки прямо в оперативную память без лагов, фризов и необходимости сторонних утилит вроде ffmpeg.
+- **Поддерживаемые форматы**:
+  - `FLAC` (`.flac`)
+  - `M4A / AAC` (`.m4a`, `.aac`)
+  - `MP3` (`.mp3`)
+  - `WAV` (`.wav`)
+  - `OGG` (`.ogg`)
+  - `WMA` (`.wma`)
+- **Папка с музыкой**: по умолчанию читает `C:\Music` (включая все вложенные подпапки). Путь можно легко изменить в файле настроек.
+- **Замена волны новостей**: автоматически заменяет станцию разговорного радио (99.1 FM) на твою музыку.
+- **Перемешивание (Shuffle)**: рандомизирует порядок воспроизведения при каждом запуске.
 
-### 2. Graphics Enhancements
-- **HD рендеринг**: увеличение внутреннего разрешения с 256x256 до 1920x1080+
-- **Отключение PS1 эффектов**: убирает CRT, пикселизацию, низкое разрешение
-- **Фильтрация текстур**: Point (пиксели), Bilinear, Trilinear
-- **Отключение пост-обработки**: chromatic aberration, lens distortion, vignette
-- **Дальность прорисовки**: настройка render distance
-- **FPS счётчик**: показ текущего FPS в углу экрана
+---
 
-### 3. Steering Wheel Support
-- Полная поддержка рулей (Logitech, Thrustmaster, Fanatec, PXN и др.)
-- Настройка осей для руля, газа и тормоза
-- Мёртвые зоны для каждой оси
-- Инверсия осей
-- Чувствительность руля
-- Раздельные/объединённые педали
-- Debug режим с показом всех значений
+## 🏎️ 2. Поддержка руля (Steering Wheel / PXN V12 Lite)
 
-### 4. VR Support
-- Поддержка VR шлемов через OpenVR/SteamVR
-- 6DOF отслеживание головы (позиция + вращение)
-- Отключение VR контроллеров (управление через клавиатуру/мышь/геймпад/руль)
-- Настройка масштаба и высоты камеры
-- Debug режим для VR
+- **Совместимость**: PXN V12 Lite, Logitech G25/G27/G29/G920, Thrustmaster, Fanatec и любые DirectInput/XInput рули и геймпады.
+- **Плавное управление**: прямое управление поворотом колес с настраиваемой чувствительностью, линейностью и мёртвой зоной.
+- **Педали**:
+  - Раздельные педали (газ и тормоз на независимых осях).
+  - Поддержка стандартных DirectInput педалей (диапазон `-1.0` ... `+1.0` с авто-нормализацией).
+  - Настраиваемые мёртвые зоны и инверсия для каждой педали.
+- **Подрулевые лепестки и кнопки**:
+  - Переключение передач (Shift Up / Shift Down).
+  - Ручной тормоз.
+- **Диагностический оверлей (F7)**:
+  - Нажми **F7** прямо во время игры, чтобы открыть/скрыть экран диагностики.
+  - В реальном времени показывает имя устройства, живые значения всех осей (Axis 1–6), номера нажатых кнопок и итоговый газ/тормоз/руль. Настройка и калибровка любого руля становится делом пары секунд!
 
-## Установка
+---
 
-1. Скачай [BepInEx 5.4.23.5](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.23.5) (x64 версию для Windows)
-2. Распакуй BepInEx в папку с игрой
-3. Запусти игру один раз для инициализации BepInEx
-4. Скачай **[EasyDeliveryCoEnhancements.dll](../../releases/latest)** из Releases
-5. Помести DLL в `BepInEx\plugins\`
-6. Запусти игру
+## 📦 Установка
 
-## Настройка
+1. Скачай и установи **[BepInEx 5.4.23.5 (x64)](https://github.com/BepInEx/BepInEx/releases/download/v5.4.23.5/BepInEx_win_x64_5.4.23.5.zip)** в корневую папку игры:
+   `...\steamapps\common\Easy Delivery Co\`
+2. Скачай архив из последнего **[Releases](../../releases)**.
+3. Помести содержимое архива в папку `BepInEx\plugins\`:
+   - `EasyDeliveryCoMods.dll`
+   - `NAudio.Core.dll`
+   - `NAudio.Wasapi.dll`
+4. Положи свои треки в `C:\Music` (или настрой свой путь в конфиге).
+5. Запусти игру!
 
-После первого запуска создаётся конфиг:
-`BepInEx\config\opencode.easydeliveryco.enhancements.cfg`
+---
 
-### Модульная система
+## ⚙️ Настройка
 
-Каждый модуль можно включить/выключить независимо:
+Конфигурационный файл генерируется автоматически после первого запуска игры:
+`...\Easy Delivery Co\BepInEx\config\opencode.easydeliveryco.mods.cfg`
+
+### Пример конфигурации:
 
 ```ini
-[1. FPS Unlock]
-Enable = false              # Включить FPS unlock
-TargetFPS = 60             # 0 = безлимит, 60 = дефолт
-DisableVSync = false       # Отключить VSync
+[1. Custom Radio]
 
-[2. Graphics]
-Enable = false             # Включить графические улучшения
-DisablePS1Effects = false  # Убрать PS1 стиль
-RenderWidth = 256          # Дефолт: 256, HD: 1920+
-RenderHeight = 256         # Дефолт: 256, HD: 1080+
-TextureFilterMode = 0      # 0=Point (пиксели), 1=Bilinear, 2=Trilinear
-DisablePostProcessing = false
-RenderDistance = 1000
+## Включить кастомное радио
+Enabled = true
 
-[3. UI]
-ShowFPSCounter = false     # FPS счётчик
+## Папка с музыкой (поддерживает FLAC, M4A, MP3, WAV, OGG, WMA)
+MusicFolder = C:\Music
 
-[4. Steering Wheel]
-Enable = false             # Включить поддержку руля
-SteeringAxis = Joystick Axis 1
-ThrottleAxis = Joystick Axis 3
-BrakeAxis = Joystick Axis 2
-SteeringDeadzone = 0.05
-ThrottleDeadzone = 0.05
-BrakeDeadzone = 0.05
-SteeringSensitivity = 1.0
-CombinedPedals = false
-InvertSteering = false
-InvertThrottle = false
-InvertBrake = false
-DebugMode = false          # Показать значения осей
+## Перемешивать треки
+Shuffle = true
 
-[5. VR Support]
-Enable = false             # Включить VR режим
-EnableHeadTracking = true  # 6DOF трекинг
-HeadTrackingScale = 1.0
-CameraHeightOffset = 0.0
-DisableVRControllers = true  # Не использовать VR контроллеры
-DebugMode = false
+## Заменять волну новостей (99.1 FM)
+ReplaceNewsChannel = true
+
+
+[2. Steering Wheel]
+
+## Включить поддержку руля
+Enabled = true
+
+## Номер оси руля (1 = Axis 1)
+SteeringAxisNumber = 1
+
+## Мертвая зона руля (0.0 - 0.5)
+SteeringDeadzone = 0.02
+
+## Чувствительность руля
+SteeringSensitivity = 1
+
+## Линейность (1.0 = линейно)
+SteeringLinearity = 1
+
+## Раздельные педали газа и тормоза
+SeparatePedals = true
+
+## Номер оси газа (проверь по F7 в игре)
+ThrottleAxisNumber = 3
+
+## Номер оси тормоза (проверь по F7 в игре)
+BrakeAxisNumber = 2
+
+## Педали в покое выдают -1.0 (DirectInput стандарт)
+PedalRestAtMinusOne = true
+
+## Кнопка Shift Up (правый лепесток)
+ShiftUpButton = 5
+
+## Кнопка Shift Down (левый лепесток)
+ShiftDownButton = 4
+
+## Кнопка ручного тормоза
+HandbrakeButton = 2
+
+## Показывать диагностический экран при старте (F7 для скрытия)
+ShowLiveOverlay = true
 ```
 
-## Примеры настроек
+---
 
-### Максимальное качество графики
-```ini
-[2. Graphics]
-Enable = true
-DisablePS1Effects = true
-RenderWidth = 1920
-RenderHeight = 1080
-TextureFilterMode = 2
-DisablePostProcessing = true
-RenderDistance = 5000
-```
-
-### Разблокировка FPS
-```ini
-[1. FPS Unlock]
-Enable = true
-TargetFPS = 240    # или 0 для безлимита
-DisableVSync = true
-```
-
-### Руль Logitech G29
-```ini
-[4. Steering Wheel]
-Enable = true
-SteeringAxis = Joystick Axis 1
-ThrottleAxis = Joystick Axis 3
-BrakeAxis = Joystick Axis 2
-SteeringDeadzone = 0.05
-SteeringSensitivity = 1.0
-```
-
-### VR режим
-```ini
-[5. VR Support]
-Enable = true
-EnableHeadTracking = true
-HeadTrackingScale = 1.0
-DisableVRControllers = true
-```
-
-## Совместимость
-
-- **Игра**: Easy Delivery Co
-- **BepInEx**: 5.4.23.5
-- **Unity**: 2021.3+ (URP)
-- **VR**: OpenVR/SteamVR совместимые шлемы
-- **Рули**: Любые HID-совместимые устройства
-
-## Устранение проблем
-
-### Руль не работает
-1. Включи `DebugMode = true` в `[4. Steering Wheel]`
-2. Запусти игру и посмотри значения в правом верхнем углу
-3. Если оси неправильные, используй программу вроде JoyToKey для определения номеров осей
-4. Настрой `SteeringAxis`, `ThrottleAxis`, `BrakeAxis`
-
-### VR не запускается
-1. Убедись что SteamVR запущен
-2. Включи `DebugMode = true` в `[5. VR Support]`
-3. Проверь лог BepInEx: `BepInEx\LogOutput.log`
-
-### Низкий FPS после включения HD
-- Уменьши `RenderWidth`/`RenderHeight` до 1280x720
-- Отключи `DisablePostProcessing`
-
-## Сборка из исходников
+## 🛠️ Сборка из исходников
 
 Требуется .NET SDK 6.0+:
 
 ```bash
-cd EasyDeliveryCoEnhancements
+cd EasyDeliveryCoMods
 dotnet build -c Release
 ```
 
-DLL находится в `bin/Release/netstandard2.1/EasyDeliveryCoEnhancements.dll`
-
-## Технические детали
-
-Мод использует:
-- **BepInEx 5.x** для инъекции в игру
-- **Harmony** для патчинга методов Unity
-- **Reflection** для доступа к приватным полям игры
-- **Unity XR API** для VR поддержки
-- **Unity Input System** для обработки руля
-
-## Лицензия
-
-MIT License - см. [LICENSE](LICENSE)
-
-## Автор
-
-Created by **OpenCode AI Agent** (Claude Opus 5)
-- Autonomous code generation
-- Game reverse engineering and analysis
-- BepInEx mod architecture design
-- Configuration system implementation
+Собранные библиотеки будут в `bin/Release/netstandard2.1/`.
 
 ---
 
-*Этот мод был полностью создан искусственным интеллектом без участия человека в написании кода.*
+## 📄 Лицензия
+
+MIT License — см. файл [LICENSE](LICENSE).
