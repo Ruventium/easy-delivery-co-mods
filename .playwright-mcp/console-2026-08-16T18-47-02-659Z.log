@@ -1,0 +1,893 @@
+[     367ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://top-fwz1.mail.ru/js/dyn-goal-config.js?ids=3082531:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_brand/?r=1791095860733:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_m_all_brand/?r=1790970105321:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side1/?r=1789853645546:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side2/?r=1791152670762:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side3/?r=1791185968248:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_video_sidestick/?r=1796715036650:0
+[     467ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_notification/?r=1790644339863:0
+[     650ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/1054_ka_d_all_brand_direct/?r=1791462100835:0
+[     708ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/403_ka_d_all_side1/?r=1795352095273:0
+[     708ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/7512_ka_d_all_side2_direct/?r=1796461855865:0
+[     708ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/7511_ka_d_all_side3_direct/?r=1793224017096:0
+[     708ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/476_ka_notification/?r=1790145075001:0
+[     963ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14834_ka_m_all_brand_advssp/?r=1791955693306:0
+[    1034ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/407_ka_d_all_brand/?r=1796075302674:0
+[    1212ms] [INFO] CONTAINER_IS_HIDDEN Container with id "advertronic-banner-1792787352289" is hidden @ https://yandex.ru/ads/system/context.js:1
+[    1387ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/409_ka_m_all_brand/?r=1791775514465:0
+[    1387ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/7018_ka_d_all_side2_variation_A/?r=1790104430311:0
+[    1459ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side2_current/?r=1791050230609:0
+[    1574ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1791101140055:0
+[    1579ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_bottom/?r=1794846148341:0
+[    1579ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/7513_ka_d_all_bottom_direct/?r=1792617524817:0
+[    1633ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/6777_ka_d_all_side3_variation_C/?r=1794801811886:0
+[    1756ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[    2249ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side3_test_300x250_1/?r=1790148754401:0
+[    2250ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_side3_test_300x250_1/?r=1792414573459:0
+[    2281ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/6693_ka_d_all_side3_test_300x250_1/?r=1790263253377:0
+[    2281ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/6693_ka_d_all_side3_test_300x250_1/?r=1791857990796:0
+[    2534ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9213_ka_d_all_bottom_variation_B/?r=1788308967516:0
+[    2661ms] [ERROR] Failed to load resource: the server responded with a status of 429 (Too Many Requests) @ https://ssp.advertronic.io/sync-callback?dsp=9&uid=b120be10-63f1-4f70-abb1-659342833d3a:0
+[    2878ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_bottom_300x250/?r=1796378995525:0
+[    2878ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_bottom_300x250/?r=1790491439090:0
+[    2948ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxs/60dd498d-b260-4ddd-840f-f402209dc7fa/ka_d_all_bottom_300x250/?r=1789068627815:0
+[    2948ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1793969333031:0
+[    2948ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1794165395925:0
+[    2948ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1793660216470:0
+[    3049ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ https://kimberlite.io/rtb/sync/advertronic?r=https%3A%2F%2Fssp.advertronic.io%2Fsync-callback%3Fdsp%3D12%26uid%3D%24%7BUID%7D:0
+[    3155ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14818_ka_d_all_side3_test_300x250_1_advssp/?r=1790840263283:0
+[    2661ms] [ERROR] Failed to load resource: the server responded with a status of 429 (Too Many Requests) @ https://ssp.advertronic.io/sync-callback?dsp=9&uid=b120be10-63f1-4f70-abb1-659342833d3a:0
+[    3477ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11164_ka_d_all_side3_300x250_1_mytarget/?r=1794899310591:0
+[    3599ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14818_ka_d_all_side3_test_300x250_1_advssp/?r=1795796747905:0
+[    3768ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[    3812ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11164_ka_d_all_side3_300x250_1_mytarget/?r=1795026445384:0
+[    3821ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[    5457ms] [LOG] data {format: vast, path: https://sys.punchmedia.ru/vast/?pcha=909&psec=914&ppar=71} @ https://static.kinoafisha.info/static/assets/js/base.js?20260730160333f262972eeab35562f18b30b475bdbf4f:0
+[    5489ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/12381_ka_d_all_side3_s_PunchMedia/?r=1792801358905:0
+[    5782ms] [LOG] data {format: vast, path: https://sys.punchmedia.ru/vast/?pcha=909&psec=914&ppar=71} @ https://static.kinoafisha.info/static/assets/js/base.js?20260730160333f262972eeab35562f18b30b475bdbf4f:0
+[    5814ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/12381_ka_d_all_side3_s_PunchMedia/?r=1788492702987:0
+[    6172ms] [LOG] undefined ООО «ДЖИЛИ-МОТОРС» 0 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[    6173ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6204ms] Identifier 'currentURL' has already been declared
+[    6261ms] [LOG] undefined ООО «ДЖИЛИ-МОТОРС» 0 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[    6261ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6707ms] [LOG] %cEVENTLOG AdLoaded color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6708ms] [LOG] %cEVENTLOG AdImpression color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6708ms] [LOG] %cEVENTLOG AdStarted color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6737ms] [LOG] %cEVENTLOG AdLoaded color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6737ms] [LOG] %cEVENTLOG AdImpression color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    6738ms] [LOG] %cEVENTLOG AdStarted color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    7087ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[    7317ms] [LOG] %cEVENTLOG AdVideoStart color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    7336ms] [LOG] %cEVENTLOG AdVideoStart color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[    8440ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   10046ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://rutarget.ru/sync-sape/sync:0
+[   11055ms] [LOG] %cEVENTLOG AdVideoFirstQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   11200ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   11599ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   11600ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   11600ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   11601ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   11607ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[   11607ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[   11760ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   11764ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   11904ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 5) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   12133ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   12159ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   12294ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[   12592ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   12902ms] [LOG] %cEVENTLOG AdVideoFirstQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   13594ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   14575ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   14774ms] [LOG] %cEVENTLOG AdVideoMidpoint color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   15927ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   16227ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   16570ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16572ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16574ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16575ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16576ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16610ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: waiting) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16610ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16611ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16613ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16614ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16616ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16617ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16617ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   16618ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   17232ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   17947ms] [LOG] %cEVENTLOG AdVideoMidpoint color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   18126ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   18165ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   18166ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18166ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18166ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18169ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[   18169ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[   18194ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18204ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   18232ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18234ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18361ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18387ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   18493ms] [LOG] %cEVENTLOG AdVideoThirdQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   18508ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[   18652ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18653ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18654ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18656ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18657ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   18738ms] [WARNING] Mixed Content: The page at 'https://sp.ohmy.bid/cmf?0.18595304183734163' was loaded over HTTPS, but requested an insecure element 'http://smi2.ru/counter/sync.gif?system=ohmybid&cb=https%3A%2F%2Fmatch.ohmy.bid%2Fcm%3Fdsp_id%3D154%26uid%3D%24UID'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://sp.ohmy.bid/cmf?0.18595304183734163:0
+[   18740ms] [WARNING] Mixed Content: The page at 'https://sp.ohmy.bid/cmf?0.18595304183734163' was loaded over HTTPS, but requested an insecure element 'http://smi2.ru/counter/sync.gif?system=ohmybid&cb=https%3A%2F%2Fmatch.ohmy.bid%2Fcm%3Fdsp_id%3D154%26uid%3D%24UID'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://sp.ohmy.bid/cmf?0.18595304183734163:0
+[   19407ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19493ms] [WARNING] Mixed Content: The page at 'https://ads.betweendigital.com/sspmatch-iframe?randsalt=1245397702&s=4886841' was loaded over HTTPS, but requested an insecure element 'http://cmr.bidderstack.com/gpm/cm?user_id=be376344-c735-52e4-ba49-669bd0c89d2e'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://ads.betweendigital.com/sspmatch-iframe?randsalt=1245397702&s=4886841:0
+[   19494ms] [WARNING] Mixed Content: The page at 'https://ads.betweendigital.com/sspmatch-iframe?randsalt=1245397702&s=4886841' was loaded over HTTPS, but requested an insecure element 'http://cmr.bidderstack.com/gpm/cm?user_id=be376344-c735-52e4-ba49-669bd0c89d2e'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://ads.betweendigital.com/sspmatch-iframe?randsalt=1245397702&s=4886841:4
+[   19510ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   19529ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19623ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19623ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19623ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19625ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19627ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19826ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19832ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   19837ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   20258ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   20258ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=41:0
+[   20300ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.giraff.io/rtb/sync?ssp=adtek-ssp-video&r=:0
+[   20870ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   21157ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   22164ms] [LOG] %cEVENTLOG AdVideoComplete color:rgba(11, 80, 11, 0.87); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   22165ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   22274ms] [ERROR] Error [2.9s]: VPAID #1 (D130): Event timeout: AdLoaded timer #29 @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[   22275ms] [WARNING] Warn [2.9s]: Mngr: Slot #1 error. @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[   22872ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   22873ms] [LOG] !SIZE! 300 169 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   22918ms] [LOG] %cEVENTLOG AdVideoThirdQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   23167ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: ready) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23167ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: ready → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23167ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23170ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23171ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: InStream destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23178ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23184ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Active ad: none @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   23229ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   23365ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   23365ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   23365ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   23652ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=21:0
+[   23910ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[   23936ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=21:0
+[   24369ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   24370ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   24412ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[   24500ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/13971_ka_d_all_side3_300x250_1_mytarget_2/?r=1787763958448:0
+[   24577ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://yandex.ru/adfox/723642/getCode?p1=ddsfh&p2=frfe&pfc=fhpru&pfb=bjosqd&pr=467617&pe=b:0
+[   24611ms] [ERROR] Failed to load resource: the server responded with a status of 429 () @ https://yandex.ru/adfox/723642/getCode?p1=ddsfh&p2=frfe&pfc=fhpru&pfb=bjowxi&pr=10283&pe=b:0
+[   26400ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1795110833907:0
+[   27693ms] [LOG] %cEVENTLOG AdVideoComplete color:rgba(11, 80, 11, 0.87); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   27693ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   28282ms] [ERROR] Failed to load resource: net::ERR_CERT_DATE_INVALID @ https://matching.mobilebanner.ru/p.gif?pid=getintent-qm&id=gHL2KhLiHfa.AikABlGgC787lw:0
+[   28752ms] [ERROR] Failed to load resource: net::ERR_TOO_MANY_REDIRECTS @ https://dmp.sbermarketing.ru/?dmpkit_cid=9064fc6c-76fe-4a6d-aea6-92ef3f343257&amp;dmpkit_evid=hOpQTFKAtHVGfECoHcqcvBATgrWkzaVo&amp;user_getint=gHL2KhLiHfa.AikABlGgC787lw&ru=https%3A%2F%2Fpx.adhigh.net%2Fp%2Fcm%2Fsm:0
+[   28899ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   28899ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   28900ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   29906ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   29908ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   29936ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/13971_ka_d_all_side3_300x250_1_mytarget_2/?r=1787186091063:0
+[   29948ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[   31951ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1787940585817:0
+[   32882ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1792869898306:0
+[   32882ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1796213920645:0
+[   32882ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1792128918460:0
+[   34466ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14886_ka_d_all_bottom_s_advssp/?r=1791398953979:0
+[   34630ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ about:srcdoc:0
+[   34828ms] [ERROR] Loading the script 'data:application/javascript;base64,' violates the following Content Security Policy directive: "script-src 'unsafe-inline' http: https:". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked. @ about:srcdoc:2
+[   34830ms] [WARNING] Mixed Content: The page at 'about:srcdoc' was loaded over HTTPS, but requested an insecure element 'http://smi2.ru/counter/sync.gif?system=ohmybid&cb=https%3A%2F%2Fmatch.ohmy.bid%2Fcm%3Fdsp_id%3D154%26uid%3D%24UID'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ about:srcdoc:12
+[   35272ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1790048281421:0
+[   35765ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14886_ka_d_all_bottom_s_advssp/?r=1794568195546:0
+[   35819ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11169_ka_d_all_bottom_300x250_mytarget/?r=1790979322570:0
+[   35896ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[   37284ms] [LOG] data {format: vast, path: https://sys.punchmedia.ru/vast/?pcha=909&psec=910&ppar=71} @ https://static.kinoafisha.info/static/assets/js/base.js?20260730160333f262972eeab35562f18b30b475bdbf4f:0
+[   37317ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/12378_ka_d_all_bottom_PunchMedia/?r=1792827607117:0
+[   37951ms] [LOG] undefined ООО «ДЖИЛИ-МОТОРС» 0 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[   37952ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   38449ms] [LOG] %cEVENTLOG AdLoaded color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   38449ms] [LOG] %cEVENTLOG AdImpression color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   38449ms] [LOG] %cEVENTLOG AdStarted color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   39041ms] [LOG] %cEVENTLOG AdVideoStart color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   44618ms] [LOG] %cEVENTLOG AdVideoFirstQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   45135ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://sync.digitalcaramel.com/match/techdig?id=NzliYTExMzc5MDgwYmI2ZQ:0
+[   49663ms] [LOG] %cEVENTLOG AdVideoMidpoint color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   49755ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   49851ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://tms.dmp.wi-fi.ru/?dmpkit_cid=81460eb5-647b-4d9b-a3e3-7863f294c3da&dmpkit_evid=fafb6b76-fede-405c-b6ee-e5fb99e1d004&gi_id=gHL2KhLiHfa.AikABlGgC787lw&ru=https%3A%2F%2Fpx.adhigh.net%2Fp%2Fcm%2Fqvntstr%3Fu%3D[UID]:0
+[   49851ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://tms.dmp.wi-fi.ru/?dmpkit_cid=81460eb5-647b-4d9b-a3e3-7863f294c3da&d_evid=fafb6b76-fede-405c-b6ee-e5fb99e1d004&gi_id=gHL2KhLiHfa.AikABlGgC787lw&ru=https%3A%2F%2Fpx.adhit%2Fp%2Fcm%2Fqvntstr%3Fu%3D[UID]:0
+[   50327ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   50598ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   50599ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   50599ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   50600ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   50603ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[   50603ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[   50669ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   50678ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   50799ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   50936ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[   51055ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   51064ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   52075ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   52124ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   52338ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   53011ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   53777ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   53926ms] Identifier 'currentURL' has already been declared
+[   54445ms] [LOG] %cEVENTLOG AdVideoThirdQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   54699ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   55467ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   55521ms] [WARNING] Suspension of work [VAST parsing error (Empty or Broken VAST)] @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   55522ms] [LOG] f-size (W: 300px; H: 169px;), m-size (W: 560px; H: 300px;) @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   55601ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: waiting) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   55601ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   55601ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   55603ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   55946ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   56547ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1792841575416:0
+[   56702ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   56735ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   56737ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56738ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56739ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56744ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[   56744ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[   56776ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56787ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   56805ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56813ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56832ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56882ms] [WARNING] Mixed Content: The page at 'https://sp.ohmy.bid/cmf?0.4725537055022092' was loaded over HTTPS, but requested an insecure element 'http://smi2.ru/counter/sync.gif?system=ohmybid&cb=https%3A%2F%2Fmatch.ohmy.bid%2Fcm%3Fdsp_id%3D154%26uid%3D%24UID'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://sp.ohmy.bid/cmf?0.4725537055022092:0
+[   56886ms] [WARNING] Mixed Content: The page at 'https://sp.ohmy.bid/cmf?0.4725537055022092' was loaded over HTTPS, but requested an insecure element 'http://smi2.ru/counter/sync.gif?system=ohmybid&cb=https%3A%2F%2Fmatch.ohmy.bid%2Fcm%3Fdsp_id%3D154%26uid%3D%24UID'. This request was automatically upgraded to HTTPS, For more information see https://blog.chromium.org/2019/10/no-more-mixed-messages-about-https.html @ https://sp.ohmy.bid/cmf?0.4725537055022092:0
+[   56957ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   56972ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56972ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56972ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56974ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   56976ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   57029ms] [LOG] https://vast.nashindex.ru/vasts/395611003 @ https://cdn.nashindex.ru/container.html?src=https%3A%2F%2Fvast.nashindex.ru%2Fvasts%2F395611003&tag_id=undefined:18
+[   57064ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[   57137ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 6) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   57760ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   57808ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   58504ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   58506ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   59414ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   59415ms] [LOG] %cEVENTLOG AdVideoComplete color:rgba(11, 80, 11, 0.87); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   59415ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   60149ms] Uncaught TypeError: Cannot read properties of null (reading 'loadedData')
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:94677)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:4759)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:8013)
+    at a (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:9153)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:10751)
+    at n.onload (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:23813)
+[   60609ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   60609ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   60609ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   61121ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 Cannot read properties of undefined (reading 'then') @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61160ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61162ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61163ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61164ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61165ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61527ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61553ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   61616ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   61621ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   61750ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: ready) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61750ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: ready → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61750ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61752ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: InStream destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61756ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61757ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61768ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61771ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61775ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Active ad: none @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   61781ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1788619534234:0
+[   61947ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1795678440864:0
+[   62023ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   62897ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1794414152689:0
+[   64465ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14886_ka_d_all_bottom_s_advssp/?r=1795999854797:0
+[   64573ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11169_ka_d_all_bottom_300x250_mytarget/?r=1793608047874:0
+[   64582ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[   66061ms] [LOG] data {format: vast, path: https://sys.punchmedia.ru/vast/?pcha=909&psec=910&ppar=71} @ https://static.kinoafisha.info/static/assets/js/base.js?20260730160333f262972eeab35562f18b30b475bdbf4f:0
+[   66087ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/12378_ka_d_all_bottom_PunchMedia/?r=1788132531436:0
+[   66795ms] Identifier 'currentURL' has already been declared
+[   66831ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[   66831ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   67053ms] [LOG] Player size too small, skip ad: 317 x 178 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   68122ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1793739398073:0
+[   69275ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1790450010464:0
+[   71911ms] Identifier 'currentURL' has already been declared
+[   71993ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   72070ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   72103ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[   72104ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   72317ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   73318ms] [LOG] %cEVENTLOG AdError color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   73319ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   73385ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   73491ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   73958ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[   73958ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75251ms] [LOG] %cEVENTLOG AdError color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75254ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75588ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75658ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75697ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[   75697ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[   75903ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   76956ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   77465ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   77775ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   77776ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77776ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77777ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77782ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[   77782ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[   77814ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77861ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77868ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   77909ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   77981ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[   78233ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   78250ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   78268ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[   78784ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   78926ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[   79268ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   79442ms] Uncaught TypeError: Cannot read properties of null (reading 'loadedData')
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:94677)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:4759)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:8013)
+    at a (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:9153)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:10751)
+    at n.onload (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:23813)
+[   80422ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 Cannot read properties of undefined (reading 'then') @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   80455ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[   80754ms] [WARNING] Empty required parameters in xml! @ https://s3.programmatica.com/scripts/vpaid/general/v2/vpaid.js:7
+[   81169ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81179ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81181ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81185ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81186ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81578ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81672ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81675ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   81755ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   82405ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[   82436ms] [WARNING] You are using unsupported Video Ads SDK script src [https://an.yandex.ru/system/video-ads-sdk/adsdk.js] please, use new link [https://yandex.ru/ads/system/adsdk.js] @ https://an.yandex.ru/system/video-ads-sdk/adsdk.js:1
+[   82779ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: waiting) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   82779ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   82779ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: InStream destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   82784ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   82786ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[   83118ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[   86516ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1791396682659:0
+[   91762ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1787831404752:0
+[   91962ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1791927584117:0
+[   92904ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1789594766431:0
+[   98256ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1795126380577:0
+[  103414ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1794439933642:0
+[  103593ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  103958ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  103959ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  103959ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  103959ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  103963ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[  103963ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[  103996ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104043ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104044ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104291ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  104351ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[  104378ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104387ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[  104434ms] [WARNING] Empty required parameters in xml! @ https://s3.programmatica.com/scripts/vpaid/general/v2/vpaid.js:7
+[  104499ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104500ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104501ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104501ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104502ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  104940ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105110ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105113ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105393ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105448ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.giraff.io/rtb/sync?ssp=adtek-ssp-video&r=:0
+[  105591ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=41:0
+[  105644ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105644ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105644ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105645ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105646ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  105905ms] [WARNING] You are using unsupported Video Ads SDK script src [https://an.yandex.ru/system/video-ads-sdk/adsdk.js] please, use new link [https://yandex.ru/ads/system/adsdk.js] @ https://an.yandex.ru/system/video-ads-sdk/adsdk.js:1
+[  105984ms] Uncaught TypeError: Cannot read properties of null (reading 'loadedData')
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:94677)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:4759)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:8013)
+    at a (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:9153)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:10751)
+    at n.onload (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:23813)
+[  106019ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  106237ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  106683ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 Cannot read properties of undefined (reading 'then') @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  107175ms] [WARNING] You are using unsupported Video Ads SDK script src [https://an.yandex.ru/system/video-ads-sdk/adsdk.js] please, use new link [https://yandex.ru/ads/system/adsdk.js] @ https://an.yandex.ru/system/video-ads-sdk/adsdk.js:1
+[  107671ms] [ERROR] Error [3.1s]: VPAID #1 (D130): Event timeout: AdLoaded timer #19 @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  107671ms] [WARNING] Warn [3.1s]: Mngr: Slot #1 error. @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  107685ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107917ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107918ms] [LOG] Subscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107919ms] [LOG] initAd start @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107920ms] [LOG] initAd end @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107950ms] [LOG] adVideo_.init start @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  107950ms] [LOG] adVideo_.init end @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108809ms] [LOG] adVideo_.onAdsManagerLoaded start @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108809ms] [LOG] unsubscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108810ms] [WARNING] [Statistic] Missing stat track event, please check incoming vast @ https://s3.programmatica.com/scripts/vpaid/general/v2/vpaid.js:7
+[  108810ms] [LOG] setAdVolume 0 @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108810ms] [LOG] getAdVolume @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108811ms] [LOG] getAdVolume @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108811ms] [LOG] startAd start @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108815ms] [LOG] unsubscribe function () { [native code] } @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108815ms] [LOG] startAd end @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108816ms] [LOG] resizeAd 300x169 normal @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108816ms] [LOG] adVideo_.onAdsManagerLoaded end @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108817ms] [LOG] getAdVolume @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108817ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded: InStream @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108818ms] [LOG] resumeAd @ https://ssp.surfy.space/wrap/vpaid_widget.js:408
+[  108962ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: ready) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108962ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: ready → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108962ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: InStream destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108970ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108972ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  108975ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Active ad: none @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  109372ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  116528ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1788571982909:0
+[  120000ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  120442ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  120552ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  120553ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  120553ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  120553ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  120557ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[  120557ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[  120615ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  120629ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  120906ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[  121004ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  121020ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121021ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121022ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121023ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121024ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121395ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121479ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121485ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121488ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  121761ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1795412824981:0
+[  122013ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.giraff.io/rtb/sync?ssp=adtek-ssp-video&r=:0
+[  122072ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1787012382560:0
+[  122134ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=41:0
+[  122234ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  122234ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  122234ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  122235ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  122236ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  122910ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9214_ka_d_all_bottom_300x250/?r=1794799114197:0
+[  124253ms] [ERROR] Error [3.2s]: VPAID #1 (D130): Event timeout: AdLoaded timer #24 @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  124253ms] [WARNING] Warn [3.2s]: Mngr: Slot #1 error. @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  125991ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/14886_ka_d_all_bottom_s_advssp/?r=1792971534472:0
+[  128123ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1793350606036:0
+[  130632ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  131199ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  131503ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  131503ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131503ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131504ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131507ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[  131507ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[  131566ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131579ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131748ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  131870ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[  131963ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131972ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[  131998ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  131999ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132000ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132001ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132001ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132352ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132425ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  132473ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132494ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132636ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  132949ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.giraff.io/rtb/sync?ssp=adtek-ssp-video&r=:0
+[  132978ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  133065ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=41:0
+[  133168ms] Uncaught TypeError: Cannot read properties of null (reading 'loadedData')
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:94677)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:4759)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:8013)
+    at a (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:9153)
+    at <anonymous> (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:10751)
+    at n.onload (https://tube.buzzoola.com/build/buzzlibrary.buzzplayer_creative_submodules.js:0:23813)
+[  133196ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  133196ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  133196ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  133196ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  133197ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  134074ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  134154ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 Cannot read properties of undefined (reading 'then') @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  134771ms] [WARNING] You are using unsupported Video Ads SDK script src [https://an.yandex.ru/system/video-ads-sdk/adsdk.js] please, use new link [https://yandex.ru/ads/system/adsdk.js] @ https://an.yandex.ru/system/video-ads-sdk/adsdk.js:1
+[  135212ms] [ERROR] Error [3.2s]: VPAID #1 (D130): Event timeout: AdLoaded timer #27 @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  135212ms] [WARNING] Warn [3.2s]: Mngr: Slot #1 error. @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  135839ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[  136009ms] TypeError: Cannot read properties of null (reading 'nodeName')
+    at pt._onInsertLayout (https://cdn.advertronic.io/j/s.js:1:47470)
+    at https://cdn.advertronic.io/j/s.js:1:47778
+    at Array.some (<anonymous>)
+    at MutationObserver.<anonymous> (https://cdn.advertronic.io/j/s.js:1:47683)
+[  136090ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11169_ka_d_all_bottom_300x250_mytarget/?r=1793078232624:0
+[  136436ms] [WARNING] Suspension of work [VAST parsing error (Empty or Broken VAST)] @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[  136436ms] [LOG] f-size (W: 300px; H: 169px;), m-size (W: 560px; H: 300px;) @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[  136511ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: ready) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  136511ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: ready → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  136511ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  136515ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  136522ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Active ad: none @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  136849ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  137289ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1792699229221:0
+[  137332ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  137365ms] [LOG] VPAIDAd init! Ad System: ctrl @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  137366ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Player version: 1.2.7 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137366ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Load started @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137366ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: created → waiting @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137370ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at ur (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137207)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137749)
+    at t.$$.update (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:137697)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124421)
+[  137370ms] Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'getVolume')
+    at getAdVolume (https://cdn.ctrltech.ai/public/js/vpaid.min.js:39:61027)
+    at cacheValue (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456340)
+    at getMuted (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:456098)
+    at getVolumeIndicator (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:290433)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:135710)
+    at <anonymous> (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126535)
+    at Ke (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120015)
+    at Ge (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:120077)
+    at Ji (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:126944)
+    at p (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:136984)
+    at h (https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0:124496)
+[  137400ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137409ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.1.js:0
+[  137430ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137438ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: -1-0 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137464ms] [LOG] data {format: vast, path: https://sys.punchmedia.ru/vast/?pcha=909&psec=910&ppar=71} @ https://static.kinoafisha.info/static/assets/js/base.js?20260730160333f262972eeab35562f18b30b475bdbf4f:0
+[  137492ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/12378_ka_d_all_bottom_PunchMedia/?r=1794991873566:0
+[  137571ms] [ERROR] Error resolving ad VAST Error: No ads were loaded
+    at https://cdn.ctrltech.ai/public/js/vpaid.min.js:40:50151
+    at async Promise.any (index 0) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:39
+[  137679ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://ssp.bidster.net/vast/b3b92ab1-14b0-45ef-a90c-47762a6ae776?width=1280&height=720:0
+[  137699ms] [LOG] undefined ООО «ГАК МОТОР РУС» 0 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[  137699ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  137699ms] Identifier 'currentURL' has already been declared
+[  137808ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137810ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137811ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 1 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137812ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 2 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  137813ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad resolved: 3 @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138161ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 VASTBuilder::getAdQueue: not creatives @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138233ms] [LOG] %cEVENTLOG AdLoaded color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  138233ms] [LOG] %cEVENTLOG AdStarted color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  138304ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 3 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138316ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 1 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138320ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: 2 {code: 3003, message: Пустой VAST} @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138326ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  138410ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  undefined @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  138762ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.giraff.io/rtb/sync?ssp=adtek-ssp-video&r=:0
+[  138865ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adiam.tech/sync?ssp=41:0
+[  139029ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Ad loaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  139029ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; First AdLoaded:  @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  139029ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: waiting → ready @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  139029ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Host startAd @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  139031ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Waiting for next ad @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  139235ms] [LOG] %cEVENTLOG AdImpression color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  139666ms] [LOG] %cEVENTLOG AdVideoStart color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  139704ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  139969ms] [LOG] Player size too small, skip ad: 300 x 168.75 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  140558ms] [WARNING] You are using unsupported Video Ads SDK script src [https://an.yandex.ru/system/video-ads-sdk/adsdk.js] please, use new link [https://yandex.ru/ads/system/adsdk.js] @ https://an.yandex.ru/system/video-ads-sdk/adsdk.js:1
+[  140840ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[  140840ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[  140912ms] [LOG] %cEVENTLOG AdVideoFirstQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  141048ms] [ERROR] Error [3.2s]: VPAID #1 (D130): Event timeout: AdLoaded timer #23 @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  141048ms] [WARNING] Warn [3.2s]: Mngr: Slot #1 error. @ https://cdn.adtec.ru/js/vpaid.js?1.2:0
+[  141464ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[  141668ms] [LOG] !SIZE! 300 0 @ https://sdk.ussp.io/vpaidp/ubundle-union.js?r=1786914000:0
+[  142367ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Global timeout after 5000ms (state: ready) @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142367ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; State: ready → error @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142368ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142370ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad: -1-0 destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142372ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Error loading ad:  destroyed @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142377ms] [LOG] %c[ctrl] color: #fff; background: #222222; border-radius: 3px; padding: 0 4px; font-weight: bold; Active ad: none @ https://cdn.ctrltech.ai/public/js/vpaid.min.js:29
+[  142809ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn2.adplay.ru/player/6.31.1/vpaid.js:0
+[  143047ms] [LOG] %cEVENTLOG AdVideoMidpoint color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  145425ms] [LOG] %cEVENTLOG AdVideoThirdQuartile color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  145916ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://uid.ssp.bidvol.com/csg?pid=6439dfca&r=https%3A%2F%2Fkimberlite.io%2Frtb%2Fsync%2Fbidvol_video%3Fu%3D%7BUID%7D%26f%3Dhttps%253A%252F%252Frtb.adplay.ru%252Ftools%252Fsync%253Fdsp%253D109%2526uid%253DaoH7tC9TL1Q%26n%3D1:0
+[  146528ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1788082435899:0
+[  147711ms] [LOG] %cEVENTLOG AdVideoComplete color:rgba(11, 80, 11, 0.87); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  147711ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  147711ms] [LOG] %cEVENTLOG AdVideoComplete color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  148726ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  148728ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  148761ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1790859343321:0
+[  149730ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  151678ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1788781682574:0
+[  151917ms] Identifier 'currentURL' has already been declared
+[  151986ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/11430_ka_d_all_side3_test_300x250_1_low/?r=1794774100643:0
+[  151994ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  152075ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  152141ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  152268ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  152305ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[  152305ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  152531ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  153532ms] [LOG] %cEVENTLOG AdError color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  153533ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  153569ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[  153569ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  153782ms] [LOG] Player size too small, skip ad: 300 x 169 @ https://a.suprion.ru/static/vpaid/vpaidk.min.1.8.2.js:0
+[  154785ms] [LOG] %cEVENTLOG AdError color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  154786ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  154868ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  154933ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  155055ms] [LOG] undefined  5 @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:546
+[  155055ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  155680ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://a.adlook.tech/sync?dsp=71&buyerid=MjhhNjBkODg2M2FjZTFhYQ#048:0
+[  155864ms] [LOG] %cEVENTLOG AdError color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  155866ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  155970ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  156068ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  156097ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  156561ms] [LOG] VIDEOPLAYER {frurlURL: null, globalDuration: 30, rnd: null, reportObserver: ReportingObserver, iframeModule: Object} @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  157098ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  157383ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[  157561ms] [LOG] %cEVENTLOG AdStopped color:rgb(114, 143, 117); @ https://cdn.punchmedia.ru/v20/vpaid-556-t.js:241
+[  158264ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/9215_ka_d_all_bottom_300x250_low/?r=1791044771103:0
+[  158366ms] [WARNING] An iframe which has both allow-scripts and allow-same-origin for its sandbox attribute can escape its sandboxing. @ https://cdn.adplay.ru/player/6.31.1/vpaid.js:0
+[  171403ms] [ERROR] Failed to load resource: net::ERR_HTTP2_PROTOCOL_ERROR @ https://cdn.advertronic.io/pxb/60dd498d-b260-4ddd-840f-f402209dc7fa/404_ka_d_all_side2_current/?r=1794245337074:0

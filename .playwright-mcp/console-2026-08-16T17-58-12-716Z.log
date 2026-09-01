@@ -1,0 +1,7 @@
+[    1880ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://kino-bejica.ru/_payload.json?_b=e4241940-f067-4663-acb8-c9ff64665b91:0
+[    1898ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://kino-bejica.ru/_payload.json?_b=e4241940-f067-4663-acb8-c9ff64665b91:0
+[    1922ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://kino-bejica.ru/_payload.json?_b=e4241940-f067-4663-acb8-c9ff64665b91:0
+[    2831ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://cinemabox.getresponse360.pl/script/ga.js?v=2&grid=pBFAEWSpY:0
+[    3170ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[   12070ms] [ERROR] WebSocket connection to 'wss://mc.yandex.ru/solid.ws' failed: Error during WebSocket handshake: Unexpected response code: 504 @ https://mc.yandex.ru/metrika/tag.js:506
+[  411855ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://kino-bejica.ru/_payload.json?_b=e4241940-f067-4663-acb8-c9ff64665b91:0

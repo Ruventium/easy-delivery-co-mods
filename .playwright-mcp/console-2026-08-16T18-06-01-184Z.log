@@ -1,0 +1,2 @@
+[    9308ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://hdrc.yandex.net/:0
+[   18393ms] [LOG] Worked hit: https://xn--90asilg6f.xn--80aa2apjhca.xn--p1ai/events @ https://xn--90asilg6f.xn--80aa2apjhca.xn--p1ai/build/assets/app-WAOAmqUW.js:28

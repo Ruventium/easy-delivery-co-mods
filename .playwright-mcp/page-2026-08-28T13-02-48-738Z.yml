@@ -1,0 +1,36 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Ссылка на домашнюю страницу Steam" [ref=e8] [cursor=pointer]:
+        - /url: https://store.steampowered.com/
+        - img "Ссылка на домашнюю страницу Steam" [ref=e9]
+      - navigation "Глобальное меню" [ref=e10]:
+        - link "МАГАЗИН" [ref=e11] [cursor=pointer]:
+          - /url: https://store.steampowered.com/
+        - link "СООБЩЕСТВО" [ref=e12] [cursor=pointer]:
+          - /url: https://steamcommunity.com/
+        - link "Информация" [ref=e13] [cursor=pointer]:
+          - /url: https://store.steampowered.com/about/
+        - link "ПОДДЕРЖКА" [ref=e14] [cursor=pointer]:
+          - /url: https://help.steampowered.com/ru/
+      - navigation "Меню аккаунта" [ref=e16]:
+        - link "Установить Steam" [ref=e17] [cursor=pointer]:
+          - /url: https://store.steampowered.com/about/
+        - link "вход" [ref=e19] [cursor=pointer]:
+          - /url: https://steamcommunity.com/login/home/?goto=app%2F4294490%2Fguides%2F
+        - text: "| язык"
+  - main [ref=e20]:
+    - generic [ref=e22]:
+      - generic [ref=e24]:
+        - generic [ref=e25]: "ЭТА ИГРА СОДЕРЖИТ КОНТЕНТ, КОТОРЫЙ ВЫ ПРЕДПОЧЛИ СКРЫТЬ:"
+        - generic [ref=e26]: Эпизодическая демонстрация наготы или сцен сексуального характера
+        - generic [ref=e27]:
+          - generic [ref=e28]: "Разработчики описывают контент так:"
+          - generic [ref=e29]: Some illustrations for the trading cards depict characters in revealing clothing, tight clothing, and/or sexual poses, without full nudity, nipples, or genitals. There are no sexual scenes or suggestive content in the game. All characters in the game are adults. You can (voluntarily) drink beer in the game.
+      - generic [ref=e30]:
+        - button "Показать центр сообщества" [ref=e31] [cursor=pointer]
+        - button "Отмена" [ref=e33] [cursor=pointer]
+      - generic [ref=e36]:
+        - text: Хотите видеть другой контент в Steam?
+        - link "Изменить настройки контента" [ref=e37] [cursor=pointer]:
+          - /url: https://store.steampowered.com/account/preferences/

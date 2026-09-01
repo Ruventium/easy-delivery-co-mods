@@ -1,0 +1,246 @@
+- generic [active] [ref=f13e1]:
+  - generic [ref=f13e3]:
+    - generic [ref=f13e6]:
+      - text: Мы используем cookie, чтобы Cайт работал корректно, а также для сбора аналитических, статистических данных и маркетинга с использованием сервисов Яндекс. Метрика. Это помогает нам улучшать сервис. Подробнее в
+      - link "Политике конфиденциальности." [ref=f13e7] [cursor=pointer]:
+        - /url: https://cinemabox.team/media/docs/Политика_конфиденциальности_ООО_Синемабокс.pdf
+    - button "Принимаю" [ref=f13e9] [cursor=pointer]
+  - generic [ref=f13e11]:
+    - banner [ref=f13e12]:
+      - generic [ref=f13e13]:
+        - link [ref=f13e15] [cursor=pointer]:
+          - /url: /
+          - img "Кинотеатр Бежицкий" [ref=f13e17]
+        - generic [ref=f13e18]:
+          - link "Сегодня" [ref=f13e19] [cursor=pointer]:
+            - /url: /
+          - link "Завтра" [ref=f13e20] [cursor=pointer]:
+            - /url: /tomorrow
+          - link "Детям" [ref=f13e21] [cursor=pointer]:
+            - /url: /kids
+          - link "Пушкинская карта" [ref=f13e22] [cursor=pointer]:
+            - /url: /pushkins-card
+          - link "Скоро" [ref=f13e23] [cursor=pointer]:
+            - /url: /soon
+          - button "Календарь" [ref=f13e24] [cursor=pointer]
+          - button "Меню" [ref=f13e27] [cursor=pointer]
+    - generic [ref=f13e52]:
+      - generic [ref=f13e215]:
+        - 'img "Человек-паук: Новый день (2026) / Предсеанс. обсл. Весеннее обострение" [ref=f13e218]'
+        - generic [ref=f13e220]:
+          - 'heading "Человек-паук: Новый день (2026) / Предсеанс. обсл. Весеннее обострение" [level=1] [ref=f13e221]'
+          - generic [ref=f13e222]: США, 2 часа 28 минут боевик, приключения, фантастика
+          - generic [ref=f13e223]: 12+
+          - generic [ref=f13e225]:
+            - generic [ref=f13e226]: Старт проката
+            - generic [ref=f13e227]: c 20 августа 2026
+          - generic [ref=f13e228]:
+            - generic [ref=f13e229]: Одинокий и повзрослевший Питер Паркер полностью посвящает себя борьбе с преступностью в Нью-Йорке, поскольку 4 года назад после заклинания Доктора Стренджа мир и все близкие забыли его. Но с ростом угроз и нагрузки на Человека-паука его способности претерпевают странные изменения, способные поставить под угрозу его существование. Тем временем в городе случается новая цепочка преступлений, которая приводит к появлению одного из самых опасных противников в жизни Питера.
+            - button "Читать целиком" [ref=f13e230] [cursor=pointer]
+      - generic [ref=f13e232]:
+        - heading "Расписание сеансов" [level=2] [ref=f13e233]
+        - generic [ref=f13e234]:
+          - generic [ref=f13e235]:
+            - generic [ref=f13e236]: 20 августа
+            - generic [ref=f13e237]:
+              - generic [ref=f13e238]:
+                - img [ref=f13e239] [cursor=pointer]
+                - generic [ref=f13e243]: Кинотеатр "Бежицкий"
+              - generic [ref=f13e244]:
+                - generic [ref=f13e247] [cursor=pointer]:
+                  - generic [ref=f13e248]: 09:30
+                  - generic [ref=f13e249]: от 770 ₽
+                  - generic [ref=f13e250]: Зал №5
+                - generic [ref=f13e253] [cursor=pointer]:
+                  - generic [ref=f13e254]: 11:15
+                  - generic [ref=f13e255]: от 830 ₽
+                  - generic [ref=f13e256]: Зал №1
+                - generic [ref=f13e259] [cursor=pointer]:
+                  - generic [ref=f13e260]: 12:10
+                  - generic [ref=f13e261]: от 860 ₽
+                  - generic [ref=f13e262]: Зал №5
+                - generic [ref=f13e265] [cursor=pointer]:
+                  - generic [ref=f13e266]: 13:55
+                  - generic [ref=f13e267]: от 910 ₽
+                  - generic [ref=f13e268]: Зал №1
+                - generic [ref=f13e271] [cursor=pointer]:
+                  - generic [ref=f13e272]: 14:50
+                  - generic [ref=f13e273]: от 960 ₽
+                  - generic [ref=f13e274]: Зал №5
+                - generic [ref=f13e277] [cursor=pointer]:
+                  - generic [ref=f13e278]: 16:35
+                  - generic [ref=f13e279]: от 1 070 ₽
+                  - generic [ref=f13e280]: Зал №1
+                - generic [ref=f13e283] [cursor=pointer]:
+                  - generic [ref=f13e284]: 17:30
+                  - generic [ref=f13e285]: от 1 170 ₽
+                  - generic [ref=f13e286]: Зал №5
+                - generic [ref=f13e289] [cursor=pointer]:
+                  - generic [ref=f13e290]: 19:15
+                  - generic [ref=f13e291]: от 1 300 ₽
+                  - generic [ref=f13e292]: Зал №1
+                - generic [ref=f13e295] [cursor=pointer]:
+                  - generic [ref=f13e296]: 20:10
+                  - generic [ref=f13e297]: от 1 370 ₽
+                  - generic [ref=f13e298]: Зал №5
+                - generic [ref=f13e301] [cursor=pointer]:
+                  - generic [ref=f13e302]: 21:55
+                  - generic [ref=f13e303]: от 1 270 ₽
+                  - generic [ref=f13e304]: Зал №1
+          - generic [ref=f13e305]:
+            - generic [ref=f13e306]: 21 августа
+            - generic [ref=f13e307]:
+              - generic [ref=f13e308]:
+                - img [ref=f13e309] [cursor=pointer]
+                - generic [ref=f13e313]: Кинотеатр "Бежицкий"
+              - generic [ref=f13e314]:
+                - generic [ref=f13e317] [cursor=pointer]:
+                  - generic [ref=f13e318]: 09:55
+                  - generic [ref=f13e319]: от 700 ₽
+                  - generic [ref=f13e320]: Зал №5
+                - generic [ref=f13e323] [cursor=pointer]:
+                  - generic [ref=f13e324]: 11:40
+                  - generic [ref=f13e325]: от 790 ₽
+                  - generic [ref=f13e326]: Зал №1
+                - generic [ref=f13e329] [cursor=pointer]:
+                  - generic [ref=f13e330]: 12:35
+                  - generic [ref=f13e331]: от 820 ₽
+                  - generic [ref=f13e332]: Зал №5
+                - generic [ref=f13e335] [cursor=pointer]:
+                  - generic [ref=f13e336]: 14:20
+                  - generic [ref=f13e337]: от 870 ₽
+                  - generic [ref=f13e338]: Зал №1
+                - generic [ref=f13e341] [cursor=pointer]:
+                  - generic [ref=f13e342]: 15:15
+                  - generic [ref=f13e343]: от 950 ₽
+                  - generic [ref=f13e344]: Зал №5
+                - generic [ref=f13e347] [cursor=pointer]:
+                  - generic [ref=f13e348]: 17:00
+                  - generic [ref=f13e349]: от 1 020 ₽
+                  - generic [ref=f13e350]: Зал №1
+                - generic [ref=f13e353] [cursor=pointer]:
+                  - generic [ref=f13e354]: 17:55
+                  - generic [ref=f13e355]: от 1 120 ₽
+                  - generic [ref=f13e356]: Зал №5
+                - generic [ref=f13e359] [cursor=pointer]:
+                  - generic [ref=f13e360]: 19:40
+                  - generic [ref=f13e361]: от 1 150 ₽
+                  - generic [ref=f13e362]: Зал №1
+                - generic [ref=f13e365] [cursor=pointer]:
+                  - generic [ref=f13e366]: 20:35
+                  - generic [ref=f13e367]: от 1 150 ₽
+                  - generic [ref=f13e368]: Зал №5
+                - generic [ref=f13e371] [cursor=pointer]:
+                  - generic [ref=f13e372]: 22:20
+                  - generic [ref=f13e373]: от 1 150 ₽
+                  - generic [ref=f13e374]: Зал №1
+      - generic [ref=f13e375]:
+        - heading "Рекомендуем посмотреть" [level=4] [ref=f13e376]
+        - generic [ref=f13e377]:
+          - generic [ref=f13e379]:
+            - generic [ref=f13e381]:
+              - link [ref=f13e382] [cursor=pointer]:
+                - /url: /movie/14392-es-molis-xudei
+                - img "Ешь, молись, худей" [ref=f13e383]
+              - generic [ref=f13e384]: 18+
+              - button "Воспроизвести" [ref=f13e385] [cursor=pointer]
+            - generic [ref=f13e389]:
+              - link [ref=f13e390] [cursor=pointer]:
+                - /url: /movie/14692-poslednii-bogatyr-kolobok
+                - img "Последний богатырь. Колобок" [ref=f13e391]
+              - generic [ref=f13e392]: 6+
+              - button "Воспроизвести" [ref=f13e393] [cursor=pointer]
+            - generic [ref=f13e397]:
+              - link [ref=f13e398] [cursor=pointer]:
+                - /url: /movie/1000000000165-istoriia-igrusek-5-predseans-obsl-vesennee-obostrenie
+                - img "История игрушек 5 / Предсеанс. обсл. Весеннее обострение" [ref=f13e399]
+              - generic [ref=f13e400]: 6+
+              - button "Воспроизвести" [ref=f13e401] [cursor=pointer]
+            - generic [ref=f13e405]:
+              - link [ref=f13e406] [cursor=pointer]:
+                - /url: /movie/1000000000167-minyony-i-monstry-predseans-obsl-vesennee-obostrenie
+                - img "Миньоны и монстры / Предсеанс. обсл. Весеннее обострение" [ref=f13e407]
+              - generic [ref=f13e408]: 6+
+              - button "Воспроизвести" [ref=f13e409] [cursor=pointer]
+            - generic [ref=f13e413]:
+              - link [ref=f13e414] [cursor=pointer]:
+                - /url: /movie/1000000000168-odisseia-predseans-obsl-vesennee-obostrenie
+                - img "ОДИССЕЯ / Предсеанс. обсл. Весеннее обострение" [ref=f13e415]
+              - generic [ref=f13e416]: 18+
+              - button "Воспроизвести" [ref=f13e417] [cursor=pointer]
+            - generic [ref=f13e421]:
+              - link [ref=f13e422] [cursor=pointer]:
+                - /url: /movie/1000000000174-celovek-pauk-net-puti-domoi2021godpredseans-obsl-vesennee-obostrenie
+                - 'img "Человек-паук: Нет пути домой(2021год)/Предсеанс. обсл. Весеннее обострение" [ref=f13e423]'
+              - generic [ref=f13e424]: 12+
+          - button "Следующий" [ref=f13e425] [cursor=pointer]
+    - contentinfo [ref=f13e154]:
+      - generic [ref=f13e156]:
+        - generic [ref=f13e157]:
+          - generic [ref=f13e158]:
+            - heading "Кинотеатр" [level=3] [ref=f13e159]
+            - list [ref=f13e160]:
+              - listitem [ref=f13e161]:
+                - link "Сегодня" [ref=f13e162] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f13e163]:
+                - link "Завтра" [ref=f13e164] [cursor=pointer]:
+                  - /url: /tomorrow
+              - listitem [ref=f13e165]:
+                - link "Детям" [ref=f13e166] [cursor=pointer]:
+                  - /url: /kids
+              - listitem [ref=f13e167]:
+                - link "Пушкинская карта" [ref=f13e168] [cursor=pointer]:
+                  - /url: /pushkins-card
+              - listitem [ref=f13e169]:
+                - link "Скоро" [ref=f13e170] [cursor=pointer]:
+                  - /url: /soon
+              - listitem [ref=f13e171]:
+                - link "Акции и новости" [ref=f13e172] [cursor=pointer]:
+                  - /url: /promotions
+              - listitem [ref=f13e173]:
+                - link "Контакты" [ref=f13e174] [cursor=pointer]:
+                  - /url: /contacts/1
+              - listitem [ref=f13e175]:
+                - link "Помощь" [ref=f13e176] [cursor=pointer]:
+                  - /url: /supports
+              - listitem [ref=f13e177]:
+                - button "Темная тема" [ref=f13e178] [cursor=pointer]
+          - generic [ref=f13e179]:
+            - heading "Правовая информация" [level=3] [ref=f13e180]
+            - list [ref=f13e181]:
+              - listitem [ref=f13e182]:
+                - link "Политика конфиденциальности" [ref=f13e183] [cursor=pointer]:
+                  - /url: https://cinemabox.team/media/docs/Политика_конфиденциальности_ООО_Синемабокс.pdf
+              - listitem [ref=f13e184]:
+                - link "Пользовательское соглашение" [ref=f13e185] [cursor=pointer]:
+                  - /url: https://cinemabox.team/media/docs/Пользовательское_соглашение_ООО_Синемабокс.pdf
+              - listitem [ref=f13e186]:
+                - link "Публичная оферта" [ref=f13e187] [cursor=pointer]:
+                  - /url: https://cinemabox.team/media/docs/Публичная_оферта_ООО_Синемабокс.pdf
+        - generic [ref=f13e188]:
+          - heading "Контакты Кинотеатр \"Бежицкий\"" [level=3] [ref=f13e189]
+          - generic [ref=f13e190]:
+            - generic [ref=f13e191]:
+              - paragraph [ref=f13e192]: г.Брянск, ул. 3-го Интернационала д-8, ТРЦ "БУМ сити", 5 этаж
+              - paragraph [ref=f13e193]: будни 14:00-00:00
+              - paragraph [ref=f13e194]: выходные 10:00-00:00
+            - generic [ref=f13e195]:
+              - paragraph [ref=f13e196]:
+                - text: "Офф. почта ООО \"Синема-Снаб\":"
+                - link "cinema-snab@yandex.ru" [ref=f13e197] [cursor=pointer]:
+                  - /url: mailto:cinema-snab@yandex.ru
+              - paragraph [ref=f13e198]:
+                - text: "Телефон:"
+                - link "77-28-07" [ref=f13e199] [cursor=pointer]:
+                  - /url: tel:77-28-07
+          - generic [ref=f13e200]:
+            - button "Перейти в VK" [ref=f13e201] [cursor=pointer]
+            - button "Перейти в Telegram" [ref=f13e204] [cursor=pointer]
+            - button "Перейти в Instagram" [ref=f13e207] [cursor=pointer]
+      - generic [ref=f13e208]:
+        - text: Разработано и поддерживается
+        - link "Cinemabox" [ref=f13e209] [cursor=pointer]:
+          - /url: https://www.cinemabox.team
+  - region "Notifications (F8)":
+    - list

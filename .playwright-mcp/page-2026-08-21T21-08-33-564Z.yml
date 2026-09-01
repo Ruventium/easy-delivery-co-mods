@@ -1,0 +1,357 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - banner [ref=e4]:
+        - generic [ref=e5]:
+          - generic [ref=e6]:
+            - generic [ref=e7]:
+              - text: Hello guest
+              - link "register" [ref=e8] [cursor=pointer]:
+                - /url: /members/register
+              - text: or
+              - link "sign in" [ref=e9] [cursor=pointer]:
+                - /url: /members/login
+            - generic [ref=e11]:
+              - textbox "Search" [ref=e12]
+              - button "Search ModDB" [ref=e13] [cursor=pointer]: Search
+          - link "ModDB Home" [ref=e14] [cursor=pointer]:
+            - /url: /
+          - list [ref=e15]:
+            - listitem [ref=e16]:
+              - link "HOME" [ref=e17] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e18]:
+              - link "Today" [ref=e19] [cursor=pointer]:
+                - /url: /today
+            - listitem [ref=e20]:
+              - link "Week" [ref=e21] [cursor=pointer]:
+                - /url: /week
+            - listitem [ref=e22]:
+              - link "Month" [ref=e23] [cursor=pointer]:
+                - /url: /month
+            - listitem [ref=e24]:
+              - link "Year" [ref=e25] [cursor=pointer]:
+                - /url: /year
+        - generic [ref=e26]:
+          - navigation:
+            - list:
+              - listitem [ref=e27]:
+                - link "games" [ref=e28] [cursor=pointer]:
+                  - /url: /games
+              - listitem [ref=e29]:
+                - link "mods" [ref=e30] [cursor=pointer]:
+                  - /url: /mods
+              - listitem [ref=e31]:
+                - link "addons" [ref=e32] [cursor=pointer]:
+                  - /url: /addons
+              - listitem [ref=e33]:
+                - link "files" [ref=e34] [cursor=pointer]:
+                  - /url: /downloads
+              - listitem [ref=e35]:
+                - link "RTX Remix" [ref=e36] [cursor=pointer]:
+                  - /url: /rtx
+              - listitem [ref=e37]:
+                - link "videos" [ref=e38] [cursor=pointer]:
+                  - /url: /videos
+              - listitem [ref=e39]:
+                - link "articles" [ref=e40] [cursor=pointer]:
+                  - /url: /articles
+              - listitem [ref=e41]:
+                - link "engines" [ref=e42] [cursor=pointer]:
+                  - /url: /engines
+              - listitem [ref=e43]:
+                - link "developers" [ref=e44] [cursor=pointer]:
+                  - /url: /company
+              - listitem [ref=e45]:
+                - link "groups" [ref=e46] [cursor=pointer]:
+                  - /url: /groups
+              - listitem [ref=e47]:
+                - link "forums" [ref=e48] [cursor=pointer]:
+                  - /url: /forum
+              - listitem [ref=e49]:
+                - link "jobs" [ref=e50] [cursor=pointer]:
+                  - /url: /jobs
+      - generic [ref=e53]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - heading [level=2] [ref=e57]:
+              - link "FlatOut 2 Steering Wheel Fix" [ref=e58] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix
+            - heading [level=3] [ref=e59]:
+              - link "FlatOut 2 mod" [ref=e60] [cursor=pointer]:
+                - /url: /games/flatout-2
+              - text: "|"
+              - time [ref=e61]: Released Aug 19, 2025
+          - navigation [ref=e62]:
+            - list [ref=e63]:
+              - listitem [ref=e64]:
+                - link "summary" [ref=e65] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix
+              - listitem [ref=e66]:
+                - link "articles" [ref=e67] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/articles
+              - listitem [ref=e68]:
+                - link "reviews" [ref=e69] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/reviews
+              - listitem [ref=e70]:
+                - link "files" [ref=e71] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/downloads
+              - listitem [ref=e72]:
+                - link "videos" [ref=e73] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/videos
+              - listitem [ref=e74]:
+                - link "images" [ref=e75] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/images
+        - paragraph [ref=e80]: A mod that significantly improves steering wheel functionality in FlatOut 2.
+      - generic [ref=e81]:
+        - generic [ref=e82]:
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - link "Add file" [ref=e86] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix/downloads/add/#downloadsform
+              - link "Report" [ref=e87] [cursor=pointer]:
+                - /url: /messages/ajax/action/?action=report&sitearea=downloads&siteareaid=297431
+            - text: FlatOut 2 Steering Wheel Fix
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - heading "Location" [level=5] [ref=e93]
+              - generic [ref=e94]:
+                - link "Games" [ref=e95] [cursor=pointer]:
+                  - /url: /games
+                - text: ":"
+                - link "FlatOut 2" [ref=e96] [cursor=pointer]:
+                  - /url: /games/flatout-2
+                - text: ":"
+                - link "Mods" [ref=e97] [cursor=pointer]:
+                  - /url: /games/flatout-2/mods
+                - text: ":"
+                - link "FlatOut 2 Steering Wheel Fix" [ref=e98] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix
+                - text: ":"
+                - link "Files" [ref=e99] [cursor=pointer]:
+                  - /url: /mods/flatout-2-steering-wheel-fix/downloads
+            - generic [ref=e100]:
+              - heading "Filename" [level=5] [ref=e101]
+              - generic [ref=e102]: FlatOut_2_Steering_Wheel_Fix.zip
+            - generic [ref=e103]:
+              - heading "Category" [level=5] [ref=e104]
+              - link "Other" [ref=e106] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix/downloads?filter=t&category=24
+            - generic [ref=e107]:
+              - heading "Uploader" [level=5] [ref=e108]
+              - link "Oks100" [ref=e110] [cursor=pointer]:
+                - /url: /members/oks100
+            - generic [ref=e111]:
+              - heading "Added" [level=5] [ref=e112]
+              - time [ref=e114]: Sep 30th, 2025
+            - generic [ref=e115]:
+              - heading "Size" [level=5] [ref=e116]
+              - generic [ref=e117]: 89.2kb (91,336 bytes)
+            - generic [ref=e118]:
+              - heading "Downloads" [level=5] [ref=e119]
+              - link "137 (1 today)" [ref=e121] [cursor=pointer]:
+                - /url: /statistics/data/visit/downloads/297431
+            - generic [ref=e122]:
+              - heading "MD5 Hash" [level=5] [ref=e123]
+              - generic [ref=e124]: f68801ac7a3f937f7f30c1c25eb1ed08
+            - generic "Share the file using this HTML" [ref=e125]:
+              - heading "Embed Button" [level=5] [ref=e126]
+              - textbox [ref=e128]: <a href="https://www.moddb.com/mods/flatout-2-steering-wheel-fix/downloads/flatout-2-steering-wheel-fix" title="Download FlatOut 2 Steering Wheel Fix - ModDB" target="_blank"><img src="https://button.moddb.com/download/medium/297431.png" alt="FlatOut 2 Steering Wheel Fix" /></a>
+            - generic "Embed the file using this HTML" [ref=e129]:
+              - heading "Embed Widget" [level=5] [ref=e130]
+              - textbox [ref=e132]: <iframe width="600" height="180" src="https://www.moddb.com/mods/flatout-2-steering-wheel-fix/downloads/flatout-2-steering-wheel-fix/widget" frameborder="0"></iframe><br><a href="https://www.moddb.com/mods/flatout-2-steering-wheel-fix/downloads/flatout-2-steering-wheel-fix">Download FlatOut 2 Steering Wheel Fix - ModDB</a>
+            - link "89.2kb Download Now" [ref=e134] [cursor=pointer]:
+              - /url: /downloads/start/297431
+              - generic [ref=e135]: 89.2kb
+              - text: Download Now
+        - generic [ref=e136]:
+          - generic [ref=e137]: Description
+          - paragraph [ref=e142]:
+            - text: A mod that significantly improves steering wheel functionality in FlatOut 2.
+            - link "Read more..." [ref=e321] [cursor=pointer]:
+              - /url: "#"
+        - generic [ref=e147]:
+          - generic [ref=e148]: Preview
+          - link [ref=e154] [cursor=pointer]:
+            - /url: https://media.moddb.com/images/downloads/1/298/297431/screenshot-2212_w1600.jpg
+            - img "FlatOut 2 Steering Wheel Fix" [ref=e155]
+        - generic [ref=e156]:
+          - generic [ref=e157]: Post a comment
+          - generic [ref=e163]:
+            - generic [ref=e164]:
+              - paragraph
+              - paragraph [ref=e165]:
+                - link "Click to connect via Steam" [ref=e166] [cursor=pointer]:
+                  - /url: /members/loginext/steam
+                - link "Click to connect via Google" [ref=e167] [cursor=pointer]:
+                  - /url: /members/loginext/google
+                - link "Click to connect via Twitter" [ref=e168] [cursor=pointer]:
+                  - /url: /members/loginext/twitter
+                - link "Click to connect via Facebook" [ref=e169] [cursor=pointer]:
+                  - /url: /members/loginext/facebook
+                - text: Your comment will be anonymous unless you
+                - link "join the community" [ref=e170] [cursor=pointer]:
+                  - /url: /members/register
+                - text: ". Or sign in with your social account:"
+            - generic [ref=e171]:
+              - paragraph
+              - textbox [ref=e172]
+            - button "Save comment" [ref=e174]
+      - generic [ref=e175]:
+        - generic [ref=e178]:
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - link "Follow" [ref=e182] [cursor=pointer]:
+                - /url: "#watch"
+              - link "Report" [ref=e183] [cursor=pointer]:
+                - /url: /messages/ajax/action/?action=report&sitearea=mods&siteareaid=68244
+            - text: Profile
+          - generic [ref=e187]:
+            - link "1 Follow" [ref=e189] [cursor=pointer]:
+              - /url: "#watch"
+              - generic [ref=e190]: "1"
+              - text: Follow
+            - generic [ref=e191]:
+              - heading "Icon" [level=5] [ref=e192]
+              - link [ref=e194] [cursor=pointer]:
+                - /url: /games/flatout-2
+                - img "FlatOut 2" [ref=e195]
+            - generic [ref=e196]:
+              - heading "Game" [level=5] [ref=e197]
+              - link "FlatOut 2" [ref=e199] [cursor=pointer]:
+                - /url: /games/flatout-2
+            - generic [ref=e200]:
+              - heading "Creator" [level=5] [ref=e201]
+              - link "Oks100" [ref=e203] [cursor=pointer]:
+                - /url: /members/oks100
+            - generic [ref=e204]:
+              - heading "Contact" [level=5] [ref=e205]
+              - link "Send Message" [ref=e207] [cursor=pointer]:
+                - /url: /messages/compose?to=Oks100
+            - generic [ref=e208]:
+              - heading "Homepage" [level=5] [ref=e209]
+              - link "Modstalgia.com" [ref=e211] [cursor=pointer]:
+                - /url: https://modstalgia.com/
+            - generic [ref=e212]:
+              - heading "Release date" [level=5] [ref=e213]
+              - time [ref=e215]: Released Aug 19, 2025
+        - generic [ref=e230]:
+          - generic [ref=e231]: File
+          - generic [ref=e236]:
+            - generic [ref=e237]:
+              - heading "Browse" [level=5] [ref=e238]
+              - link "Files" [ref=e240] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix/downloads
+            - generic [ref=e241]:
+              - heading "New" [level=5] [ref=e242]
+              - link "Add file" [ref=e244] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix/downloads/add/#downloadsform
+            - generic [ref=e245]:
+              - heading "Report" [level=5] [ref=e246]
+              - link "Report" [ref=e248] [cursor=pointer]:
+                - /url: /messages/ajax/action/?action=report&sitearea=downloads&siteareaid=297431
+            - generic [ref=e249]:
+              - heading "Share" [level=5] [ref=e250]
+              - generic [ref=e251]:
+                - link "Share on Reddit" [ref=e252] [cursor=pointer]:
+                  - /url: https://www.reddit.com/r/1/submit?url=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix&title=FlatOut+2+Steering+Wheel+Fix+file
+                - link "Email a friend" [ref=e253] [cursor=pointer]:
+                  - /url: mailto:?subject=FlatOut%202%20Steering%20Wheel%20Fix%20file&body=Visit%3A%20https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix
+                - link "Tweeeeeet!" [ref=e254] [cursor=pointer]:
+                  - /url: https://twitter.com/intent/tweet?status=FlatOut+2+Steering+Wheel+Fix+file+https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix+via+%40moddb&url=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix&via=moddb
+                - link "Share on Facebook" [ref=e255] [cursor=pointer]:
+                  - /url: https://www.facebook.com/dialog/share?app_id=210134345672070&display=page&href=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix&quote=FlatOut+2+Steering+Wheel+Fix+file&redirect_uri=https%3A%2F%2Fwww.moddb.com%2Fmods%2Fflatout-2-steering-wheel-fix%2Fdownloads%2Fflatout-2-steering-wheel-fix
+        - generic [ref=e256]:
+          - generic [ref=e257]: Related Mods
+          - generic [ref=e263]:
+            - link [ref=e264] [cursor=pointer]:
+              - /url: /mods/flatout-2-steering-wheel-fix
+              - img "FlatOut 2 Steering Wheel Fix" [ref=e265]
+            - generic [ref=e266]:
+              - link "FlatOut 2 Steering Wheel Fix" [ref=e267] [cursor=pointer]:
+                - /url: /mods/flatout-2-steering-wheel-fix
+              - link "FlatOut 2" [ref=e269] [cursor=pointer]:
+                - /url: /games/flatout-2
+        - generic [ref=e270]:
+          - generic [ref=e271]: Related Games
+          - generic [ref=e277]:
+            - link [ref=e278] [cursor=pointer]:
+              - /url: /games/flatout-2
+              - img "FlatOut 2" [ref=e279]
+            - generic [ref=e280]:
+              - link "FlatOut 2" [ref=e281] [cursor=pointer]:
+                - /url: /games/flatout-2
+              - text: Racing
+        - generic [ref=e282]:
+          - generic [ref=e283]: Tags
+          - generic [ref=e290]:
+            - paragraph
+            - paragraph [ref=e291]: FlatOut 2 Steering Wheel Fix has not been tagged yet.
+    - contentinfo [ref=e295]:
+      - generic [ref=e297]:
+        - link "DBolical - Entertainment Euphoria" [ref=e298] [cursor=pointer]:
+          - /url: https://www.dbolical.com
+        - generic [ref=e299]:
+          - link "Cookies" [ref=e300] [cursor=pointer]:
+            - /url: javascript:CookieScript.instance.show()
+          - text: "|"
+          - link "Terms of Use" [ref=e301] [cursor=pointer]:
+            - /url: /terms-of-use
+          - text: "|"
+          - link "Privacy Policy" [ref=e302] [cursor=pointer]:
+            - /url: /privacy-policy
+        - generic [ref=e303]:
+          - link "Blog" [ref=e304] [cursor=pointer]:
+            - /url: /blog
+          - text: "|"
+          - link "About" [ref=e305] [cursor=pointer]:
+            - /url: /about
+          - text: "|"
+          - link "Advertise" [ref=e306] [cursor=pointer]:
+            - /url: /advertise
+          - text: "|"
+          - link "Contact" [ref=e307] [cursor=pointer]:
+            - /url: /contact
+          - text: "|"
+          - link "Submit Mod" [ref=e308] [cursor=pointer]:
+            - /url: /mods/add
+          - text: "|"
+          - link "Cross-Platform Mod Support" [ref=e309] [cursor=pointer]:
+            - /url: https://mod.io
+          - text: "|"
+          - link "Site Map" [ref=e310] [cursor=pointer]:
+            - /url: /sitemap
+        - generic [ref=e311]:
+          - text: © 2002 - 2026
+          - link "DBolical Pty Ltd." [ref=e312] [cursor=pointer]:
+            - /url: https://www.dbolical.com
+          - text: All Rights Reserved.
+          - link "7581 modders" [ref=e313] [cursor=pointer]:
+            - /url: /members/online
+          - text: .
+  - textbox [ref=e322]
+  - dialog "Cookie consent dialog" [ref=e324]:
+    - button "Close" [ref=e327] [cursor=pointer]: ×
+    - generic [ref=e328]: Responsible use of your data
+    - generic [ref=e329]:
+      - generic [ref=e330]: We and our partners use cookies and similar technologies to store and access information on your device and process personal data, such as your IP address, unique identifiers, and browsing data, for personalised ads and content, ad and content measurement, audience insights, and service improvement. Third-party vendors (1916) may also process your data for these and other purposes, including the use of precise geolocation data and device characteristics. Your choices apply to this website only. Some vendors may rely on legitimate interest instead of consent; you have the right to object in Advertising Settings. You can withdraw your consent at any time in Cookie Settings.
+      - link "Privacy Policy" [ref=e331] [cursor=pointer]:
+        - /url: /privacy-policy
+    - generic [ref=e332]:
+      - generic [ref=e333]:
+        - generic [ref=e334] [cursor=pointer]:
+          - checkbox "Strictly necessary" [checked] [disabled]
+        - generic [ref=e335] [cursor=pointer]: Strictly necessary
+      - generic [ref=e337]:
+        - checkbox "Performance" [ref=e339] [cursor=pointer]
+        - generic [ref=e340] [cursor=pointer]: Performance
+      - generic [ref=e342]:
+        - checkbox "Targeting" [ref=e344] [cursor=pointer]
+        - generic [ref=e345] [cursor=pointer]: Targeting
+      - generic [ref=e347]:
+        - checkbox "Functionality" [ref=e349] [cursor=pointer]
+        - generic [ref=e350] [cursor=pointer]: Functionality
+    - generic [ref=e352]:
+      - button "Accept all cookies" [ref=e353] [cursor=pointer]
+      - button "Decline all" [ref=e354] [cursor=pointer]
+    - button "Manage settings" [ref=e355]
