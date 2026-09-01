@@ -251,17 +251,21 @@ namespace EasyDeliveryCoMods
                         }
                     }
 
-                    // Steer axis: Find explicit or best matching axis
+                    // Steer axis on PXN V12 Lite:
+                    // Look at the two 'x' axes: one rests at -1.00 (pedal/clutch/lever), the other rests at 0.00 (THE WHEEL!)
+                    // We specifically select the 'x' axis that rests near 0.00!
                     if (wheelSteerControlPath.Value != "auto")
                     {
                         steerAxis = FindAxisByCustom(wheelSteerControlPath.Value);
                     }
                     if (steerAxis == null)
                     {
-                        // Priority 1: stick/x
-                        steerAxis = activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/stick/x", StringComparison.OrdinalIgnoreCase))
-                                    ?? activeDeviceAxes.FirstOrDefault(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("hat") && !a.path.Contains("dpad"))
-                                    ?? activeDeviceAxes.FirstOrDefault(a => a.path.EndsWith("/x", StringComparison.OrdinalIgnoreCase) && !a.path.Contains("hat") && !a.path.Contains("dpad"));
+                        var candidateXAxes = activeDeviceAxes.Where(a => a.name.Equals("x", StringComparison.OrdinalIgnoreCase) || a.path.EndsWith("/x", StringComparison.OrdinalIgnoreCase)).ToList();
+                        
+                        // Select the one centered at 0.00 (abs value < 0.5)
+                        steerAxis = candidateXAxes.FirstOrDefault(a => Mathf.Abs(a.ReadValue()) < 0.4f)
+                                    ?? candidateXAxes.LastOrDefault()
+                                    ?? candidateXAxes.FirstOrDefault();
                     }
 
                     // Gas: 'z'
