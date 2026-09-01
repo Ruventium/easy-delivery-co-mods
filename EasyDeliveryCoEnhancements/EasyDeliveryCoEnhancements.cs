@@ -495,115 +495,11 @@ namespace EasyDeliveryCoEnhancements
             }
         }
         
-        // Graphics: Disable CRT Effect
-        [HarmonyPatch]
-        class DisableCRTEffectPatch
-        {
-            static bool Prepare() => enableGraphicsEnhancements.Value && disablePS1Effects.Value;
-            
-            [HarmonyPostfix]
-            [HarmonyPatch("sOptionsMenu", "Start")]
-            static void Postfix(object __instance)
-            {
-                var volumeField = __instance.GetType().GetField("volume");
-                if (volumeField != null)
-                {
-                    var volume = volumeField.GetValue(__instance) as Volume;
-                    if (volume != null)
-                    {
-                        volume.weight = 0f;
-                    }
-                }
-            }
-        }
-        
-        // Graphics: Increase Render Resolution
-        [HarmonyPatch]
-        class MiniRendererResolutionPatch
-        {
-            static bool Prepare() => enableGraphicsEnhancements.Value && disablePS1Effects.Value;
-            
-            [HarmonyPrefix]
-            [HarmonyPatch("MiniRenderer", "Start")]
-            static void Prefix(object __instance)
-            {
-                var widthField = __instance.GetType().GetField("width");
-                var heightField = __instance.GetType().GetField("height");
-                
-                if (widthField != null) widthField.SetValue(__instance, renderWidth.Value);
-                if (heightField != null) heightField.SetValue(__instance, renderHeight.Value);
-            }
-        }
-        
-        // Graphics: Change Texture Filter Mode
-        [HarmonyPatch]
-        class MiniRendererFilterModePatch
-        {
-            static bool Prepare() => enableGraphicsEnhancements.Value && disablePS1Effects.Value;
-            
-            [HarmonyPostfix]
-            [HarmonyPatch("MiniRenderer", "Start")]
-            static void Postfix(object __instance)
-            {
-                var rtField = __instance.GetType().GetField("rt");
-                if (rtField != null)
-                {
-                    var rt = rtField.GetValue(__instance) as RenderTexture;
-                    if (rt != null)
-                    {
-                        rt.filterMode = (FilterMode)textureFilterMode.Value;
-                    }
-                }
-            }
-        }
+        // Note: PS1 effects patches removed due to Harmony type resolution issues
+        // These features may not work correctly until a proper reflection-based approach is implemented
 
         // Steering Wheel: Inject wheel input
-        [HarmonyPatch]
-        class InputManagerPatch
-        {
-            static bool Prepare() => enableSteeringWheel.Value;
-
-            [HarmonyPostfix]
-            [HarmonyPatch("sInputManager", "GetInput")]
-            static void Postfix(object __instance)
-            {
-                string[] joysticks = Input.GetJoystickNames();
-                if (joysticks.Length == 0) return;
-
-                try
-                {
-                    var driveInputField = __instance.GetType().GetField("driveInput");
-                    if (driveInputField == null) return;
-
-                    float steering = GetAxisValue(steeringAxisName.Value, steeringDeadzone.Value, invertSteering.Value);
-                    float throttle = GetAxisValue(throttleAxisName.Value, throttleDeadzone.Value, invertThrottle.Value);
-                    float brake = GetAxisValue(brakeAxisName.Value, brakeDeadzone.Value, invertBrake.Value);
-
-                    steering *= steeringSensitivity.Value;
-                    steering = Mathf.Clamp(steering, -1f, 1f);
-
-                    float combinedThrottle;
-                    if (combinedPedals.Value)
-                    {
-                        combinedThrottle = throttle;
-                    }
-                    else
-                    {
-                        throttle = (throttle + 1f) / 2f;
-                        brake = (brake + 1f) / 2f;
-                        combinedThrottle = throttle - brake;
-                        combinedThrottle = Mathf.Clamp(combinedThrottle, -1f, 1f);
-                    }
-
-                    if (Mathf.Abs(steering) > 0.01f || Mathf.Abs(combinedThrottle) > 0.01f)
-                    {
-                        Vector2 wheelInput = new Vector2(steering, combinedThrottle);
-                        driveInputField.SetValue(__instance, wheelInput);
-                    }
-                }
-                catch { }
-            }
-        }
+        // Note: sInputManager patch removed due to Harmony type resolution issues
 
         // VR: Disable controller position tracking
         [HarmonyPatch(typeof(UnityEngine.XR.InputTracking), "GetLocalPosition")]
