@@ -8,8 +8,9 @@
 bin/
 obj/
 
-# Visual Studio
+# Visual Studio / Rider
 .vs/
+.idea/
 *.suo
 *.user
 
@@ -17,15 +18,3 @@ obj/
 *.log
 *.cache
 *.pdb
-
-# Other projects
-Kotamon*
-NativeDisasm*
-.opencode/
-.playwright-mcp/
-docs/
-EasyDeliveryCoEnhancements/
-EasyDeliveryCoCustomRadio/
-EasyDeliveryCoFpsUnlock/
-EasyDeliveryCoSteeringWheel/
-EasyDeliveryCoVR/
