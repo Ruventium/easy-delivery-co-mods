@@ -7,6 +7,7 @@
 [Oo]bj/
 bin/
 obj/
+*.pdb
 
 # Visual Studio / Rider
 .vs/
@@ -17,4 +18,9 @@ obj/
 # Logs and temps
 *.log
 *.cache
-*.pdb
+
+# Secrets
+.env
+*.pem
+*.key
+*_rsa*
